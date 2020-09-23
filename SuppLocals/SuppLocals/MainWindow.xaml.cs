@@ -105,12 +105,12 @@ namespace SuppLocals
             if (servicePanel.Visibility == Visibility.Collapsed)
             {
                 servicePanel.Visibility = Visibility.Visible;
-                (sender as Button).Content = "Services";
+                (sender as Button).Content = "Vendors";
             }
             else
             {
                 servicePanel.Visibility = Visibility.Collapsed;
-                (sender as Button).Content = "Services";
+                (sender as Button).Content = "Vendors";
             }
         }
 
@@ -127,6 +127,27 @@ namespace SuppLocals
                 (sender as Button).Content = "Filters";
             }
         }
+
+        private void reviewsClick(object sender, RoutedEventArgs e)
+        {
+            if (reviewsPanel.Visibility == Visibility.Collapsed)
+            {
+                reviewsPanel.Visibility = Visibility.Visible;
+                (sender as Button).Content = "Reviews";
+            }
+            else
+            {
+                reviewsPanel.Visibility = Visibility.Collapsed;
+                (sender as Button).Content = "Reviews";
+            }
+        }
+
+        private void MoreButtonClicked(object sender, RoutedEventArgs e)
+        {
+            ReviewsWindow rWindow = new ReviewsWindow();
+            rWindow.Show();
+        }
+
 
         private void hyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
