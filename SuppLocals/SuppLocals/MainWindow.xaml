@@ -34,6 +34,8 @@
         </TextBlock>
 
 
+        
+        
         <!--Menu-->
         <ScrollViewer x:Name="sPan" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" MinWidth="200" Margin="5 0 5 0" Visibility="Collapsed">
             <StackPanel  Orientation="Vertical">
