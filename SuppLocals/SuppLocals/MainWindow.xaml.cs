@@ -3,24 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Net;
-using System.Xml.Linq;
 using Geocoding.Microsoft;
 using Geocoding;
 using SuppLocals.Services;
-using System.Numerics;
 
+
+using Windows.Devices.Geolocation;
+using System.ComponentModel;
 
 namespace SuppLocals
 {
@@ -28,9 +22,15 @@ namespace SuppLocals
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
+     
+
+    
 
     public partial class MainWindow : Window
     {
+        
+
+        
         //serviceList[0] - FOOD |  [1] - Car Repair |  [2] - OTHER
         public List<List<Service>> servicesList = new List<List<Service>>();
 
@@ -38,7 +38,8 @@ namespace SuppLocals
 
         public double circleRadius = 0;
 
-        public Microsoft.Maps.MapControl.WPF.Location myCurrLocation = new Microsoft.Maps.MapControl.WPF.Location(54.6872, 25.2797);
+        public Microsoft.Maps.MapControl.WPF.Location myCurrLocation= null;
+        private double myCurrLocationRadius = 0.01;
 
         public MainWindow()
         {
@@ -84,9 +85,10 @@ namespace SuppLocals
 
             filterServiceTypeCB.ItemsSource = types;
             filterServiceTypeCB.SelectedIndex = 0;
-
-            //  updateServiceListAndMap(null, null);
         }
+
+        
+
         private void buttonClick(object sender, RoutedEventArgs e)
         {
             if (sPan.Visibility == Visibility.Collapsed)
@@ -159,7 +161,7 @@ namespace SuppLocals
         }
 
 
-        public void drawCircle(Microsoft.Maps.MapControl.WPF.Location Loc, double dRadius)
+        public void drawCircle(Microsoft.Maps.MapControl.WPF.Location Loc, double dRadius, Color fillColor)
         {
 
             var locCollection = new LocationCollection();
@@ -169,7 +171,6 @@ namespace SuppLocals
             var latitude = (Math.PI / 180) * (Loc.Latitude);
             var longitude = (Math.PI / 180) * (Loc.Longitude);
 
-            //Angular distance covered on earth surface
             var d = dRadius / EarthRadius;
 
             for (int x = 0; x < 360; x++)
@@ -177,17 +178,16 @@ namespace SuppLocals
                 var angle = x * (Math.PI / 180); //radians
                 var latRadians = Math.Asin(Math.Sin(latitude) * Math.Cos(d) + Math.Cos(latitude) * Math.Sin(d) * Math.Cos(angle));
                 var lngRadians = longitude + Math.Atan2(Math.Sin(angle) * Math.Sin(d) * Math.Cos(latitude), Math.Cos(d) - Math.Sin(latitude) * Math.Sin(latRadians));
-
+            
                 //Get location of the point
                 var pt = new Microsoft.Maps.MapControl.WPF.Location(180.0 * latRadians / Math.PI, 180.0 * lngRadians / Math.PI);
-
+            
                 //Add the new calculatied poitn to the collection
                 locCollection.Add(pt);
             }
-
-
+            
             MapPolygon polygon = new MapPolygon();
-            polygon.Fill = new SolidColorBrush(Colors.AliceBlue);
+            polygon.Fill = new SolidColorBrush(fillColor);
             polygon.Stroke = new SolidColorBrush(Colors.Black);
             polygon.StrokeThickness = 1;
             polygon.Opacity = 0.65;
@@ -348,12 +348,17 @@ namespace SuppLocals
             }
             if ((bool)filterDistanceCheck.IsChecked)
             {
-                drawCircle(myCurrLocation, circleRadius);
+                //Filter circle
+                drawCircle(myCurrLocation, circleRadius, Color.FromRgb(240,248,255));
+
+                //Current location circle
+                drawCircle(myCurrLocation, myCurrLocationRadius, Color.FromRgb(0,0,255));
+
             }
         }
         public double DistanceBetweenPlaces(double lon1, double lat1, double lon2, double lat2)
         {
-            double R = 6371; // km
+            double R = 6371; // Earth radius km
 
             double sLat1 = Math.Sin(lat1 * (Math.PI / 180));
             double sLat2 = Math.Sin(lat2 * (Math.PI / 180));
@@ -438,10 +443,57 @@ namespace SuppLocals
 
         }
 
-        public void distanceFilterChecked(object sender, RoutedEventArgs e)
+
+        private async Task getLivelocation()
         {
-            distanceFilterPanel.Visibility = Visibility.Visible;
+            var accessStatus = await Geolocator.RequestAccessAsync();
+            switch (accessStatus)
+            {
+                case GeolocationAccessStatus.Allowed:
+
+                    ProgressDialog progressDialog = new ProgressDialog();
+                    progressDialog.Owner = this;
+                    Application.Current.Dispatcher.Invoke(new Action(() => this.IsEnabled = false));
+                    _ = progressDialog.Dispatcher.BeginInvoke(new Action(() => progressDialog.ShowDialog()));
+
+                    // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
+                    Geolocator geolocator = new Geolocator { DesiredAccuracyInMeters = 0 };
+
+                    // Carry out the operation
+                    Geoposition pos = await geolocator.GetGeopositionAsync();   
+
+                    myCurrLocation = new Microsoft.Maps.MapControl.WPF.Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
+
+                    Application.Current.Dispatcher.Invoke(new Action(() => this.IsEnabled = true));
+                    progressDialog.Close();
+
+
+                    break;
+                default:
+                    MessageBox.Show("We can't reach your location. Please check that the following location privacy are turned on:\n" +
+                                    "Location for this device... is turned on (not applicable in Windows 10 Mobile\n" +
+                                    "The location services setting, Location, is turned on\n" +
+                                    "Under Choose apps that can use your location, your app is set to on\n ");
+
+                    break;
+            }
+
+        }
+
+        public async void distanceFilterChecked(object sender, RoutedEventArgs e)
+        {
+
+            if(myCurrLocation == null) {
+               await getLivelocation();
+                if (myCurrLocation == null)
+                {
+                    filterDistanceCheck.IsChecked = false;
+                    return;
+                }
+            }
+            distanceFilterPanel.Visibility=Visibility.Visible;
             circleRadius = radiusSlider.Value;
+            myMap.Center = myCurrLocation;
             updateServiceListAndMap(null, null);
         }
 
