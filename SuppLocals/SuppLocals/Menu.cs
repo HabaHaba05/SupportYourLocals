@@ -7,7 +7,7 @@ namespace SuppLocals
 {
     public partial class MainWindow
     {
-        /* There is methods for Menu*/
+        // Methods for meniu interface
         private void buttonClick(object sender, RoutedEventArgs e)
         {
             if (sPan.Visibility == Visibility.Collapsed)
