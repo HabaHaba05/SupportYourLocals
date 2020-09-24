@@ -22,15 +22,9 @@ namespace SuppLocals
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-     
-
-    
 
     public partial class MainWindow : Window
     {
-        
-
-        
         //serviceList[0] - FOOD |  [1] - Car Repair |  [2] - OTHER
         public List<List<Service>> servicesList = new List<List<Service>>();
 
@@ -88,7 +82,6 @@ namespace SuppLocals
         }
 
         
-
         private void buttonClick(object sender, RoutedEventArgs e)
         {
             if (sPan.Visibility == Visibility.Collapsed)
@@ -151,7 +144,6 @@ namespace SuppLocals
             rWindow.Show();
         }
 
-
         private void hyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             //true if the shell should be used when starting the process; false if the process should be created directly from the executable file.
@@ -159,7 +151,6 @@ namespace SuppLocals
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
             e.Handled = true;
         }
-
 
         public void drawCircle(Microsoft.Maps.MapControl.WPF.Location Loc, double dRadius, Color fillColor)
         {
