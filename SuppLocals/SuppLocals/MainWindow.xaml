@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Background="#CCBA8B">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--0-->
@@ -28,13 +28,10 @@
         </Grid.RowDefinitions>
 
         <!--Place for a hyperlink to this site: https://lrv.lt/en-->
-        <Rectangle Grid.ColumnSpan="6" Fill="LightGray"/>
+        <Rectangle Grid.ColumnSpan="6" Fill="White"/>
         <TextBlock Text="All the information related to COVID-19 regulations. " HorizontalAlignment="Center" Grid.ColumnSpan="6" FontSize="13">
            <Hyperlink Foreground="Black" NavigateUri="https://lrv.lt/en" RequestNavigate="hyperlinkRequestNavigate">Read More</Hyperlink>
         </TextBlock>
-
-
-
 
         <!--Menu-->
         <ScrollViewer x:Name="sPan" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" MinWidth="200" Margin="5 0 5 0" Visibility="Collapsed">
@@ -42,7 +39,7 @@
 
                 <TextBlock Text="|Menu|" FontSize="30" HorizontalAlignment="Center" Margin="0 30 0 50"/>
 
-                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="LightGray" Click="servicesClick">Vendors
+                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="White" Click="servicesClick">Vendors
 
                     <Button.Resources>
                         <Style TargetType="Border">
@@ -64,7 +61,7 @@
                 </StackPanel>
 
 
-                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="LightGray" Click="filterClick">Filters
+                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="White" Click="filterClick">Filters
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="4"/>
@@ -91,7 +88,7 @@
                 </StackPanel>
 
 
-                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="LightGray" Click="reviewsClick">Reviews
+                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="White" Click="reviewsClick">Reviews
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="4"/>
@@ -100,7 +97,7 @@
                 </Button>
 
                 <StackPanel Name="reviewsPanel" Grid.Column="1" MinWidth="150" Height="100" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
-                    <Button Width="60" Height="auto"  FontSize="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Background ="LightGray" Click="MoreButtonClicked">More..
+                    <Button Width="60" Height="auto"  FontSize="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Background ="White" Click="MoreButtonClicked">More..
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="4"/>
@@ -117,7 +114,7 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="32" Height="25" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right"  Background ="LightGray" Click="buttonClick">☰</Button>
+        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="32" Height="25" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right"  Background ="White" Click="buttonClick">☰</Button>
 
         <ListBox x:Name="servicesLB" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" MinWidth="150" Margin="0 0 10 0"
                  SelectionMode="Single" SelectionChanged="serviceChanged">
