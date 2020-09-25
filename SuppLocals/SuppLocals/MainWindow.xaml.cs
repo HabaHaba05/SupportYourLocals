@@ -28,7 +28,7 @@ namespace SuppLocals
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-
+    
     public partial class MainWindow : Window
     {
         //serviceList[0] - FOOD |  [1] - Car Repair |  [2] - OTHER
@@ -215,8 +215,6 @@ namespace SuppLocals
             // Add to the panel   
             resultStack.Children.Add(block);
         }
-
-        #endregion
 
         public void drawCircle(Microsoft.Maps.MapControl.WPF.Location Loc, double dRadius, Color fillColor)
         {

@@ -34,7 +34,7 @@
         </TextBlock>
 
         <!--Menu-->
-        <ScrollViewer x:Name="sPan" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" MinWidth="200" Margin="5 0 5 0" Visibility="Collapsed">
+        <ScrollViewer x:Name="sPan" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" MinWidth="200" Margin="5 0 5 0" Visibility="Visible">
             <StackPanel  Orientation="Vertical">
 
                 <TextBlock Text="|Menu|" FontSize="30" HorizontalAlignment="Center" Margin="0 30 0 50"/>
@@ -51,17 +51,24 @@
 
                 <!--Create PushPins-->
                 <!--Services list-->
-                <StackPanel Name="servicePanel" Grid.Column="1" Grid.Row="1" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
+                <StackPanel Name="servicePanel" Grid.Column="1" Grid.Row="1" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" Visibility="Visible">
                     <TextBlock Text="Vendor type" Padding="5" HorizontalAlignment="Center" />
                     <ComboBox x:Name="createServiceCB"/>
 
                     <TextBlock Text="Address" Padding="5" HorizontalAlignment="Center" />
                     <TextBox x:Name="addressTextBox" Height="20" TextWrapping="NoWrap" KeyUp="AddressChanged"
                              GotFocus="addressTextBox_GotFocus" LostFocus="addressTextBox_LostFocus"/>
+
                     <ScrollViewer x:Name="addressSuggest" Width="{Binding ElementName=addressTextBox, Path=ActualWidth}"
                             Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                         <StackPanel Name="resultStack"></StackPanel>
                     </ScrollViewer>
+
+                        <ScrollViewer x:Name="addressSuggest" Width="{Binding ElementName=addressTextBox, Path=ActualWidth}"
+                            Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel Name="resultStack"></StackPanel>
+                        </ScrollViewer>
+                  
                     <Button x:Name="confirmBtn" Click="addPushPin" Content="Confirm"/>
                 </StackPanel>
 
