@@ -15,6 +15,12 @@ using SuppLocals.Services;
 
 using Windows.Devices.Geolocation;
 using System.ComponentModel;
+using System.Windows.Input;
+using System.Net.Http;
+using System.Net;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Threading;
 
 namespace SuppLocals
 {
@@ -22,22 +28,23 @@ namespace SuppLocals
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-     
 
     public partial class MainWindow : Window
     {
-        
-
-        
         //serviceList[0] - FOOD |  [1] - Car Repair |  [2] - OTHER
         public List<List<Service>> servicesList = new List<List<Service>>();
 
         //Variables for testing
-
         public double circleRadius = 0;
 
-        public Microsoft.Maps.MapControl.WPF.Location myCurrLocation= null;
+        public Microsoft.Maps.MapControl.WPF.Location myCurrLocation = null;
         private double myCurrLocationRadius = 0.01;
+
+
+        //Google place api
+        const string host = "https://maps.googleapis.com";
+        const string path = "/maps/api/place/autocomplete/json";
+        const string key = "AIzaSyBVs4wsiyCVvFbpPlX-NJyz_fj8db04R78";
 
         public MainWindow()
         {
@@ -55,7 +62,6 @@ namespace SuppLocals
             servicesList.Add(testFood);
             servicesList.Add(testCar);
             servicesList.Add(testOther);
-
 
             //By default
             InitializeComponent();
@@ -85,6 +91,133 @@ namespace SuppLocals
             filterServiceTypeCB.SelectedIndex = 0;
         }
 
+
+        #region Address Suggestions
+        public async Task<List<string>> GetData()
+        {
+            List<string> data = new List<string>();
+
+
+            try
+            {
+                string uri = host + path + "?input=" + addressTextBox.Text + "&types=geocode&language=lt&components=country:lt&key=" + key;
+
+                HttpClient client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync(uri);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                JObject o = JObject.Parse(responseBody);
+
+
+                JObject jObj = (JObject)JsonConvert.DeserializeObject(responseBody);
+                var ob = jObj["predictions"];
+                int count = ob.Count();
+                if (count > 3)
+                {
+                    addressSuggest.Height = 90;
+                }
+                for (int i = 0; i < count; i++)
+                {
+                    data.Add((string)o.SelectToken("predictions[" + i + "].description"));
+                }
+
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+            }
+
+            return data;
+        }
+
+        private void addressTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            addressSuggest.Visibility = Visibility.Visible;
+        }
+        private void addressTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            Thread.Sleep(200);
+            addressSuggest.Visibility = Visibility.Collapsed;
+        }
+
+
+        private async void AddressChanged(object sender, KeyEventArgs e)
+        {
+            string query = (sender as TextBox).Text;
+            if (String.IsNullOrEmpty(query))
+            {
+                return;
+            };
+
+            bool found = false;
+            var border = (resultStack.Parent as ScrollViewer).Parent as Border;
+            var data = await GetData();
+
+            if (query.Length == 0)
+            {
+                // Clear   
+                resultStack.Children.Clear();
+            }
+
+
+            // Clear the list   
+            resultStack.Children.Clear();
+
+            // Add the result   
+            foreach (var obj in data)
+            {
+                if (obj.ToLower().StartsWith(query.ToLower()))
+                {
+                    // The word starts with this... Autocomplete must work   
+                    addItem(obj);
+                    found = true;
+                }
+            }
+
+            if (!found)
+            {
+                resultStack.Children.Add(new TextBlock() { Text = "No results found." });
+            }
+        }
+
+        private void addItem(string text)
+        {
+            TextBlock block = new TextBlock();
+
+            // Add the text   
+            block.Text = text;
+
+            // A little style...   
+            block.Margin = new Thickness(2, 3, 2, 3);
+            block.Cursor = Cursors.Hand;
+
+            // Mouse events   
+            block.MouseLeftButtonUp += (sender, e) =>
+            {
+                addressTextBox.Text = (sender as TextBlock).Text;
+            };
+
+            block.MouseEnter += (sender, e) =>
+            {
+                TextBlock b = sender as TextBlock;
+                b.Background = Brushes.PeachPuff;
+            };
+
+            block.MouseLeave += (sender, e) =>
+            {
+                TextBlock b = sender as TextBlock;
+                b.Background = Brushes.Transparent;
+            };
+
+            // Add to the panel   
+            resultStack.Children.Add(block);
+        }
+
+        #endregion
+
         public void drawCircle(Microsoft.Maps.MapControl.WPF.Location Loc, double dRadius, Color fillColor)
         {
 
@@ -102,14 +235,14 @@ namespace SuppLocals
                 var angle = x * (Math.PI / 180); //radians
                 var latRadians = Math.Asin(Math.Sin(latitude) * Math.Cos(d) + Math.Cos(latitude) * Math.Sin(d) * Math.Cos(angle));
                 var lngRadians = longitude + Math.Atan2(Math.Sin(angle) * Math.Sin(d) * Math.Cos(latitude), Math.Cos(d) - Math.Sin(latitude) * Math.Sin(latRadians));
-            
+
                 //Get location of the point
                 var pt = new Microsoft.Maps.MapControl.WPF.Location(180.0 * latRadians / Math.PI, 180.0 * lngRadians / Math.PI);
-            
+
                 //Add the new calculatied poitn to the collection
                 locCollection.Add(pt);
             }
-            
+
             MapPolygon polygon = new MapPolygon();
             polygon.Fill = new SolidColorBrush(fillColor);
             polygon.Stroke = new SolidColorBrush(Colors.Black);
@@ -273,10 +406,10 @@ namespace SuppLocals
             if ((bool)filterDistanceCheck.IsChecked)
             {
                 //Filter circle
-                drawCircle(myCurrLocation, circleRadius, Color.FromRgb(240,248,255));
+                drawCircle(myCurrLocation, circleRadius, Color.FromRgb(240, 248, 255));
 
                 //Current location circle
-                drawCircle(myCurrLocation, myCurrLocationRadius, Color.FromRgb(0,0,255));
+                drawCircle(myCurrLocation, myCurrLocationRadius, Color.FromRgb(0, 0, 255));
 
             }
         }
@@ -383,7 +516,7 @@ namespace SuppLocals
                     Geolocator geolocator = new Geolocator { DesiredAccuracyInMeters = 0 };
 
                     // Carry out the operation
-                    Geoposition pos = await geolocator.GetGeopositionAsync();   
+                    Geoposition pos = await geolocator.GetGeopositionAsync();
 
                     myCurrLocation = new Microsoft.Maps.MapControl.WPF.Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
 
@@ -406,15 +539,16 @@ namespace SuppLocals
         public async void distanceFilterChecked(object sender, RoutedEventArgs e)
         {
 
-            if(myCurrLocation == null) {
-               await getLivelocation();
+            if (myCurrLocation == null)
+            {
+                await getLivelocation();
                 if (myCurrLocation == null)
                 {
                     filterDistanceCheck.IsChecked = false;
                     return;
                 }
             }
-            distanceFilterPanel.Visibility=Visibility.Visible;
+            distanceFilterPanel.Visibility = Visibility.Visible;
             circleRadius = radiusSlider.Value;
             myMap.Center = myCurrLocation;
             updateServiceListAndMap(null, null);
@@ -429,5 +563,4 @@ namespace SuppLocals
 
         }
     }
-
 }
