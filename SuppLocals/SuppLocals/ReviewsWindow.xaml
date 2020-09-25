@@ -30,6 +30,10 @@
             <TextBlock Text="Ratings &amp; Reviews" FontSize="20"/>
         </StackPanel>
 
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+           
+        </StackPanel>
+
         <!-- Display ratings -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="5 5 5 5">
             <TextBlock Name="rAverage" Text="Average"/>
@@ -39,7 +43,7 @@
             <TextBlock Name="ThreeRating" Margin="0 0 0 5" Text="3 Stars"/>
             <TextBlock Name="TwoRating" Margin="0 0 0 5" Text="2 Stars"/>
             <TextBlock Name="OneRating" Margin="0 0 0 5" Text="1 Star"/>
-            
+
         </StackPanel>
 
         <!-- Display reviews -->
@@ -48,7 +52,7 @@
                 <DataTemplate>
                     <StackPanel HorizontalAlignment="Stretch">
                         <Image x:Name="Assets_usericon_jpg" Source="Assets/usericon.jpg" Stretch="None" HorizontalAlignment="Left"/>
-                        <TextBlock Margin="30 0 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
+                        <TextBlock Margin="30 -23 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
                         <Separator Name="MySeparator" Height="1" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="LightGray"/>
                     </StackPanel>
                 </DataTemplate>
@@ -58,7 +62,9 @@
         <!-- Add a review -->
         <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" Margin="10 5 5 5">
             <TextBlock Text="Your name:" FontSize="13"/>
-            <TextBox x:Name="reviewer" Margin="10 0 0 0" Height="20" Width="150" MaxLength="15" TextWrapping="NoWrap"/>
+            <TextBox x:Name="reviewer" Margin="10 0 30 0" Height="20" Width="100" MaxLength="15" TextWrapping="NoWrap"/>
+            <TextBlock Text="Rating:" FontSize="13" Margin="0 0 10 0"/>
+            <local:Rating Height="17" Width="auto" VerticalAlignment="Center" Margin="0 0 0 3"/>
         </StackPanel>
 
         <Border BorderBrush="LightGray" BorderThickness="2" Grid.Column="2" Grid.Row="3"  Margin="10 0 5 0">

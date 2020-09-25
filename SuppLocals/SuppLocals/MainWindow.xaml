@@ -58,10 +58,17 @@
                     <TextBlock Text="Address" Padding="5" HorizontalAlignment="Center" />
                     <TextBox x:Name="addressTextBox" Height="20" TextWrapping="NoWrap" KeyUp="AddressChanged"
                              GotFocus="addressTextBox_GotFocus" LostFocus="addressTextBox_LostFocus"/>
+
+                    <ScrollViewer x:Name="addressSuggest" Width="{Binding ElementName=addressTextBox, Path=ActualWidth}"
+                            Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <StackPanel Name="resultStack"></StackPanel>
+                    </ScrollViewer>
+
                         <ScrollViewer x:Name="addressSuggest" Width="{Binding ElementName=addressTextBox, Path=ActualWidth}"
                             Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                             <StackPanel Name="resultStack"></StackPanel>
                         </ScrollViewer>
+                  
                     <Button x:Name="confirmBtn" Click="addPushPin" Content="Confirm"/>
                 </StackPanel>
 
