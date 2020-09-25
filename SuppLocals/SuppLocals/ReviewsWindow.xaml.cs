@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace SuppLocals
 {
@@ -16,8 +16,9 @@ namespace SuppLocals
             List<Review> rewList = new List<Review>();
 
             // by default
-            InitializeComponent();   
+            InitializeComponent();
 
+            // test reviews
             rewList.Add(new Review("Hui", "If i could give zero stars i would.", DateTime.Now.ToString("yyyy-MM-dd")));
             rewList.Add(new Review("Pam", "Everything is not working. Piece of crap.", DateTime.Now.ToString("yyyy-MM-dd")));
 
@@ -25,7 +26,7 @@ namespace SuppLocals
 
             foreach (Review r in rewList)
             {
-                rView.Items.Add(r.Sender + "\n" + r.Text + "\n Date published: " + r.Date);
+                rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);
             }
         }
 
@@ -42,17 +43,13 @@ namespace SuppLocals
             }
             else
             {
-                Image img = new Image();
                 Review r = new Review(user, comment, DateTime.Now.ToString("yyyy-MM-dd"));
-
-                rView.Items.Add(r.Sender + "\n" + r.Text + "\n Date published: " + r.Date);
+                rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);
 
                 // clearing fields after comment commited
                 reviewer.Clear();
                 comments.Clear();
             }
         }
-
-        
     }
 }
