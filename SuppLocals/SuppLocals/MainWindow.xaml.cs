@@ -364,7 +364,6 @@ namespace SuppLocals
             circleRadius = (float)radiusSlider.Value;
             if (myMap != null)
                 updateServiceListAndMap(null, null);
-
         }
 
 

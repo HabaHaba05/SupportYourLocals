@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
         mc:Ignorable="d"
-        Title="ReviewsWindow" Height="400" Width="600">
+        Title="ReviewsWindow" Height="400" Width="600" Background="#CCBA8B">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--0-->
@@ -42,12 +42,15 @@
             
         </StackPanel>
 
-        
         <!-- Display reviews -->
         <ListView x:Name ="rView" Grid.Column="2" Grid.Row="1" Margin="10 0 5 0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                    <StackPanel HorizontalAlignment="Stretch">
+                        <Image x:Name="Assets_usericon_jpg" Source="Assets/usericon.jpg" Stretch="None" HorizontalAlignment="Left"/>
+                        <TextBlock Margin="30 0 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
+                        <Separator Name="MySeparator" Height="1" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="LightGray"/>
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

@@ -8,20 +8,19 @@ namespace SuppLocals
     public class Review
     { 
         //Constructor
-        public Review(Image image, string sender, string text)
+        public Review(string sender, string text, string date)
         {
             this.Sender = sender;
             this.Text = text;
-            this.Image = image;
+            this.Date = date;
         }
 
         //Sender
         public string Sender { get; set; }
 
-        //Sender blank image
-        public Image Image { get; set; }
-
         //Review
         public string Text { get; set; }
+
+        public string Date { get; set; }
     }
 }

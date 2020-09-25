@@ -1,16 +1,8 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SuppLocals
 {
@@ -24,33 +16,17 @@ namespace SuppLocals
             List<Review> rewList = new List<Review>();
 
             // by default
-            InitializeComponent();
+            InitializeComponent();   
 
-            // Create the image element.
-            Image img = new Image();
-            img.Margin = new Thickness(5);
-
-            // Create source.
-            BitmapImage bi = new BitmapImage();
-            // BitmapImage.UriSource must be in a BeginInit/EndInit block.
-            bi.BeginInit();
-            bi.UriSource = new Uri(@"Assets/usericon.jpg", UriKind.RelativeOrAbsolute);
-            bi.EndInit();
-            // Set the image source.
-            img.Source = bi;
-
-            
-           
-            rewList.Add(new Review(img, "Hui", "If i could give zero stars i would."));
-            rewList.Add(new Review(img, "Hui", "If i could give zero stars i would."));
+            rewList.Add(new Review("Hui", "If i could give zero stars i would.", DateTime.Now.ToString("yyyy-MM-dd")));
+            rewList.Add(new Review("Pam", "Everything is not working. Piece of crap.", DateTime.Now.ToString("yyyy-MM-dd")));
 
             rView.Items.Clear();
 
             foreach (Review r in rewList)
             {
-                rView.Items.Add(r.Image + " " + r.Sender + "\n" + r.Text);
+                rView.Items.Add(r.Sender + "\n" + r.Text + "\n Date published: " + r.Date);
             }
-
         }
 
         // Adding user comment when button pressed
@@ -67,14 +43,16 @@ namespace SuppLocals
             else
             {
                 Image img = new Image();
-                Review r = new Review(img, user, comment);
+                Review r = new Review(user, comment, DateTime.Now.ToString("yyyy-MM-dd"));
 
-                rView.Items.Add(r.Image + " " + r.Sender + "\n" + r.Text);
+                rView.Items.Add(r.Sender + "\n" + r.Text + "\n Date published: " + r.Date);
 
                 // clearing fields after comment commited
                 reviewer.Clear();
                 comments.Clear();
             }
         }
+
+        
     }
 }
