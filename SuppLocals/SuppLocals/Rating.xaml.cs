@@ -84,13 +84,7 @@ namespace SuppLocals
 
             // value of rating (ex. 3)
             Value = newvalue;
-
-            if (Value.Equals(5)) { RatingValue = 5; }
-            else if (Value.Equals(4)) { RatingValue = 4; }
-            else if (Value.Equals(3)) { RatingValue = 3; }
-            else if (Value.Equals(2)) { RatingValue = 2; }
-            else if (Value.Equals(1)) { RatingValue = 1; }
-            else { RatingValue = 0; }
+            RatingValue = Value;
         }
 
         public static int RatingValue { get; set; }
