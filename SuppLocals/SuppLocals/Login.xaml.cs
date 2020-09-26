@@ -67,5 +67,12 @@ namespace SuppLocals
             signUpForm.Show();
 
         }
+
+        private void ContinueBtnClick(object sender, RoutedEventArgs e)
+        {
+            MainWindow map = new MainWindow();
+            map.Show();
+            this.Close();
+        }
     }
 }

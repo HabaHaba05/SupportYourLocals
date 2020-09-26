@@ -114,7 +114,7 @@
                 <!-- About (help) button-->
 
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="32" Height="25" FontSize="16" VerticalAlignment="Stretch" HorizontalAlignment="Left"  Background ="White">?</Button>
+                    <Button DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="25" Height="25" FontSize="16" VerticalAlignment="Stretch" HorizontalAlignment="Left"  Background ="Transparent" BorderBrush="Black">?</Button>
                 </DockPanel>
             </StackPanel>
         </ScrollViewer>
