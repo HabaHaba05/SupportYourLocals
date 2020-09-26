@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
         mc:Ignorable="d"
+        Title="MainBrowserWindow" Height="450" Width="800">
+    <Grid>
+
         Title="SupportYourLocals" Height="auto" Width="auto" Background="#CCBA8B">
     <Grid>
-    
     </Grid>
 </Window>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,7 +26,10 @@ namespace SuppLocals
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Rating", typeof(int), typeof(Rating),
             new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(RatingChanged)));
 
-        private int _max = 5;
+        public Rating()
+        {
+            InitializeComponent();
+        }
 
         public int Value
         {
@@ -38,9 +43,9 @@ namespace SuppLocals
                 {
                     SetValue(ValueProperty, 0);
                 }
-                else if (value > _max)
+                else if (value > 5)
                 {
-                    SetValue(ValueProperty, _max);
+                    SetValue(ValueProperty, 5);
                 }
                 else
                 {
@@ -55,7 +60,7 @@ namespace SuppLocals
             int newval = (int)e.NewValue;
             UIElementCollection childs = ((Grid)(item.Content)).Children;
 
-            ToggleButton button = null;
+            ToggleButton button = new ToggleButton();
 
             for (int i = 0; i < newval; i++)
             {
@@ -70,19 +75,18 @@ namespace SuppLocals
                 if (button != null)
                     button.IsChecked = false;
             }
-
         }
 
         private void ClickEventHandler(object sender, RoutedEventArgs args)
         {
             ToggleButton button = sender as ToggleButton;
             int newvalue = int.Parse(button.Tag.ToString());
+
+            // value of rating (ex. 3)
             Value = newvalue;
+            RatingValue = Value;
         }
 
-        public Rating()
-        {
-            InitializeComponent();
-        }
+        public static int RatingValue { get; set; }
     }
 }

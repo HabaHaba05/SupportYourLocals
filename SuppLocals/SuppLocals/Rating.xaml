@@ -13,7 +13,7 @@
                 </Viewbox>
                 <ControlTemplate.Triggers>
                     <Trigger Property="IsChecked" Value="True">
-                        <Setter TargetName="star" Property="Fill" Value="Orange" />
+                        <Setter TargetName="star" Property="Fill" Value="Gold" />
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
@@ -26,11 +26,11 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <ToggleButton Grid.Column="0" Tag="1" Cursor="Pen"  Template="{StaticResource ratingtemplate}" Click="ClickEventHandler" />
-        <ToggleButton Grid.Column="1" Tag="2" Cursor="Pen"  Template="{StaticResource ratingtemplate}" Click="ClickEventHandler"/>
-        <ToggleButton Grid.Column="2" Tag="3" Cursor="Pen"  Template="{StaticResource ratingtemplate}" Click="ClickEventHandler"/>
-        <ToggleButton Grid.Column="3" Tag="4" Cursor="Pen"  Template="{StaticResource ratingtemplate}" Click="ClickEventHandler"/>
-        <ToggleButton Grid.Column="4" Tag="5" Cursor="Pen"  Template="{StaticResource ratingtemplate}" Click="ClickEventHandler"/>
+        <ToggleButton Grid.Column="0" Tag="1" Cursor="Arrow" Template="{StaticResource ratingtemplate}" Click="ClickEventHandler" />
+        <ToggleButton Grid.Column="1" Tag="2" Cursor="Arrow" Template="{StaticResource ratingtemplate}" Click="ClickEventHandler"/>
+        <ToggleButton Grid.Column="2" Tag="3" Cursor="Arrow" Template="{StaticResource ratingtemplate}" Click="ClickEventHandler"/>
+        <ToggleButton Grid.Column="3" Tag="4" Cursor="Arrow" Template="{StaticResource ratingtemplate}" Click="ClickEventHandler"/>
+        <ToggleButton Grid.Column="4" Tag="5" Cursor="Arrow" Template="{StaticResource ratingtemplate}" Click="ClickEventHandler"/>
 
     </Grid>
 </UserControl>
