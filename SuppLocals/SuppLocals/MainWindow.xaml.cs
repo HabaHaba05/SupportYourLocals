@@ -28,7 +28,7 @@ namespace SuppLocals
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    
+
     public partial class MainWindow : Window
     {
         //serviceList[0] - FOOD |  [1] - Car Repair |  [2] - OTHER
@@ -91,12 +91,10 @@ namespace SuppLocals
             filterServiceTypeCB.SelectedIndex = 0;
         }
 
-
         #region Address Suggestions
         public async Task<List<string>> GetData()
         {
             List<string> data = new List<string>();
-
 
             try
             {
@@ -561,4 +559,5 @@ namespace SuppLocals
 
         }
     }
+    #endregion
 }
