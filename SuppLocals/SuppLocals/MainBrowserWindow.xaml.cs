@@ -15,7 +15,9 @@ namespace SuppLocals
     /// <summary>
     /// Interaction logic for MainBrowserWindow.xaml
     /// </summary>
-     
+
+namespace SuppLocals
+{
     public partial class MainBrowserWindow : Window
     {
         public MainBrowserWindow()
