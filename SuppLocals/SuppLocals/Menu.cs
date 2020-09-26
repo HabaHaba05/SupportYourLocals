@@ -67,6 +67,7 @@ namespace SuppLocals
         // Information about the app
         private void AboutButtonClicked(object sender, RoutedEventArgs e)
         {
+
             //ReviewsWindow rWindow = new ReviewsWindow();
             //rWindow.Show();
         }
