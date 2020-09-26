@@ -5,60 +5,79 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="800">
+        Title="Login" Height="500" Width="400"
+        AllowsTransparency="true" Background="Transparent"
+        WindowStyle="none" ResizeMode="NoResize">
+
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TextBox 
-            Name="First"
-            HorizontalAlignment="Center" 
-            Margin="0,90,0,0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Top" 
-            Width="202" 
-            RenderTransformOrigin="1.789,0.592"
-            Height="30" 
-            />
-        <Label 
-            Content="Username" 
-            HorizontalAlignment="Center" 
-            Margin="0,59,0,0" 
-            VerticalAlignment="Top"/>
-        <Label 
-            Content="Password" 
-            HorizontalAlignment="Center" 
-            Margin="0,156,0,0" 
-            VerticalAlignment="Top"/>
-        <Button 
-            Content="Log in" 
-            HorizontalAlignment="Center" 
-            Margin="0,265,0,0" 
-            VerticalAlignment="Top" 
-            Width="150" 
-            Click="LogInBtnClick"/>
-        <PasswordBox 
-            Name="PasswordBox"
-            HorizontalAlignment="Center" 
-            Margin="0,187,0,0" 
-            VerticalAlignment="Top"
-            Width="202" 
-            Height="30" 
-            PasswordChar="*" 
-            MaxLength="25"/>
-        <Button 
-            Content="Don't have a login? Sign up." 
-            HorizontalAlignment="Center" 
-            Margin="0,391,0,0" 
-            VerticalAlignment="Top"
-            Height="24" 
-            Width="150" 
-            Name ="SignUpBtn" 
-            Background="Transparent" 
-            BorderBrush="Transparent" 
-            BorderThickness="0" 
-            Padding="-4"
-            Click="SignUpBtnClick"/>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <Border CornerRadius="10" Grid.RowSpan="2">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#F8D0C6" Offset="0.0"/>
+                    <GradientStop Color="#F8D0C6" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <StackPanel VerticalAlignment="Center">
+            <Image Source="/Assets/Supp.png" Width="150" Visibility="Visible"/>
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBox    Name="Username"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        Text="Username"
+                        FontSize="20"
+                        Foreground="#FA5D53"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="75 0 0 0 "/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="#FA5D53"
+                    Opacity="0.5"/>
+
+            <StackPanel Orientation="Horizontal">
+                <PasswordBox  Name="PasswordBox"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        Password="Password"
+                        FontSize="20"
+                        Foreground="#FA5D53"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Height="25"
+                        Margin="75 0 0 0 "/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="#FA5D53"
+                    Opacity="0.5"/>
+            
+            <StackPanel Orientation="Horizontal" Margin="75 10 0 0">
+                <Button Width="100" Height="25" Content="Login" Click="LogInBtnClick"/>
+                <Button Width="100" Height="25" Content="Register" Click="SignUpBtnClick"/>
+            </StackPanel>
+            
+        </StackPanel>
+
+  
+       
     </Grid>
 </Window>

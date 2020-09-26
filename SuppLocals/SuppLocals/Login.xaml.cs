@@ -26,7 +26,7 @@ namespace SuppLocals
         private void LogInBtnClick(object sender, RoutedEventArgs e)
         {
             bool discovered = false;
-            string username = First.Text;
+            string username = Username.Text;
             string password = PasswordBox.Password.ToString();
 
             string path = @"..\LoginInfo.txt";
@@ -54,7 +54,7 @@ namespace SuppLocals
                     if (discovered == false)
                     {
                         MessageBox.Show("Username or password is incorrect.");
-                        First.Clear();
+                        Username.Clear();
                         PasswordBox.Clear();
                     }
                 }

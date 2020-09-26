@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Supp.png" />
     <None Remove="Assets\usericon.jpg" />
   </ItemGroup>
 
@@ -42,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Supp.png" />
     <Resource Include="Assets\usericon.jpg" />
   </ItemGroup>
   
