@@ -44,17 +44,9 @@ namespace SuppLocals
             }
             else if (File.Exists(path))
             {
-                if (username == "")
+                if (username == "" || password == "" || repeatPassword == "")
                 {
-                    MessageBox.Show("Please enter your username");
-                }
-                if (password == "")
-                {
-                    MessageBox.Show("Please enter your password");
-                }
-                if (repeatPassword == "")
-                {
-                    MessageBox.Show("Please enter your confirm password");
+                    MessageBox.Show("Please enter your username or password");
                 }
                 if (password != repeatPassword)
                 {
