@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         Title="SignUp" Height="500" Width="400"
         AllowsTransparency="true" Background="Transparent"
-        WindowStyle="none" ResizeMode="NoResize">
+        WindowStyle="none" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        MouseDown="Window_MouseDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

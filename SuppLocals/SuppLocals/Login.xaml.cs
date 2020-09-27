@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Input;
 
 namespace SuppLocals
 {
@@ -69,6 +69,12 @@ namespace SuppLocals
             MainWindow map = new MainWindow();
             map.Show();
             this.Close();
+        }
+
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
     }
 }
