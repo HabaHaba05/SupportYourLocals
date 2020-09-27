@@ -5,55 +5,143 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
         mc:Ignorable="d"
-        Title="SignUp" Height="500" Width="400">
+        Title="SignUp" Height="500" Width="400"
+        AllowsTransparency="true" Background="Transparent"
+        WindowStyle="none" ResizeMode="NoResize">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Label 
-            Content="Username" 
-            HorizontalAlignment="Left" 
-            Margin="236,79,0,0" 
-            VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5"/>
-        <Label 
-            Content="Password" 
-            HorizontalAlignment="Left" 
-            Margin="236,138,0,0" 
-            VerticalAlignment="Top"/>
-        <Label 
-            Content="Confirm password" 
-            HorizontalAlignment="Left" 
-            Margin="236,198,0,0" 
-            VerticalAlignment="Top"/>
-        <TextBox 
-            HorizontalAlignment="Left" 
-            Margin="427,83,0,0" 
-            TextWrapping="Wrap" 
-            VerticalAlignment="Top" 
-            Width="120"
-            Name="UsernameTextBox"/>
-        <Button 
-            Content="Sign up" 
-            HorizontalAlignment="Center" 
-            Margin="0,335,0,0" 
-            VerticalAlignment="Top" 
-            Height="43" 
-            Width="102"
-            FontSize="18"
-            Click="SignUp_ButtonClick"/>
-        <PasswordBox 
-            HorizontalAlignment="Left" 
-            Margin="427,142,0,0" 
-            VerticalAlignment="Top" 
-            Width="120"
-            PasswordChar="*"
-            Name="PasswordBox"/>
-        <PasswordBox 
-            HorizontalAlignment="Left" 
-            Margin="427,202,0,0" 
-            VerticalAlignment="Top" 
-            Width="120"
-            PasswordChar="*"
-            Name="ConfirmPasswordBox"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border CornerRadius="10" Grid.RowSpan="5">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#F8D0C6" Offset="0.0"/>
+                    <GradientStop Color="#F8D0C6" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <StackPanel VerticalAlignment="Center">
+            <Image Source="/Assets/Supp.png" Width="150" Visibility="Visible"/>
+        </StackPanel>
+
+        
+        
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="#FA5D53" 
+                        Content="Write your username:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+                        
+                <TextBox    Name="UsernameTextBox"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="#FA5D53"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="-220 40 0 0 "/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="#FA5D53"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="2">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="#FA5D53" 
+                        Content="Write your password:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <PasswordBox   Name="PasswordBox1"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="#FA5D53"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="-220 40 0 0 "/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="#FA5D53"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="3">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="#FA5D53" 
+                        Content="Confirm password:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <PasswordBox   Name="ConfirmPasswordBox1"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="#FA5D53"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="-220 40 0 0 "/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="#FA5D53"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="5">
+            <Button 
+                Margin="0 10 0 0"
+                Width="120"
+                FontSize="20"
+                Height="30" 
+                Content="Apply" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"  
+                Click="SignUp_ButtonClick"/>
+
+            <Button 
+                Margin="0 20 0 0"
+                Width="120"
+                FontSize="20"
+                Height="30" 
+                Content="Back" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"  
+                Click="BackButtonClick"/>
+            
+        </StackPanel>
+            
     </Grid>
 </Window>

@@ -23,11 +23,18 @@ namespace SuppLocals
             InitializeComponent();
         }
 
+        private void BackButtonClick(object sender, RoutedEventArgs e)
+        {
+            Login login = new Login();
+            login.Show();
+            this.Close();
+        }
+
         private void SignUp_ButtonClick(object sender, RoutedEventArgs e)
         {
             var username = UsernameTextBox.Text;
-            var password = PasswordBox.Password.ToString();
-            var repeatPassword = ConfirmPasswordBox.Password.ToString();
+            var password = PasswordBox1.Password.ToString();
+            var repeatPassword = ConfirmPasswordBox1.Password.ToString();
             var path = @"..\LoginInfo.txt";
             var inUse = false;
 
@@ -79,5 +86,6 @@ namespace SuppLocals
             }
 
         }
-    }
+
+    } 
 }

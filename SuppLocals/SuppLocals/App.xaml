@@ -10,6 +10,6 @@
                 <ResourceDictionary Source="ButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-        
+
     </Application.Resources>
 </Application>
