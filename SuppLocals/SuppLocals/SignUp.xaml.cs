@@ -44,7 +44,7 @@ namespace SuppLocals
             }
             else if (File.Exists(path))
             {
-                if (username == "" || password == "" || repeatPassword == "")
+                if (username == "" || password == "")
                 {
                     MessageBox.Show("Please enter your username or password");
                 }
