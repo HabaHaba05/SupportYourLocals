@@ -18,12 +18,10 @@ namespace SuppLocals
             InitializeComponent();
         }
 
-
-
         public void LogInBtnClick(object sender, RoutedEventArgs e)
         {
             bool discovered = false;
-            string username = Username.Text;
+            var username = Username.Text;
             string password = PasswordBox.Password.ToString();
 
             string path = @"..\LoginInfo.txt";
