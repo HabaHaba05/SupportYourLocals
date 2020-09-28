@@ -86,7 +86,9 @@ namespace SuppLocals
             filterServiceTypeCB.SelectedIndex = 0;
         }
 
-        #region Address Suggestions
+        #region Address suggestions
+
+        //Method to get JSON from google API
         public async Task<List<string>> GetData()
         {
             List<string> data = new List<string>();
@@ -146,15 +148,12 @@ namespace SuppLocals
             };
 
             bool found = false;
-            var border = (resultStack.Parent as ScrollViewer).Parent as Border;
             var data = await GetData();
 
             if (query.Length == 0)
             {
-                // Clear   
                 resultStack.Children.Clear();
             }
-
 
             // Clear the list   
             resultStack.Children.Clear();
@@ -164,7 +163,6 @@ namespace SuppLocals
             {
                 if (obj.ToLower().StartsWith(query.ToLower()))
                 {
-                    // The word starts with this... Autocomplete must work   
                     addItem(obj);
                     found = true;
                 }
@@ -209,6 +207,9 @@ namespace SuppLocals
             resultStack.Children.Add(block);
         }
 
+        #endregion
+
+        #region Filters
         public void drawCircle(Microsoft.Maps.MapControl.WPF.Location Loc, double dRadius, Color fillColor)
         {
 
@@ -243,167 +244,7 @@ namespace SuppLocals
 
             myMap.Children.Add(polygon);
         }
-
-        public async void addPushPin(object sender, RoutedEventArgs e)
-        {
-
-            if (!validFields())
-            {
-                MessageBox.Show("Please fill all text fields");
-                return;
-            }
-
-            Service newService = null;
-            Pushpin pushPin = new Pushpin();
-
-            Geocoding.IGeocoder geocoder = new BingMapsGeocoder("vuOU7tN47KBhly1BAyhi~SKpEroFcVqMGYOJVSj-2HA~AhGXS-dV_H6Ofvn920LLMyvxfUUaLfjpZTD54fSc3WO-qRE7x6225O22AP_0XjDn");
-            IEnumerable<Address> addresses = await geocoder.GeocodeAsync(addressTextBox.Text);
-
-            if (addresses.Count() == 0)
-            {
-                MessageBox.Show("We couldn't find that place, please try to clarify the address");
-                return;
-            }
-
-            double lati = addresses.First().Coordinates.Latitude;
-            double longi = addresses.First().Coordinates.Longitude;
-
-            pushPin.Location = new Microsoft.Maps.MapControl.WPF.Location(lati, longi);
-            myMap.Children.Add(pushPin);
-            myMap.Center = pushPin.Location;
-
-
-            switch (createServiceCB.SelectedIndex)
-            {
-                //Food
-                case 0:
-                    {
-                        newService = new FoodService(addressTextBox.Text, new Microsoft.Maps.MapControl.WPF.Location(lati, longi));
-                        pushPin.Background = newService.color;
-                        servicesList[(int)ServiceType.FOOD].Add(newService);
-                        break;
-                    }
-                //Car Repair
-                case 1:
-                    {
-                        newService = new CarRepairService(addressTextBox.Text, new Microsoft.Maps.MapControl.WPF.Location(lati, longi));
-                        pushPin.Background = newService.color;
-                        servicesList[(int)ServiceType.CAR_REPAIR].Add(newService);
-                        break;
-                    }
-                //Other
-                case 2:
-                    {
-                        newService = new OtherService(addressTextBox.Text, new Microsoft.Maps.MapControl.WPF.Location(lati, longi));
-                        pushPin.Background = newService.color;
-                        servicesList[(int)ServiceType.OTHER].Add(newService);
-                        break;
-                    }
-            }
-            updateServiceListAndMap(null, null);
-
-        }
-
-        private bool validFields()   //True if valid fields , false - invalid
-        {
-            if (addressTextBox.Text == "")
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private void updateServiceListAndMap(object sender, SelectionChangedEventArgs args)
-        {
-            myMap.Children.Clear();
-            servicesLB.Items.Clear();
-
-            switch (filterServiceTypeCB.SelectedIndex)
-            {
-                //ALL
-                case 0:
-                    {
-                        foreach (List<Service> serviceListTemp in servicesList)
-                        {
-                            foreach (Service service in serviceListTemp)
-                            {
-                                if (!(bool)filterDistanceCheck.IsChecked ||
-                                    DistanceBetweenPlaces(service.location.Longitude, service.location.Latitude, myCurrLocation.Longitude, myCurrLocation.Latitude) <= circleRadius)
-                                {
-                                    Pushpin pushpin = new Pushpin();
-                                    pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
-                                    pushpin.Background = service.color;
-                                    myMap.Children.Add(pushpin);
-                                    servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
-                                }
-                            }
-                        }
-                        break;
-                    }
-                //Food
-                case 1:
-                    {
-                        foreach (Service service in servicesList[(int)ServiceType.FOOD])
-                        {
-                            if (!(bool)filterDistanceCheck.IsChecked ||
-                                DistanceBetweenPlaces(service.location.Longitude, service.location.Latitude, myCurrLocation.Longitude, myCurrLocation.Latitude) <= circleRadius)
-                            {
-                                Pushpin pushpin = new Pushpin();
-                                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
-                                pushpin.Background = service.color;
-                                myMap.Children.Add(pushpin);
-                                servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
-                            }
-                        }
-                        break;
-                    }
-                //Car Repair
-                case 2:
-                    {
-                        foreach (Service service in servicesList[(int)ServiceType.CAR_REPAIR])
-                        {
-                            if (!(bool)filterDistanceCheck.IsChecked ||
-                                DistanceBetweenPlaces(service.location.Longitude, service.location.Latitude, myCurrLocation.Longitude, myCurrLocation.Latitude) <= circleRadius)
-                            {
-                                Pushpin pushpin = new Pushpin();
-                                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
-                                pushpin.Background = service.color;
-                                myMap.Children.Add(pushpin);
-                                servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
-                            }
-                        }
-                        break;
-                    }
-                //Other
-                case 3:
-                    {
-                        foreach (Service service in servicesList[(int)ServiceType.OTHER])
-                        {
-                            if (!(bool)filterDistanceCheck.IsChecked ||
-                                DistanceBetweenPlaces(service.location.Longitude, service.location.Latitude, myCurrLocation.Longitude, myCurrLocation.Latitude) <= circleRadius)
-                            {
-                                Pushpin pushpin = new Pushpin();
-                                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
-                                pushpin.Background = service.color;
-                                myMap.Children.Add(pushpin);
-                                servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
-                            }
-                        }
-                        break;
-                    }
-
-            }
-            if ((bool)filterDistanceCheck.IsChecked)
-            {
-                //Filter circle
-                drawCircle(myCurrLocation, circleRadius, Color.FromRgb(240, 248, 255));
-
-                //Current location circle
-                drawCircle(myCurrLocation, myCurrLocationRadius, Color.FromRgb(0, 0, 255));
-
-            }
-        }
+        
         public double DistanceBetweenPlaces(double lon1, double lat1, double lon2, double lat2)
         {
             double R = 6371; // Earth radius km
@@ -421,6 +262,14 @@ namespace SuppLocals
             double dist = R * d;
 
             return dist;
+        }
+
+        private void radiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+            circleRadius = (float)radiusSlider.Value;
+            if (myMap != null)
+                updateServiceListAndMap(null, null);
         }
 
         public void serviceChanged(object sender, SelectionChangedEventArgs args)
@@ -482,14 +331,215 @@ namespace SuppLocals
             }
         }
 
-        private void radiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        public async void distanceFilterChecked(object sender, RoutedEventArgs e)
         {
 
-            circleRadius = (float)radiusSlider.Value;
-            if (myMap != null)
-                updateServiceListAndMap(null, null);
+            if (myCurrLocation == null)
+            {
+                await getLivelocation();
+                if (myCurrLocation == null)
+                {
+                    filterDistanceCheck.IsChecked = false;
+                    return;
+                }
+            }
+            distanceFilterPanel.Visibility = Visibility.Visible;
+            circleRadius = radiusSlider.Value;
+            myMap.Center = myCurrLocation;
+            updateServiceListAndMap(null, null);
         }
 
+        public void distanceFilterUnchecked(object sender, RoutedEventArgs e)
+        {
+            circleRadius = 0;
+            distanceFilterPanel.Visibility = Visibility.Hidden;
+            updateServiceListAndMap(null, null);
+
+
+        }
+
+        #endregion
+
+
+
+        public async void addPushPin(object sender, RoutedEventArgs e)
+        {
+
+            if (!validFields())
+            {
+                MessageBox.Show("Please fill all text fields");
+                return;
+            }
+
+            Service newService = null;
+            Pushpin pushPin = new Pushpin();
+
+            Geocoding.IGeocoder geocoder = new BingMapsGeocoder("vuOU7tN47KBhly1BAyhi~SKpEroFcVqMGYOJVSj-2HA~AhGXS-dV_H6Ofvn920LLMyvxfUUaLfjpZTD54fSc3WO-qRE7x6225O22AP_0XjDn");
+            IEnumerable<Address> addresses = await geocoder.GeocodeAsync(addressTextBox.Text);
+
+            if (addresses.Count() == 0)
+            {
+                MessageBox.Show("We couldn't find that place, please try to clarify the address");
+                return;
+            }
+
+            double lati = addresses.First().Coordinates.Latitude;
+            double longi = addresses.First().Coordinates.Longitude;
+
+            pushPin.Location = new Microsoft.Maps.MapControl.WPF.Location(lati, longi);
+            pushPin.MouseDown += PinClicked;
+
+
+
+            myMap.Children.Add(pushPin);
+            myMap.Center = pushPin.Location;
+
+
+            switch (createServiceCB.SelectedIndex)
+            {
+                //Food
+                case 0:
+                    {
+                        newService = new FoodService(addressTextBox.Text, new Microsoft.Maps.MapControl.WPF.Location(lati, longi));
+                        pushPin.Background = newService.color;
+                        servicesList[(int)ServiceType.FOOD].Add(newService);
+                        break;
+                    }
+                //Car Repair
+                case 1:
+                    {
+                        newService = new CarRepairService(addressTextBox.Text, new Microsoft.Maps.MapControl.WPF.Location(lati, longi));
+                        pushPin.Background = newService.color;
+                        servicesList[(int)ServiceType.CAR_REPAIR].Add(newService);
+                        break;
+                    }
+                //Other
+                case 2:
+                    {
+                        newService = new OtherService(addressTextBox.Text, new Microsoft.Maps.MapControl.WPF.Location(lati, longi));
+                        pushPin.Background = newService.color;
+                        servicesList[(int)ServiceType.OTHER].Add(newService);
+                        break;
+                    }
+            }
+            updateServiceListAndMap(null, null);
+
+        }
+
+        
+        private bool validFields()   //True if valid fields , false - invalid
+        {
+            if (addressTextBox.Text == "")
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void updateServiceListAndMap(object sender, SelectionChangedEventArgs args)
+        {
+            myMap.Children.Clear();
+            servicesLB.Items.Clear();
+
+            switch (filterServiceTypeCB.SelectedIndex)
+            {
+                //ALL
+                case 0:
+                    {
+                        foreach (List<Service> serviceListTemp in servicesList)
+                        {
+                            foreach (Service service in serviceListTemp)
+                            {
+                                if (!(bool)filterDistanceCheck.IsChecked ||
+                                    DistanceBetweenPlaces(service.location.Longitude, service.location.Latitude, myCurrLocation.Longitude, myCurrLocation.Latitude) <= circleRadius)
+                                {
+                                    Pushpin pushpin = new Pushpin();
+                                    pushpin.MouseUp += PinClicked;
+                                    pushpin.Tag = service;
+
+                                    pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+                                    pushpin.Background = service.color;
+                                    myMap.Children.Add(pushpin);
+                                    servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
+                                }
+                            }
+                        }
+                        break;
+                    }
+                //Food
+                case 1:
+                    {
+                        foreach (Service service in servicesList[(int)ServiceType.FOOD])
+                        {
+                            if (!(bool)filterDistanceCheck.IsChecked ||
+                                DistanceBetweenPlaces(service.location.Longitude, service.location.Latitude, myCurrLocation.Longitude, myCurrLocation.Latitude) <= circleRadius)
+                            {
+                                Pushpin pushpin = new Pushpin();
+                                pushpin.MouseUp += PinClicked;
+                                pushpin.Tag = service;
+
+
+                                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+                                pushpin.Background = service.color;
+                                myMap.Children.Add(pushpin);
+                                servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
+                            }
+                        }
+                        break;
+                    }
+                //Car Repair
+                case 2:
+                    {
+                        foreach (Service service in servicesList[(int)ServiceType.CAR_REPAIR])
+                        {
+                            if (!(bool)filterDistanceCheck.IsChecked ||
+                                DistanceBetweenPlaces(service.location.Longitude, service.location.Latitude, myCurrLocation.Longitude, myCurrLocation.Latitude) <= circleRadius)
+                            {
+                                Pushpin pushpin = new Pushpin();
+                                pushpin.MouseUp += PinClicked;
+                                pushpin.Tag = service;
+
+                                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+                                pushpin.Background = service.color;
+                                myMap.Children.Add(pushpin);
+                                servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
+                            }
+                        }
+                        break;
+                    }
+                //Other
+                case 3:
+                    {
+                        foreach (Service service in servicesList[(int)ServiceType.OTHER])
+                        {
+                            if (!(bool)filterDistanceCheck.IsChecked ||
+                                DistanceBetweenPlaces(service.location.Longitude, service.location.Latitude, myCurrLocation.Longitude, myCurrLocation.Latitude) <= circleRadius)
+                            {
+                                Pushpin pushpin = new Pushpin();
+                                pushpin.MouseUp += PinClicked;
+                                pushpin.Tag = service;
+
+                                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+                                pushpin.Background = service.color;
+                                myMap.Children.Add(pushpin);
+                                servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
+                            }
+                        }
+                        break;
+                    }
+
+            }
+            if ((bool)filterDistanceCheck.IsChecked)
+            {
+                //Filter circle
+                drawCircle(myCurrLocation, circleRadius, Color.FromRgb(240, 248, 255));
+
+                //Current location circle
+                drawCircle(myCurrLocation, myCurrLocationRadius, Color.FromRgb(0, 0, 255));
+
+            }
+        }
 
         private async Task getLivelocation()
         {
@@ -527,32 +577,24 @@ namespace SuppLocals
 
         }
 
-        public async void distanceFilterChecked(object sender, RoutedEventArgs e)
+        
+        public void hide_BtnClick(object sender, RoutedEventArgs e)
         {
-
-            if (myCurrLocation == null)
-            {
-                await getLivelocation();
-                if (myCurrLocation == null)
-                {
-                    filterDistanceCheck.IsChecked = false;
-                    return;
-                }
-            }
-            distanceFilterPanel.Visibility = Visibility.Visible;
-            circleRadius = radiusSlider.Value;
-            myMap.Center = myCurrLocation;
-            updateServiceListAndMap(null, null);
+            selectedServiceInfoGrid.Visibility = Visibility.Hidden;
+            Grid.SetColumnSpan(myMap, 2);
         }
-
-        public void distanceFilterUnchecked(object sender, RoutedEventArgs e)
+        private void PinClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            circleRadius = 0;
-            distanceFilterPanel.Visibility = Visibility.Hidden;
-            updateServiceListAndMap(null, null);
+            Pushpin p = sender as Pushpin;
+            Service service = p.Tag as Service;
 
+            selectedServiceTitle.Text = service.address;
+            selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
+
+            selectedServiceInfoGrid.Visibility = Visibility.Visible;
+            Grid.SetColumnSpan(myMap, 1);
 
         }
     }
-    #endregion
+
 }
