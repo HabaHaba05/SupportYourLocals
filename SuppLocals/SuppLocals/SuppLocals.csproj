@@ -8,16 +8,12 @@
 
   <ItemGroup>
     <Compile Remove="NewFolder1\**" />
-    <Compile Remove="NewFolder\**" />
     <Compile Remove="Services\NewFolder\**" />
     <EmbeddedResource Remove="NewFolder1\**" />
-    <EmbeddedResource Remove="NewFolder\**" />
     <EmbeddedResource Remove="Services\NewFolder\**" />
     <None Remove="NewFolder1\**" />
-    <None Remove="NewFolder\**" />
     <None Remove="Services\NewFolder\**" />
     <Page Remove="NewFolder1\**" />
-    <Page Remove="NewFolder\**" />
     <Page Remove="Services\NewFolder\**" />
   </ItemGroup>
 

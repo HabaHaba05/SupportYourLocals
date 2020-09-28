@@ -18,7 +18,9 @@ namespace SuppLocals
             InitializeComponent();
         }
 
-        private void LogInBtnClick(object sender, RoutedEventArgs e)
+
+
+        public void LogInBtnClick(object sender, RoutedEventArgs e)
         {
             bool discovered = false;
             string username = Username.Text;
@@ -71,10 +73,14 @@ namespace SuppLocals
             this.Close();
         }
 
+        // Method which allow user drag window aroud their screen
         private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
+
+      
     }
+
 }

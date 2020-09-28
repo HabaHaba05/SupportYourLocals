@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#CCBA8B">
+        Title="MainWindow" Height="450" Width="800" Background="#F8D0C6">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--0-->
