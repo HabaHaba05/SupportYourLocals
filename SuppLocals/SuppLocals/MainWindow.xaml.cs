@@ -290,7 +290,15 @@ namespace SuppLocals
 
                 if (!(bool)filterDistanceCheck.IsChecked)
                 {
-                    myMap.Center = tempList[selectedIndex].location;
+                    Service service = tempList[selectedIndex];
+                    myMap.Center = service.location;
+
+                    selectedServiceTitle.Text = service.address;
+                    selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
+                    review_Btn.Tag = service;
+
+                    selectedServiceInfoGrid.Visibility = Visibility.Visible;
+                    Grid.SetColumnSpan(myMap, 1);
                 }
                 else
                 {
@@ -302,6 +310,13 @@ namespace SuppLocals
                             if (selectedIndex == -1)
                             {
                                 myMap.Center = service.location;
+
+                                selectedServiceTitle.Text = service.address;
+                                selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
+                                review_Btn.Tag = service;
+
+                                selectedServiceInfoGrid.Visibility = Visibility.Visible;
+                                Grid.SetColumnSpan(myMap, 1);
                             }
                         }
                     }
@@ -311,7 +326,17 @@ namespace SuppLocals
             {
                 if (!(bool)filterDistanceCheck.IsChecked)
                 {
-                    myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(servicesList[(int)filterServiceTypeCB.SelectedIndex - 1][selectedIndex].location.Latitude, servicesList[(int)filterServiceTypeCB.SelectedIndex - 1][selectedIndex].location.Longitude);
+                    Service service = servicesList[(int)filterServiceTypeCB.SelectedIndex - 1][selectedIndex];
+
+                    myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+
+                    selectedServiceTitle.Text = service.address;
+                    selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
+                    review_Btn.Tag = service;
+
+                    selectedServiceInfoGrid.Visibility = Visibility.Visible;
+                    Grid.SetColumnSpan(myMap, 1);
+
                 }
                 else
                 {
@@ -323,6 +348,13 @@ namespace SuppLocals
                             if (selectedIndex == -1)
                             {
                                 myMap.Center = service.location;
+
+                                selectedServiceTitle.Text = service.address;
+                                selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
+                                review_Btn.Tag = service;
+
+                                selectedServiceInfoGrid.Visibility = Visibility.Visible;
+                                Grid.SetColumnSpan(myMap, 1);
                             }
                         }
                     }
@@ -590,11 +622,22 @@ namespace SuppLocals
 
             selectedServiceTitle.Text = service.address;
             selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
+            review_Btn.Tag = service;
 
             selectedServiceInfoGrid.Visibility = Visibility.Visible;
             Grid.SetColumnSpan(myMap, 1);
 
         }
+
+        public void review_BtnClick(object sender, RoutedEventArgs e)
+        {
+            Button b = sender as Button;
+            Service service = b.Tag as Service;
+
+            ReviewsWindow reviewsWindow = new ReviewsWindow(service);
+            reviewsWindow.Show();
+        }
+
     }
 
 }

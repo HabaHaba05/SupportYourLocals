@@ -79,10 +79,10 @@
 
                 <!--Filters-->
 
-                <StackPanel Name="filterPanel" Grid.Column="1" Grid.Row="4" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
-                    <TextBlock Text="Filter:" Padding="5" HorizontalAlignment="Center" />
-                    <ComboBox x:Name="filterServiceTypeCB" SelectionChanged="updateServiceListAndMap"/>
-                    <CheckBox x:Name="filterDistanceCheck" Margin="0 10 0 0" Content="Filter by distance" Checked="distanceFilterChecked" Unchecked="distanceFilterUnchecked" />
+                    <StackPanel Name="filterPanel" Grid.Column="1" Grid.Row="4" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
+                        <TextBlock Text="Filter:" Padding="5" HorizontalAlignment="Center" />
+                        <ComboBox x:Name="filterServiceTypeCB" SelectionChanged="updateServiceListAndMap"/>
+                        <CheckBox x:Name="filterDistanceCheck" Margin="0 10 0 0" Content="Filter by distance" Checked="distanceFilterChecked" Unchecked="distanceFilterUnchecked" />
                         <StackPanel x:Name="distanceFilterPanel" Margin="0 10 0 0" Visibility="Hidden">
                             <TextBox TextAlignment="Center" Text="{Binding ElementName=radiusSlider , Path=Value, StringFormat=N2 }"/>
                             <Slider x:Name="radiusSlider" Minimum="0" Maximum="20" Value="10" ValueChanged="radiusSlider_ValueChanged" Cursor="Hand" TickPlacement="None"/>
@@ -93,15 +93,7 @@
                         </StackPanel>
                     </StackPanel>
 
-                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="White" Click="MoreButtonClicked">Reviews
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="4"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
- 
-            </StackPanel>
+                </StackPanel>
                 <!-- About (help) button-->
                 <Button Margin="0 0 0 5" Grid.Row="1" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="32" Height="25" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background ="White" Click="AboutButtonClicked">?</Button>
             </Grid>
@@ -143,9 +135,15 @@
             </ScrollViewer>
 
             <UniformGrid Grid.Column="1" Grid.Row="3" Rows="1">
-                <Button Click="hide_BtnClick" Content="Hide"/>
-                <Button Content="Go"/>
-                <Button Content="Reviews"/>
+                <Button Click="hide_BtnClick">
+                    <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
+                </Button>
+                <Button>
+                    <Image Height="auto" Width="auto"  Source="/Assets/destination.png"/>
+                </Button>
+                <Button x:Name="review_Btn" Click="review_BtnClick">
+                    <Image Height="auto" Width="auto"  Source="/Assets/review.png"/>
+                </Button>
             </UniformGrid>
 
 
