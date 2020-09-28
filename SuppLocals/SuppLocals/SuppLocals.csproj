@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <None Remove="146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
     <None Remove="Assets\Supp.png" />
     <None Remove="Assets\usericon.jpg" />
@@ -29,10 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
+
+
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
