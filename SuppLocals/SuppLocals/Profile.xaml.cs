@@ -22,19 +22,7 @@ namespace SuppLocals
         public Profile(string username)
         {
             InitializeComponent();
-            UsernameBox.Text = username;
-            string[] lines = File.ReadAllLines(@"..\LoginInfo.txt");
-            for(int i = 0; i< lines.Length; i++)
-            {
-                string[] line = lines[i].Split('`');
-                if (line[0] == username && line.Length >= 3)
-                {
-                    var selectedFileName = line[2];
-                    ImageBrush myBrush = new ImageBrush();
-                    myBrush.ImageSource = new BitmapImage(new Uri(selectedFileName));
-                    Elipse.Fill = myBrush;
-                }
-            }
+            GetInfo(username);
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -53,12 +41,8 @@ namespace SuppLocals
                 ImageBrush myBrush = new ImageBrush();
                 myBrush.ImageSource = new BitmapImage(new Uri(selectedFileName));
                 Elipse.Fill = myBrush;
-
-
             }
             
-            
-
             string[] lines = File.ReadAllLines(@"..\LoginInfo.txt");
             using (StreamWriter writer = new StreamWriter(@"..\LoginInfo.txt"))
             {
@@ -67,22 +51,122 @@ namespace SuppLocals
                     string[] line = lines[currentLine].Split('`');
                     if (line[0] == UsernameBox.Text)
                     {
-                        writer.WriteLine(line[0] + "`" + line[1] + "`" + fileName);
+                        writer.Write(line[0] + "`" + line[1] + "`" + fileName + "`");
+                        if (line.Length > 3)
+                        {
+                            for (int i = 3; i < line.Length; i++)
+                            {
+                                if (i != line.Length - 1)
+                                {
+                                    writer.Write(line[i] + "`");
+                                }
+                                else
+                                {
+                                    writer.Write(line[i] + Environment.NewLine);
+                                }
+                            }
+                        }
+                        writer.Write(Environment.NewLine);
                     }
                     else
                     {
-                        if (line.Length == 2)
+                        for (int i = 0; i < line.Length; i++)
                         {
-                            writer.WriteLine(line[0] + "`" + line[1]);
-                        }
-                        else
-                        {
-                            writer.WriteLine(line[0] + "`" + line[1] + "`" + line[2]);
+                            if (i != line.Length - 1)
+                            {
+                                writer.Write(line[i] + "`");
+                            }
+                            else
+                            {
+                                writer.Write(line[i] + Environment.NewLine);
+                            }
                         }
                     }
                 }
             }
 
+        }
+
+        private void EditProfileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (EditProfileBtn.Content == "Save")
+            {
+                string[] lines = File.ReadAllLines(@"..\LoginInfo.txt");
+                using (StreamWriter writer = new StreamWriter(@"..\LoginInfo.txt"))
+                {
+                    for (int currentLine = 0; currentLine < lines.Length; currentLine++)
+                    {
+                        string[] line = lines[currentLine].Split('`');
+                        if (line[0] == UsernameBox.Text)
+                        {
+                            writer.Write(line[0] + "`" + line[1] + "`" + line[2] + "`" + NameBox.Text + "`" + LastNameBox.Text + "`" + AdressBox.Text + Environment.NewLine);
+                        }
+                        else
+                        {
+                            var lenght = line.Length;
+                            for (int i = 0; i < lenght; i++)
+                            {
+                                if (i != lenght - 1)
+                                {
+                                    writer.Write(line[i] + "`");
+                                }
+                                else
+                                {
+                                    writer.Write(line[i] + Environment.NewLine);
+                                }
+                            }
+                        }
+                    }
+                }
+                EditProfileBtn.Content = "Edit profile";
+            }
+            UsernameBox.IsReadOnly = false;
+            NameBox.IsReadOnly = false;
+            LastNameBox.IsReadOnly = false;
+            AdressBox.IsReadOnly = false;
+            EditProfileBtn.Content = "Save";
+        }
+
+        private void GetInfo(string username)
+        {
+            UsernameBox.Text = username;
+            string[] lines = File.ReadAllLines(@"..\LoginInfo.txt");
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string[] line = lines[i].Split('`');
+                if (line[0] == username && line.Length >= 3)
+                {
+                    if (line[2] != "noPhoto")
+                    {
+                        var selectedFileName = line[2];
+                        ImageBrush myBrush = new ImageBrush();
+                        myBrush.ImageSource = new BitmapImage(new Uri(selectedFileName));
+                        Elipse.Fill = myBrush;
+                    }
+                    if (line.Length == 4)
+                    {
+                        NameBox.Text = line[3];
+                    }
+                    if (line.Length == 5)
+                    {
+                        NameBox.Text = line[3];
+                        LastNameBox.Text = line[4];
+                    }
+                    if (line.Length == 6)
+                    {
+                        NameBox.Text = line[3];
+                        LastNameBox.Text = line[4];
+                        AdressBox.Text = line[5];
+                    }
+                }
+            }
+        }
+
+        private void mapBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow main = new MainWindow();
+            main.Show();
+            this.Close();
         }
     }
 }

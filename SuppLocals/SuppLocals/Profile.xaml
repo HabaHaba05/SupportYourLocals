@@ -10,9 +10,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="UsernameBox" HorizontalAlignment="Left" Margin="215,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Edit profile" HorizontalAlignment="Center" Margin="0,365,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="BrowseButton" Content="Browse" HorizontalAlignment="Left" Margin="339,78,0,0" VerticalAlignment="Top" Click="BrowseButton_Click"/>
+        <TextBox IsReadOnly="True" x:Name="UsernameBox" HorizontalAlignment="Left" Margin="215,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="EditProfileBtn" Content="Edit profile" HorizontalAlignment="Center" Margin="0,365,0,0" VerticalAlignment="Top" Click="EditProfileBtn_Click"/>
+        <Button x:Name="BrowseButton" Content="Browse" HorizontalAlignment="Left" Margin="324,24,0,0" VerticalAlignment="Top" Click="BrowseButton_Click"/>
         <Ellipse x:Name="Elipse" HorizontalAlignment="Center" Height="158" Margin="0,9,0,0" Stroke="Black" VerticalAlignment="Top" Width="158">
             <Ellipse.Fill>
                 <ImageBrush ImageSource="/download.png"/>
@@ -22,8 +22,9 @@
         <Label Content="Name" HorizontalAlignment="Left" Margin="47,232,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.305,0.549"/>
         <Label Content="Last name" HorizontalAlignment="Left" Margin="47,273,0,0" VerticalAlignment="Top"/>
         <Label Content="Adress" HorizontalAlignment="Left" Margin="47,312,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="215,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Margin="215,273,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Margin="215,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="NameBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="215,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="LastNameBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="215,273,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="AdressBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="215,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="mapBtn" Content="Map" HorizontalAlignment="Center" Margin="0,417,0,0" VerticalAlignment="Top" Click="mapBtn_Click"/>
     </Grid>
 </Window>
