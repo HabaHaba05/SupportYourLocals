@@ -53,22 +53,22 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock FontSize="14" Grid.Row="0" Grid.Column="0" Margin="0 10 0 5" Text="5 Stars   ★★★★★"/>
-                <TextBlock FontSize="14" Grid.Row="0" Grid.Column="1" Text="0" Name="FiveRating" Margin="0 10 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="0" Grid.Column="1" Name="FiveRating" Margin="0 10 0 5"/>
 
                 <TextBlock FontSize="14" Grid.Row="1" Grid.Column="0" Margin="0 0 0 5" Text="4 Stars   ★★★★☆"/>
-                <TextBlock FontSize="14" Grid.Row="1" Grid.Column="1" Text="0" Name="FourRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="1" Grid.Column="1" Name="FourRating" Margin="0 0 0 5"/>
 
                 <TextBlock FontSize="14" Grid.Row="2" Grid.Column="0" Margin="0 0 0 5" Text="3 Stars   ★★★☆☆"/>
-                <TextBlock FontSize="14" Grid.Row="2" Grid.Column="1" Text="0" Name="ThreeRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="2" Grid.Column="1" Name="ThreeRating" Margin="0 0 0 5"/>
 
                 <TextBlock FontSize="14" Grid.Row="3" Grid.Column="0" Margin="0 0 0 5" Text="2 Stars   ★★☆☆☆"/>
-                <TextBlock FontSize="14" Grid.Row="3" Grid.Column="1" Text="0" Name="TwoRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="3" Grid.Column="1" Name="TwoRating" Margin="0 0 0 5"/>
 
                 <TextBlock FontSize="14" Grid.Row="4" Grid.Column="0" Margin="0 0 0 5" Text="1 Star    ★☆☆☆☆"/>
-                <TextBlock FontSize="14" Grid.Row="4" Grid.Column="1" Text="0" Name="OneRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="4" Grid.Column="1" Name="OneRating" Margin="0 0 0 5"/>
 
                 <TextBlock FontSize="14" Grid.Row="5" Grid.Column="0" Margin="0 0 0 5" Text="0 Stars   ☆☆☆☆☆"/>
-                <TextBlock FontSize="14" Grid.Row="5" Grid.Column="1" Text="0" Name="ZeroRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="5" Grid.Column="1" Name="ZeroRating" Margin="0 0 0 5"/>
             </Grid>
         </StackPanel>
 

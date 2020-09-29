@@ -23,12 +23,12 @@
 
   <ItemGroup>
 
+    <None Remove="backArrow.png" />
     <None Remove="Assets\SuppLogo.png" />
     <None Remove="Assets\usericon.jpg" />
    </ItemGroup>
 
   <ItemGroup>
-
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
@@ -46,9 +46,13 @@
 
   <ItemGroup>
     <Resource Include="Assets\usericon.jpg" />
-	<Resource Include="Assets\SuppLogo.png">
+    <Resource Include="Assets\backArrow.png" />
+    <Resource Include="Assets\destination.png" />
+    <Resource Include="Assets\review.png" />
+	  <Resource Include="Assets\SuppLogo.png">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</Resource>
+    
   </ItemGroup>
   
 

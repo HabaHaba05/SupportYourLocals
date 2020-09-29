@@ -10,22 +10,18 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <!--0-->
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
-            <!--4-->
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <!--0-->
             <RowDefinition Height="25"/>
             <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
-            <!--4-->
-
         </Grid.RowDefinitions>
 
         <!--Place for a hyperlink to this site: https://lrv.lt/en-->
@@ -84,10 +80,10 @@
 
                 <!--Filters-->
 
-                <StackPanel Name="filterPanel" Grid.Column="1" Grid.Row="4" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
-                    <TextBlock Text="Filter:" Padding="5" HorizontalAlignment="Center" />
-                    <ComboBox x:Name="filterServiceTypeCB" SelectionChanged="updateServiceListAndMap"/>
-                    <CheckBox x:Name="filterDistanceCheck" Margin="0 10 0 0" Content="Filter by distance" Checked="distanceFilterChecked" Unchecked="distanceFilterUnchecked" />
+                    <StackPanel Name="filterPanel" Grid.Column="1" Grid.Row="4" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
+                        <TextBlock Text="Filter:" Padding="5" HorizontalAlignment="Center" />
+                        <ComboBox x:Name="filterServiceTypeCB" SelectionChanged="updateServiceListAndMap"/>
+                        <CheckBox x:Name="filterDistanceCheck" Margin="0 10 0 0" Content="Filter by distance" Checked="distanceFilterChecked" Unchecked="distanceFilterUnchecked" />
                         <StackPanel x:Name="distanceFilterPanel" Margin="0 10 0 0" Visibility="Hidden">
                             <TextBox TextAlignment="Center" Text="{Binding ElementName=radiusSlider , Path=Value, StringFormat=N2 }"/>
                             <Slider x:Name="radiusSlider" Minimum="0" Maximum="20" Value="10" ValueChanged="radiusSlider_ValueChanged" Cursor="Hand" TickPlacement="None"/>
@@ -98,23 +94,9 @@
                         </StackPanel>
                     </StackPanel>
 
-                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="White" Click="MoreButtonClicked">Reviews
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="4"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
 
-                <StackPanel Name="reviewsPanel" Grid.Column="1" MinWidth="150" Height="100" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
-                    <Button Width="60" Height="auto"  FontSize="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Background ="White" Click="MoreButtonClicked">More..
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="4"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-                </StackPanel>
+
+
 
                 <!-- About (help) button-->
 
@@ -124,6 +106,7 @@
 
 
             </StackPanel>
+
                 <!-- About (help) button-->
                 <Button Margin="0 0 0 5" Grid.Row="1" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="32" Height="25" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background ="White" Click="AboutButtonClicked">?</Button>
             </Grid>
@@ -136,10 +119,48 @@
         </ListBox>
 
         <!--Map-->
-        <m:Map  Grid.Column="4" Grid.Row="1" Grid.RowSpan="2"
+        <m:Map  Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2"
             x:Name="myMap" CredentialsProvider="vuOU7tN47KBhly1BAyhi~SKpEroFcVqMGYOJVSj-2HA~AhGXS-dV_H6Ofvn920LLMyvxfUUaLfjpZTD54fSc3WO-qRE7x6225O22AP_0XjDn"
-            Mode="Road" Center="54.68,25.27" ZoomLevel="12" Heading="0">
+            Mode="Road" Center="54.68,25.27" ZoomLevel="12">
         </m:Map>
+        
+        <!--Selected Service-->
+        <Grid x:Name="selectedServiceInfoGrid" Grid.Column="5" Grid.Row="1" Grid.RowSpan="2" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="2*"/> <!--Title-->
+                <RowDefinition Height="8*"/> <!--About-->
+                <RowDefinition Height="*"/> <!--Refs-->
+                <RowDefinition Height="5"/>
+            </Grid.RowDefinitions>
+
+
+            <TextBlock x:Name="selectedServiceTitle" Grid.Column="1" Grid.Row="1"
+                       TextAlignment="Center" TextWrapping="Wrap"/>
+            <ScrollViewer  Grid.Column="1" Grid.Row="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="selectedServiceAbout"
+                           TextAlignment="Center" TextWrapping="Wrap"/>
+            </ScrollViewer>
+
+            <UniformGrid Grid.Column="1" Grid.Row="3" Rows="1">
+                <Button Click="hide_BtnClick">
+                    <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
+                </Button>
+                <Button>
+                    <Image Height="auto" Width="auto"  Source="/Assets/destination.png"/>
+                </Button>
+                <Button x:Name="review_Btn" Click="review_BtnClick">
+                    <Image Height="auto" Width="auto"  Source="/Assets/review.png"/>
+                </Button>
+            </UniformGrid>
+
+
+        </Grid>
 
     </Grid>
 </Window>

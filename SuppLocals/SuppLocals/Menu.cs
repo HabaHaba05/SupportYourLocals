@@ -50,12 +50,6 @@ namespace SuppLocals
             }
         }
 
-        private void MoreButtonClicked(object sender, RoutedEventArgs e)
-        {
-            ReviewsWindow rWindow = new ReviewsWindow();
-            rWindow.Show();
-        }
-
         private void hyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             //true if the shell should be used when starting the process; false if the process should be created directly from the executable file.

@@ -24,6 +24,10 @@ namespace SuppLocals
         //Latitude and Longitude
         public Location location;
 
+        public List<Review> reviews = new List<Review>();
+
+        public int[] reviewsCount = { 0, 0, 0, 0, 0, 0 };
+
 
     }
 }
