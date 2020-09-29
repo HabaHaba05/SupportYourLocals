@@ -1,0 +1,152 @@
+﻿<Window x:Class="SuppLocals.SignUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SuppLocals"
+        mc:Ignorable="d"
+        Title="SignUp" Height="500" Width="400"
+        AllowsTransparency="true" Background="Transparent"
+        WindowStyle="none" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        MouseDown="Window_MouseDown">
+
+    <Grid>
+      
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border CornerRadius="10" Grid.RowSpan="5">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#F8D0C6" Offset="0.0"/>
+                    <GradientStop Color="#F8D0C6" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <StackPanel VerticalAlignment="Center">
+            <Image Source="/Assets/SuppLogo.png" Width="150" Visibility="Visible"/>
+        </StackPanel>
+
+        
+        
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="#FA5D53" 
+                        Content="Write your username:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+                        
+                <TextBox  Name="UsernameTextBox"
+                        Validation.Error="UsernameTextBox_Error"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="#FA5D53"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="-220 40 0 0 "/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="#FA5D53"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="2">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="#FA5D53" 
+                        Content="Write your password:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <PasswordBox   Name="PasswordBox1"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="#FA5D53"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="-220 40 0 0 "/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="#FA5D53"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="3">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="#FA5D53" 
+                        Content="Confirm password:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <PasswordBox   Name="ConfirmPasswordBox1"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="#FA5D53"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="-200 40 0 0 "/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="#FA5D53"
+                    Opacity="1"
+                    Margin="-20 0 0 0 "/>
+
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="5">
+            <Button 
+                Margin="0 10 0 0"
+                Width="120"
+                FontSize="20"
+                Height="30" 
+                Content="Apply" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"  
+                Click="SignUp_ButtonClick"/>
+
+            <Button 
+                Margin="0 20 0 0"
+                Width="120"
+                FontSize="20"
+                Height="30" 
+                Content="Back" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"  
+                Click="BackButtonClick"/>
+            
+        </StackPanel>
+            
+    </Grid>
+</Window>

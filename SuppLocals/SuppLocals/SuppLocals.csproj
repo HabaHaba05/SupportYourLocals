@@ -22,8 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <None Remove="backArrow.png" />
-  </ItemGroup>
+    <None Remove="Assets\SuppLogo.png" />
+    <None Remove="Assets\usericon.jpg" />
+   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
@@ -46,6 +49,10 @@
     <Resource Include="Assets\backArrow.png" />
     <Resource Include="Assets\destination.png" />
     <Resource Include="Assets\review.png" />
+	  <Resource Include="Assets\SuppLogo.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+    
   </ItemGroup>
   
 
