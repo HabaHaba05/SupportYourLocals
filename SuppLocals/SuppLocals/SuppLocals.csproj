@@ -28,6 +28,7 @@
     <None Remove="download.png" />
   </ItemGroup>
 
+  <ItemGroup>
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />

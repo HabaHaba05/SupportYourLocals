@@ -198,5 +198,10 @@ namespace SuppLocals
             login.Show();
             this.Close();
         }
+
+        private void UsernameBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
