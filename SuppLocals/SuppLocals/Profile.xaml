@@ -10,9 +10,9 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox IsReadOnly="True" x:Name="UsernameBox" HorizontalAlignment="Left" Margin="215,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="EditProfileBtn" Content="Edit profile" HorizontalAlignment="Center" Margin="0,365,0,0" VerticalAlignment="Top" Click="EditProfileBtn_Click"/>
-        <Button x:Name="BrowseButton" Content="Browse" HorizontalAlignment="Left" Margin="324,24,0,0" VerticalAlignment="Top" Click="BrowseButton_Click"/>
+        <TextBox IsReadOnly="True" x:Name="UsernameBox" Margin="215,196,65,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button x:Name="EditProfileBtn" Content="Edit profile" HorizontalAlignment="Left" Margin="46,428,0,0" VerticalAlignment="Top" Click="EditProfileBtn_Click" RenderTransformOrigin="0.426,2.695"/>
+        <Button x:Name="BrowseButton" Content="Change photo" HorizontalAlignment="Left" Margin="245,366,0,0" VerticalAlignment="Top" Click="BrowseButton_Click" RenderTransformOrigin="0.506,3.044"/>
         <Ellipse x:Name="Elipse" HorizontalAlignment="Center" Height="158" Margin="0,9,0,0" Stroke="Black" VerticalAlignment="Top" Width="158">
             <Ellipse.Fill>
                 <ImageBrush ImageSource="/download.png"/>
@@ -25,6 +25,8 @@
         <TextBox x:Name="NameBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="215,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="LastNameBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="215,273,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="AdressBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="215,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="mapBtn" Content="Map" HorizontalAlignment="Center" Margin="0,417,0,0" VerticalAlignment="Top" Click="mapBtn_Click"/>
+        <Button x:Name="mapBtn" Content="Map" HorizontalAlignment="Center" Margin="0,403,0,0" VerticalAlignment="Top" Click="mapBtn_Click" RenderTransformOrigin="-0.467,0.69"/>
+        <Button x:Name="ChangePasswordBtn" Content="Change password" HorizontalAlignment="Left" Margin="46,366,0,0" VerticalAlignment="Top" Click="ChangePasswordBtn_Click"/>
+        <Button x:Name="LogOutBtn" Content="Log out" HorizontalAlignment="Left" Margin="284,428,0,0" VerticalAlignment="Top" Click="LogOutBtn_Click"/>
     </Grid>
 </Window>

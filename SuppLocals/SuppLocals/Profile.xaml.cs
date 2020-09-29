@@ -19,10 +19,14 @@ namespace SuppLocals
     /// </summary>
     public partial class Profile : Window
     {
-        public Profile(string username)
+        string user;
+        string pass;
+        public Profile(string username, string password)
         {
             InitializeComponent();
             GetInfo(username);
+            user = username;
+            pass = password;
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -178,6 +182,20 @@ namespace SuppLocals
         {
             MainWindow main = new MainWindow();
             main.Show();
+            this.Close();
+        }
+
+        private void ChangePasswordBtn_Click(object sender, RoutedEventArgs e)
+        {
+            PasswordChange change = new PasswordChange(user, pass);
+            change.Show();
+
+        }
+
+        private void LogOutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Login login = new Login();
+            login.Show();
             this.Close();
         }
     }

@@ -69,7 +69,7 @@ namespace SuppLocals
                     {
                         using (StreamWriter writeText = new StreamWriter(path, true))
                         {
-                            writeText.Write(username + "`" + password + "`noPhoto" + Environment.NewLine);
+                            writeText.WriteLine(username + "`" + password + "`noPhoto");
                         }
                         MessageBox.Show("User was registered");
                         Login login = new Login();
