@@ -41,9 +41,12 @@ namespace SuppLocals
                         if (line[0] == username && line[1] == password)
                         {
                             discovered = true;
-                            MainWindow map = new MainWindow();
-                            map.Show();
+                            Profile profile = new Profile(line[0], line[1]);
+                            profile.Show();
                             this.Close();
+                            /*MainWindow map = new MainWindow();
+                            map.Show();
+                            this.Close();*/
                         }
                     }
                     if (discovered == false)
@@ -58,6 +61,9 @@ namespace SuppLocals
 
         private void SignUpBtnClick(object sender, RoutedEventArgs e)
         {
+            /*Profile profile = new Profile();
+            profile.Show();*/
+
             SignUp signUpForm = new SignUp();
             signUpForm.Show();
             this.Close();
