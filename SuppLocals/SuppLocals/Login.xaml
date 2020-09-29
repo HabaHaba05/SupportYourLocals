@@ -28,7 +28,7 @@
         </Border>
 
         <StackPanel VerticalAlignment="Center">
-            <Image Source="/Assets/Supp.png" Width="150" Visibility="Visible"/>
+            <Image Source="/Assets/SuppLogo.png" Width="150" Visibility="Visible"/>
         </StackPanel>
 
 
