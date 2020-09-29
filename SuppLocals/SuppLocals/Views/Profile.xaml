@@ -31,7 +31,7 @@
                  VerticalAlignment="Top" 
                  Width="150">
             <Ellipse.Fill>
-                <ImageBrush ImageSource="/download.png"/>
+                <ImageBrush ImageSource="/Assets/download.png"/>
             </Ellipse.Fill>
         </Ellipse>
 

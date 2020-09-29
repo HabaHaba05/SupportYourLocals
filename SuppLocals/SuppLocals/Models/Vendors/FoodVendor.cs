@@ -6,9 +6,9 @@ using System.Windows.Media;
 
 namespace SuppLocals.Services
 {
-    public class FoodService : Service
+    public class FoodVendor : Vendor
     {
-        public FoodService(String address, Location location)
+        public FoodVendor(String address, Location location)
         {
             color = new SolidColorBrush(Color.FromRgb(255, 0, 0));
             this.address = address;
