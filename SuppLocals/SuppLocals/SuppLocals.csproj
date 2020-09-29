@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -8,21 +8,24 @@
 
   <ItemGroup>
     <Compile Remove="NewFolder1\**" />
+    <Compile Remove="NewFolder\**" />
     <Compile Remove="Services\NewFolder\**" />
     <EmbeddedResource Remove="NewFolder1\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
     <EmbeddedResource Remove="Services\NewFolder\**" />
     <None Remove="NewFolder1\**" />
+    <None Remove="NewFolder\**" />
     <None Remove="Services\NewFolder\**" />
     <Page Remove="NewFolder1\**" />
+    <Page Remove="NewFolder\**" />
     <Page Remove="Services\NewFolder\**" />
   </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\Supp.png" />
     <Resource Include="Assets\usericon.jpg" />
   </ItemGroup>
   
