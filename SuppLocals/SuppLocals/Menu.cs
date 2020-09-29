@@ -50,26 +50,11 @@ namespace SuppLocals
             }
         }
 
-        private void reviewsClick(object sender, RoutedEventArgs e)
-        {
-            if (reviewsPanel.Visibility == Visibility.Collapsed)
-            {
-                reviewsPanel.Visibility = Visibility.Visible;
-                (sender as Button).Content = "Reviews";
-            }
-            else
-            {
-                reviewsPanel.Visibility = Visibility.Collapsed;
-                (sender as Button).Content = "Reviews";
-            }
-        }
-
         private void MoreButtonClicked(object sender, RoutedEventArgs e)
         {
             ReviewsWindow rWindow = new ReviewsWindow();
             rWindow.Show();
         }
-
 
         private void hyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
@@ -79,5 +64,12 @@ namespace SuppLocals
             e.Handled = true;
         }
 
+        // Information about the app
+        private void AboutButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+            //ReviewsWindow rWindow = new ReviewsWindow();
+            //rWindow.Show();
+        }
     }
 }

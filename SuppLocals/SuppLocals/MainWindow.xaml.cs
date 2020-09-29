@@ -7,17 +7,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Navigation;
 using Geocoding.Microsoft;
 using Geocoding;
 using SuppLocals.Services;
-
-
 using Windows.Devices.Geolocation;
-using System.ComponentModel;
 using System.Windows.Input;
 using System.Net.Http;
-using System.Net;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Threading;
@@ -29,12 +24,8 @@ namespace SuppLocals
     /// </summary>
     /// 
 
-
     public partial class MainWindow : Window
     {
-
-
-
         //serviceList[0] - FOOD |  [1] - Car Repair |  [2] - OTHER
         public List<List<Service>> servicesList = new List<List<Service>>();
 
@@ -67,7 +58,6 @@ namespace SuppLocals
             servicesList.Add(testCar);
             servicesList.Add(testOther);
 
-
             //By default
             InitializeComponent();
 
@@ -96,12 +86,10 @@ namespace SuppLocals
             filterServiceTypeCB.SelectedIndex = 0;
         }
 
-
         #region Address Suggestions
         public async Task<List<string>> GetData()
         {
             List<string> data = new List<string>();
-
 
             try
             {
@@ -220,8 +208,6 @@ namespace SuppLocals
             // Add to the panel   
             resultStack.Children.Add(block);
         }
-        
-        #endregion
 
         public void drawCircle(Microsoft.Maps.MapControl.WPF.Location Loc, double dRadius, Color fillColor)
         {
@@ -567,6 +553,6 @@ namespace SuppLocals
 
 
         }
-
     }
+    #endregion
 }

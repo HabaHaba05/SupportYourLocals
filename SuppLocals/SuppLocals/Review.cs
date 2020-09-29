@@ -21,6 +21,7 @@ namespace SuppLocals
         //Review
         public string Text { get; set; }
 
+        // Publishing date
         public string Date { get; set; }
     }
 }
