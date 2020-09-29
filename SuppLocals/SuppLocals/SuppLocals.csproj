@@ -17,10 +17,6 @@
     <Page Remove="Services\NewFolder\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Assets\Supp.png" />
-    <None Remove="Assets\usericon.jpg" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
