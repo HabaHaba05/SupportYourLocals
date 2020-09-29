@@ -23,11 +23,15 @@
 
   <ItemGroup>
     <None Remove="146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
+    <None Remove="Assets\title.png" />
     <None Remove="backArrow.png" />
     <None Remove="Assets\SuppLogo.png" />
     <None Remove="Assets\usericon.jpg" />
-    <None Remove="Assets\SuppLogo.png" />
     <None Remove="download.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\title.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,7 +53,6 @@
   <ItemGroup>
 
     <Resource Include="146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
-    <Resource Include="Assets\SuppLogo.png" />
     <Resource Include="Assets\usericon.jpg" />
     <Resource Include="download.png" />
     <Resource Include="Assets\backArrow.png" />

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#F8D0C6"
+        Title="MainWindow" Height="450" Width="800" Background="#CCBA8B"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -42,7 +42,7 @@
 
                 <TextBlock Text="|Menu|" FontSize="30" HorizontalAlignment="Center" Margin="0 30 0 50"/>
 
-                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="White" Click="servicesClick">Vendors
+                    <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Vendors" Click="servicesClick">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="4"/>
@@ -69,16 +69,10 @@
                 </StackPanel>
 
 
-                <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"  Background ="White" Click="filterClick">Filters
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="4"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
+                    <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" Content="Filters" HorizontalAlignment="Center"  Click="filterClick"/>
 
 
-                <!--Filters-->
+                    <!--Filters-->
 
                     <StackPanel Name="filterPanel" Grid.Column="1" Grid.Row="4" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
                         <TextBlock Text="Filter:" Padding="5" HorizontalAlignment="Center" />
@@ -93,16 +87,6 @@
                             </DockPanel>
                         </StackPanel>
                     </StackPanel>
-
-
-
-
-
-                <!-- About (help) button-->
-
-                <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="25" Height="25" FontSize="16" VerticalAlignment="Stretch" HorizontalAlignment="Left"  Background ="Transparent" BorderBrush="Black">?</Button>
-                </DockPanel>
 
 
             </StackPanel>
