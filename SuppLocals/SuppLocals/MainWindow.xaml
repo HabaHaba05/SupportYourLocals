@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#CCBA8B">
+        Title="MainWindow" Height="450" Width="800" Background="#F8D0C6"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--0-->
@@ -104,7 +105,24 @@
                         </Style>
                     </Button.Resources>
                 </Button>
- 
+
+                <StackPanel Name="reviewsPanel" Grid.Column="1" MinWidth="150" Height="100" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
+                    <Button Width="60" Height="auto"  FontSize="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Background ="White" Click="MoreButtonClicked">More..
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+
+                <!-- About (help) button-->
+
+                <DockPanel>
+                    <Button DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="25" Height="25" FontSize="16" VerticalAlignment="Stretch" HorizontalAlignment="Left"  Background ="Transparent" BorderBrush="Black">?</Button>
+                </DockPanel>
+
+
             </StackPanel>
                 <!-- About (help) button-->
                 <Button Margin="0 0 0 5" Grid.Row="1" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="32" Height="25" FontSize="16" VerticalAlignment="Bottom" HorizontalAlignment="Left" Background ="White" Click="AboutButtonClicked">?</Button>
