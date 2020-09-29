@@ -89,7 +89,8 @@ namespace SuppLocals
 
         private void EditProfileBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (EditProfileBtn.Content == "Save")
+            int j = 0;
+            if (EditProfileBtn.Content.ToString() == "Save")
             {
                 string[] lines = File.ReadAllLines(@"..\LoginInfo.txt");
                 using (StreamWriter writer = new StreamWriter(@"..\LoginInfo.txt"))
@@ -118,13 +119,24 @@ namespace SuppLocals
                         }
                     }
                 }
-                EditProfileBtn.Content = "Edit profile";
+                ChangeProperties(true, "Edit profile");
+                j = 1;
+
             }
-            UsernameBox.IsReadOnly = false;
-            NameBox.IsReadOnly = false;
-            LastNameBox.IsReadOnly = false;
-            AdressBox.IsReadOnly = false;
-            EditProfileBtn.Content = "Save";
+            if (j != 1)
+            {
+                ChangeProperties(false, "Save");
+                j = 0;
+            }
+        }
+
+        private void ChangeProperties (bool tf, string buttonContent)
+        {
+            UsernameBox.IsReadOnly = tf;
+            NameBox.IsReadOnly = tf;
+            LastNameBox.IsReadOnly = tf;
+            AdressBox.IsReadOnly = tf;
+            EditProfileBtn.Content = buttonContent;
         }
 
         private void GetInfo(string username)
