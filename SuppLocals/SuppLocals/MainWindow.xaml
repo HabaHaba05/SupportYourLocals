@@ -139,7 +139,7 @@
                 <Button Click="hide_BtnClick">
                     <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
                 </Button>
-                <Button Click="findRoute_BtnClick">
+                <Button x:Name="findRoute_Btn" Click="findRoute_BtnClick">
                     <Image Height="auto" Width="auto"  Source="/Assets/destination.png"/>
                 </Button>
                 <Button x:Name="review_Btn" Click="review_BtnClick">

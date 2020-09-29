@@ -28,6 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
+    <PackageReference Include="GMap.NET.Core" Version="2.0.1" />
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
@@ -35,9 +36,6 @@
   <ItemGroup>
     <Reference Include="Microsoft.Maps.MapControl.WPF">
       <HintPath>..\Libraries\Bing Map\Libraries\Microsoft.Maps.MapControl.WPF.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Device">
-      <HintPath>..\Libraries\System.Device.dll</HintPath>
     </Reference>
   </ItemGroup>
 

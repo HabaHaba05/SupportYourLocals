@@ -1,7 +1,6 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,8 +15,12 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Threading;
-using System.Security.Policy;
-using System.Device.Location;
+
+using Location = Microsoft.Maps.MapControl.WPF.Location;
+using Windows.UI.Xaml.Media.Animation;
+using System.Diagnostics;
+using GMap.NET.MapProviders;
+using GMap.NET;
 
 namespace SuppLocals
 {
@@ -34,7 +37,7 @@ namespace SuppLocals
         //Variables for testing
         public double circleRadius = 0;
 
-        public Microsoft.Maps.MapControl.WPF.Location myCurrLocation = null;
+        public Location myCurrLocation = null;
         private double myCurrLocationRadius = 0.01;
 
         public MainWindow()
@@ -43,14 +46,14 @@ namespace SuppLocals
 
             // Testing stuff
             List<Service> testFood = new List<Service>();
-            testFood.Add(new FoodService("Vilnius Didlaukio 59", new Microsoft.Maps.MapControl.WPF.Location(54.73146, 25.2621)));
-            testFood.Add(new FoodService("Vilnius Baltupiai", new Microsoft.Maps.MapControl.WPF.Location(54.732730865478519, 25.266708374023438)));
+            testFood.Add(new FoodService("Vilnius Didlaukio 59", new Location(54.73146, 25.2621)));
+            testFood.Add(new FoodService("Vilnius Baltupiai", new Location(54.732730865478519, 25.266708374023438)));
             List<Service> testCar = new List<Service>();
-            testCar.Add(new CarRepairService("Vilnius Sauletekis", new Microsoft.Maps.MapControl.WPF.Location(54.72392, 25.33686)));
-            testCar.Add(new CarRepairService("Ukmerge ", new Microsoft.Maps.MapControl.WPF.Location(55.2453, 24.7761)));
+            testCar.Add(new CarRepairService("Vilnius Sauletekis", new Location(54.72392, 25.33686)));
+            testCar.Add(new CarRepairService("Ukmerge ", new Location(55.2453, 24.7761)));
             List<Service> testOther = new List<Service>();
-            testOther.Add(new OtherService("Kaunas", new Microsoft.Maps.MapControl.WPF.Location(54.896873474121094, 23.892425537109375)));
-            testOther.Add(new OtherService("Vilnius Senamiestis", new Microsoft.Maps.MapControl.WPF.Location(54.67876052856445, 25.287307739257812)));
+            testOther.Add(new OtherService("Kaunas", new Location(54.896873474121094, 23.892425537109375)));
+            testOther.Add(new OtherService("Vilnius Senamiestis", new Location(54.67876052856445, 25.287307739257812)));
 
             servicesList.Add(testFood);
             servicesList.Add(testCar);
@@ -209,7 +212,7 @@ namespace SuppLocals
         #endregion
 
         #region Filters
-        public void drawCircle(Microsoft.Maps.MapControl.WPF.Location Loc, double dRadius, Color fillColor)
+        public void drawCircle(Location Loc, double dRadius, Color fillColor)
         {
 
             var locCollection = new LocationCollection();
@@ -228,7 +231,7 @@ namespace SuppLocals
                 var lngRadians = longitude + Math.Atan2(Math.Sin(angle) * Math.Sin(d) * Math.Cos(latitude), Math.Cos(d) - Math.Sin(latitude) * Math.Sin(latRadians));
 
                 //Get location of the point
-                var pt = new Microsoft.Maps.MapControl.WPF.Location(180.0 * latRadians / Math.PI, 180.0 * lngRadians / Math.PI);
+                var pt = new Location(180.0 * latRadians / Math.PI, 180.0 * lngRadians / Math.PI);
 
                 //Add the new calculatied poitn to the collection
                 locCollection.Add(pt);
@@ -295,6 +298,7 @@ namespace SuppLocals
                     selectedServiceTitle.Text = service.address;
                     selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
                     review_Btn.Tag = service;
+                    findRoute_Btn.Tag = service;
 
                     selectedServiceInfoGrid.Visibility = Visibility.Visible;
                     Grid.SetColumnSpan(myMap, 1);
@@ -313,6 +317,8 @@ namespace SuppLocals
                                 selectedServiceTitle.Text = service.address;
                                 selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
                                 review_Btn.Tag = service;
+                                findRoute_Btn.Tag = service;
+
 
                                 selectedServiceInfoGrid.Visibility = Visibility.Visible;
                                 Grid.SetColumnSpan(myMap, 1);
@@ -327,11 +333,12 @@ namespace SuppLocals
                 {
                     Service service = servicesList[(int)filterServiceTypeCB.SelectedIndex - 1][selectedIndex];
 
-                    myMap.Center = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+                    myMap.Center = new Location(service.location.Latitude, service.location.Longitude);
 
                     selectedServiceTitle.Text = service.address;
                     selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
                     review_Btn.Tag = service;
+                    findRoute_Btn.Tag = service;
 
                     selectedServiceInfoGrid.Visibility = Visibility.Visible;
                     Grid.SetColumnSpan(myMap, 1);
@@ -351,6 +358,8 @@ namespace SuppLocals
                                 selectedServiceTitle.Text = service.address;
                                 selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
                                 review_Btn.Tag = service;
+                                findRoute_Btn.Tag = service;
+
 
                                 selectedServiceInfoGrid.Visibility = Visibility.Visible;
                                 Grid.SetColumnSpan(myMap, 1);
@@ -417,7 +426,7 @@ namespace SuppLocals
             double lati = addresses.First().Coordinates.Latitude;
             double longi = addresses.First().Coordinates.Longitude;
 
-            pushPin.Location = new Microsoft.Maps.MapControl.WPF.Location(lati, longi);
+            pushPin.Location = new Location(lati, longi);
             pushPin.MouseDown += PinClicked;
 
 
@@ -431,7 +440,7 @@ namespace SuppLocals
                 //Food
                 case 0:
                     {
-                        newService = new FoodService(addressTextBox.Text, new Microsoft.Maps.MapControl.WPF.Location(lati, longi));
+                        newService = new FoodService(addressTextBox.Text, new Location(lati, longi));
                         pushPin.Background = newService.color;
                         servicesList[(int)ServiceType.FOOD].Add(newService);
                         break;
@@ -439,7 +448,7 @@ namespace SuppLocals
                 //Car Repair
                 case 1:
                     {
-                        newService = new CarRepairService(addressTextBox.Text, new Microsoft.Maps.MapControl.WPF.Location(lati, longi));
+                        newService = new CarRepairService(addressTextBox.Text, new Location(lati, longi));
                         pushPin.Background = newService.color;
                         servicesList[(int)ServiceType.CAR_REPAIR].Add(newService);
                         break;
@@ -447,7 +456,7 @@ namespace SuppLocals
                 //Other
                 case 2:
                     {
-                        newService = new OtherService(addressTextBox.Text, new Microsoft.Maps.MapControl.WPF.Location(lati, longi));
+                        newService = new OtherService(addressTextBox.Text, new Location(lati, longi));
                         pushPin.Background = newService.color;
                         servicesList[(int)ServiceType.OTHER].Add(newService);
                         break;
@@ -489,7 +498,7 @@ namespace SuppLocals
                                     pushpin.MouseUp += PinClicked;
                                     pushpin.Tag = service;
 
-                                    pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+                                    pushpin.Location = new Location(service.location.Latitude, service.location.Longitude);
                                     pushpin.Background = service.color;
                                     myMap.Children.Add(pushpin);
                                     servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
@@ -511,7 +520,7 @@ namespace SuppLocals
                                 pushpin.Tag = service;
 
 
-                                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+                                pushpin.Location = new Location(service.location.Latitude, service.location.Longitude);
                                 pushpin.Background = service.color;
                                 myMap.Children.Add(pushpin);
                                 servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
@@ -531,7 +540,7 @@ namespace SuppLocals
                                 pushpin.MouseUp += PinClicked;
                                 pushpin.Tag = service;
 
-                                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+                                pushpin.Location = new Location(service.location.Latitude, service.location.Longitude);
                                 pushpin.Background = service.color;
                                 myMap.Children.Add(pushpin);
                                 servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
@@ -551,7 +560,7 @@ namespace SuppLocals
                                 pushpin.MouseUp += PinClicked;
                                 pushpin.Tag = service;
 
-                                pushpin.Location = new Microsoft.Maps.MapControl.WPF.Location(service.location.Latitude, service.location.Longitude);
+                                pushpin.Location = new Location(service.location.Latitude, service.location.Longitude);
                                 pushpin.Background = service.color;
                                 myMap.Children.Add(pushpin);
                                 servicesLB.Items.Add(service.address + "\nLat:" + service.location.Latitude.ToString("N2") + "\nLong:" + service.location.Longitude.ToString("N2"));
@@ -590,7 +599,7 @@ namespace SuppLocals
                     // Carry out the operation
                     Geoposition pos = await geolocator.GetGeopositionAsync();
 
-                    myCurrLocation = new Microsoft.Maps.MapControl.WPF.Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
+                    myCurrLocation = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
 
                     Application.Current.Dispatcher.Invoke(new Action(() => this.IsEnabled = true));
                     progressDialog.Close();
@@ -608,7 +617,7 @@ namespace SuppLocals
 
         }
 
-        
+
         public void hide_BtnClick(object sender, RoutedEventArgs e)
         {
             selectedServiceInfoGrid.Visibility = Visibility.Hidden;
@@ -622,6 +631,8 @@ namespace SuppLocals
             selectedServiceTitle.Text = service.address;
             selectedServiceAbout.Text = "Lat: " + service.location.Latitude + "\nLong: " + service.location.Longitude;
             review_Btn.Tag = service;
+            findRoute_Btn.Tag = service;
+
 
             selectedServiceInfoGrid.Visibility = Visibility.Visible;
             Grid.SetColumnSpan(myMap, 1);
@@ -639,9 +650,49 @@ namespace SuppLocals
 
         public void findRoute_BtnClick(object sender, RoutedEventArgs e)
         {
+            Button b = sender as Button;
+            Service service = b.Tag as Service;
 
+            getR(service.location);
+        
         }
 
+        public async void getR(Location finishLoc)
+        {
+
+            if (myCurrLocation == null)
+            {
+                await getLivelocation();
+            }
+            if (myCurrLocation != null) {
+                GoogleMapProvider.Instance.ApiKey = Config.GOOGLE_API_KEY;
+                MapRoute route = GoogleMapProvider.Instance.GetRoute(
+                       new PointLatLng(myCurrLocation.Latitude, myCurrLocation.Longitude),
+                       new PointLatLng(finishLoc.Latitude, finishLoc.Longitude), false, false, 15);
+
+                LocationCollection points = new LocationCollection();
+                List<Location> pointsL = new List<Location>();
+
+                foreach (var x in route.Points)
+                {
+                    pointsL.Add(new Location(x.Lat, x.Lng));
+                }
+
+                foreach (var x in pointsL)
+                {
+                    points.Add(x);
+                }
+
+                MapPolyline routeLine = new MapPolyline()
+                {
+                    Locations = points,
+                    Stroke = new SolidColorBrush(Colors.Green),
+                    StrokeThickness = 5
+                };
+
+                myMap.Children.Add(routeLine);
+            }
+        }
     }
 
 }
