@@ -16,6 +16,8 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Threading;
+using System.Security.Policy;
+using System.Device.Location;
 
 namespace SuppLocals
 {
@@ -35,14 +37,10 @@ namespace SuppLocals
         public Microsoft.Maps.MapControl.WPF.Location myCurrLocation = null;
         private double myCurrLocationRadius = 0.01;
 
-
-        //Google place api
-        const string host = "https://maps.googleapis.com";
-        const string path = "/maps/api/place/autocomplete/json";
-        const string key = "AIzaSyBVs4wsiyCVvFbpPlX-NJyz_fj8db04R78";
-
         public MainWindow()
         {
+
+
             // Testing stuff
             List<Service> testFood = new List<Service>();
             testFood.Add(new FoodService("Vilnius Didlaukio 59", new Microsoft.Maps.MapControl.WPF.Location(54.73146, 25.2621)));
@@ -63,6 +61,7 @@ namespace SuppLocals
 
             //Activates the + and – keys to allow the user to manually zoom in and out of the map
             myMap.Focus();
+            myMap.CredentialsProvider = Config.BING_API_KEY;
 
             //Add List<Service> to List of list
             for (int i = 0; i < Enum.GetNames(typeof(ServiceType)).Length; i++)
@@ -95,7 +94,7 @@ namespace SuppLocals
 
             try
             {
-                string uri = host + path + "?input=" + addressTextBox.Text + "&types=geocode&language=lt&components=country:lt&key=" + key;
+                string uri = Config.host + Config.path + "?input=" + addressTextBox.Text + "&types=geocode&language=lt&components=country:lt&key=" + Config.GOOGLE_API_KEY;
 
                 HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync(uri);
@@ -636,6 +635,11 @@ namespace SuppLocals
 
             ReviewsWindow reviewsWindow = new ReviewsWindow(service);
             reviewsWindow.Show();
+        }
+
+        public void findRoute_BtnClick(object sender, RoutedEventArgs e)
+        {
+
         }
 
     }

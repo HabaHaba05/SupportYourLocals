@@ -107,10 +107,11 @@
 
         <!--Map-->
         <m:Map  Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2"
-            x:Name="myMap" CredentialsProvider="vuOU7tN47KBhly1BAyhi~SKpEroFcVqMGYOJVSj-2HA~AhGXS-dV_H6Ofvn920LLMyvxfUUaLfjpZTD54fSc3WO-qRE7x6225O22AP_0XjDn"
-            Mode="Road" Center="54.68,25.27" ZoomLevel="12">
+            x:Name="myMap" Mode="Road" Center="54.68,25.27" ZoomLevel="12">
+            
+            <m:MapLayer x:Name="RouteLayer"/>
         </m:Map>
-        
+
         <!--Selected Service-->
         <Grid x:Name="selectedServiceInfoGrid" Grid.Column="5" Grid.Row="1" Grid.RowSpan="2" Visibility="Hidden">
             <Grid.ColumnDefinitions>
@@ -138,7 +139,7 @@
                 <Button Click="hide_BtnClick">
                     <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
                 </Button>
-                <Button>
+                <Button Click="findRoute_BtnClick">
                     <Image Height="auto" Width="auto"  Source="/Assets/destination.png"/>
                 </Button>
                 <Button x:Name="review_Btn" Click="review_BtnClick">
