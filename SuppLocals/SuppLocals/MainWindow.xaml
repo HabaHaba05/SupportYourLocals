@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#CCBA8B">
+        Title="MainWindow" Height="450" Width="800" Background="#F8D0C6"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--0-->
@@ -121,7 +122,6 @@
                     <Button DockPanel.Dock="Bottom" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="25" Height="25" FontSize="16" VerticalAlignment="Stretch" HorizontalAlignment="Left"  Background ="Transparent" BorderBrush="Black">?</Button>
                 </DockPanel>
 
- 
 
             </StackPanel>
                 <!-- About (help) button-->

@@ -1,15 +1,13 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Navigation;
 
 namespace SuppLocals
 {
@@ -18,9 +16,11 @@ namespace SuppLocals
     /// </summary>
     public partial class SignUp : Window
     {
+     
         public SignUp()
         {
             InitializeComponent();
+
         }
 
         private void BackButtonClick(object sender, RoutedEventArgs e)
@@ -32,9 +32,10 @@ namespace SuppLocals
 
         private void SignUp_ButtonClick(object sender, RoutedEventArgs e)
         {
+
             var username = UsernameTextBox.Text;
-            var password = PasswordBox1.Password.ToString();
-            var repeatPassword = ConfirmPasswordBox1.Password.ToString();
+            var password = PasswordBox1.Password;
+            var repeatPassword = ConfirmPasswordBox1.Password;
             var path = @"..\LoginInfo.txt";
             var inUse = false;
 
@@ -72,14 +73,26 @@ namespace SuppLocals
                             writeText.WriteLine(username + "`" + password + "`noPhoto");
                         }
                         MessageBox.Show("User was registered");
+
                         Login login = new Login();
                         login.Show();
                         this.Close();
                     }
                 }
             }
-
         }
 
-    } 
-}
+        // Method which allow user drag window aroud their screen
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
+        private void UsernameTextBox_Error(object sender, System.Windows.Controls.ValidationErrorEventArgs e)
+        {
+
+        }
+    }
+
+} 

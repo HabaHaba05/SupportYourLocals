@@ -7,8 +7,12 @@
         mc:Ignorable="d"
         Title="SignUp" Height="500" Width="400"
         AllowsTransparency="true" Background="Transparent"
-        WindowStyle="none" ResizeMode="NoResize">
+        WindowStyle="none" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        MouseDown="Window_MouseDown">
+
     <Grid>
+      
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -27,7 +31,7 @@
         </Border>
 
         <StackPanel VerticalAlignment="Center">
-            <Image Source="/Assets/Supp.png" Width="150" Visibility="Visible"/>
+            <Image Source="/Assets/SuppLogo.png" Width="150" Visibility="Visible"/>
         </StackPanel>
 
         
@@ -41,7 +45,8 @@
                         FontWeight="Bold"
                         Margin="60 0 0 0 "/>
                         
-                <TextBox    Name="UsernameTextBox"
+                <TextBox  Name="UsernameTextBox"
+                        Validation.Error="UsernameTextBox_Error"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
                         FontSize="20"
@@ -109,13 +114,13 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-220 40 0 0 "/>
+                        Margin="-200 40 0 0 "/>
             </StackPanel>
             <Border Width="250"
                     Height="2"
                     Background="#FA5D53"
                     Opacity="1"
-                    Margin="-10 0 0 0 "/>
+                    Margin="-20 0 0 0 "/>
 
         </StackPanel>
 

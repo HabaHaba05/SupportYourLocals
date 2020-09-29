@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Input;
 
 namespace SuppLocals
 {
@@ -18,10 +18,10 @@ namespace SuppLocals
             InitializeComponent();
         }
 
-        private void LogInBtnClick(object sender, RoutedEventArgs e)
+        public void LogInBtnClick(object sender, RoutedEventArgs e)
         {
             bool discovered = false;
-            string username = Username.Text;
+            var username = Username.Text;
             string password = PasswordBox.Password.ToString();
 
             string path = @"..\LoginInfo.txt";
@@ -76,5 +76,15 @@ namespace SuppLocals
             map.Show();
             this.Close();
         }
+
+        // Method which allow user drag window aroud their screen
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
+      
     }
+
 }

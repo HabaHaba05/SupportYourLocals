@@ -22,15 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-
     <None Remove="146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
-    <None Remove="Assets\Supp.png" />
     <None Remove="Assets\usericon.jpg" />
+    <None Remove="Assets\SuppLogo.png" />
     <None Remove="download.png" />
   </ItemGroup>
-
-  <ItemGroup>
-
 
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
@@ -48,8 +44,9 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <Resource Include="146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
-    <Resource Include="Assets\Supp.png" />
+    <Resource Include="Assets\SuppLogo.png" />
     <Resource Include="Assets\usericon.jpg" />
     <Resource Include="download.png" />
   </ItemGroup>
