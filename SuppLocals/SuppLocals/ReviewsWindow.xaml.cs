@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Windows;
 
 namespace SuppLocals
@@ -9,26 +10,28 @@ namespace SuppLocals
     /// </summary>
     public partial class ReviewsWindow : Window
     {
-        public ReviewsWindow()
+        private readonly List<string> STARS = new List<string>{"☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
+        private Service _service;
+       
+        public ReviewsWindow(Service service)
         {
-            List<Review> rewList = new List<Review>();
-
+            
             // by default
             InitializeComponent();
-
-            // test reviews
-            rewList.Add(new Review("Hui ☆☆☆☆☆", "If i could give negative stars i would.", DateTime.Now.ToString("yyyy-MM-dd")));
-            rewList.Add(new Review("Pam ☆☆☆☆☆", "Everything is not working. Piece of crap.", DateTime.Now.ToString("yyyy-MM-dd")));
+            this.DataContext = this;
+            _service = service;
 
             rView.Items.Clear();
 
-            foreach (Review r in rewList)
+            foreach (Review r in service.reviews)
             {
                 rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);
-                ZeroRating.Text = (int.Parse(ZeroRating.Text) + 1).ToString();
-            } 
+            }
+
+            updateRatingCounts();
         }
 
+        
         // Adding user comment when button pressed
         private void confirmClicked(object sender, RoutedEventArgs e)
         {
@@ -43,54 +46,27 @@ namespace SuppLocals
 
             else
             {
-                Review r = new Review(user, comment, DateTime.Now.ToString("yyyy-MM-dd"));
+                Review r = new Review(user + STARS[Rating.RatingValue], comment, DateTime.Now.ToString("yyyy-MM-dd"));
+                _service.reviewsCount[Rating.RatingValue]++;
+                _service.reviews.Add(r);
 
-                // 5 Star review
-                if (Rating.RatingValue.Equals(5))
-                {
-                    rView.Items.Add(r.Sender + "  ★★★★★\n" + r.Text + "\n" + r.Date);
-                    FiveRating.Text = (int.Parse(FiveRating.Text) + 1).ToString();
-                }
-
-                // 4 Stars review
-                else if (Rating.RatingValue.Equals(4))
-                {
-                    rView.Items.Add(r.Sender + "  ★★★★☆\n" + r.Text + "\n" + r.Date);
-                    FourRating.Text = (int.Parse(FourRating.Text) + 1).ToString();
-                }
-
-                // 3 Stars review
-                else if (Rating.RatingValue.Equals(3))
-                {
-                    rView.Items.Add(r.Sender + "  ★★★☆☆\n" + r.Text + "\n" + r.Date);
-                    ThreeRating.Text = (int.Parse(ThreeRating.Text) + 1).ToString();
-                }
-
-                // 2 Stars review
-                else if (Rating.RatingValue.Equals(2))
-                {
-                    rView.Items.Add(r.Sender + "  ★★☆☆☆\n" + r.Text + "\n" + r.Date);
-                    TwoRating.Text = (int.Parse(TwoRating.Text) + 1).ToString();
-                }
-
-                // 1 Star review
-                else if (Rating.RatingValue.Equals(1))
-                {
-                    rView.Items.Add(r.Sender + "  ★☆☆☆☆\n" + r.Text + "\n" + r.Date);
-                    OneRating.Text = (int.Parse(OneRating.Text) + 1).ToString();
-                }
-
-                // 0 Stars review
-                else
-                {
-                    rView.Items.Add(r.Sender + "  ☆☆☆☆☆\n" + r.Text + "\n" + r.Date);
-                    ZeroRating.Text = (int.Parse(ZeroRating.Text) + 1).ToString();
-                }
+                rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);
+                updateRatingCounts();
 
                 // clearing fields after comment commited
                 reviewer.Clear();
                 comments.Clear();
             }
+        }
+
+        private void updateRatingCounts()
+        {
+            ZeroRating.Text = _service.reviewsCount[0].ToString();
+            OneRating.Text = _service.reviewsCount[1].ToString();
+            TwoRating.Text = _service.reviewsCount[2].ToString();
+            ThreeRating.Text = _service.reviewsCount[3].ToString();
+            FourRating.Text = _service.reviewsCount[4].ToString();
+            FiveRating.Text = _service.reviewsCount[5].ToString();
         }
     }
 }
