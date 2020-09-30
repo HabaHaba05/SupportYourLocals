@@ -8,7 +8,7 @@ namespace SuppLocals
     public partial class MainWindow
     {
         // Methods for meniu interface
-        private void buttonClick(object sender, RoutedEventArgs e)
+        private void ButtonClick(object sender, RoutedEventArgs e)
         {
             if (sPan.Visibility == Visibility.Collapsed)
             {
@@ -22,7 +22,7 @@ namespace SuppLocals
             }
         }
 
-        private void servicesClick(object sender, RoutedEventArgs e)
+        private void ServicesClick(object sender, RoutedEventArgs e)
         {
             if (servicePanel.Visibility == Visibility.Collapsed)
             {
@@ -36,7 +36,7 @@ namespace SuppLocals
             }
         }
 
-        private void filterClick(object sender, RoutedEventArgs e)
+        private void FilterClick(object sender, RoutedEventArgs e)
         {
             if (filterPanel.Visibility == Visibility.Collapsed)
             {
@@ -50,13 +50,7 @@ namespace SuppLocals
             }
         }
 
-        private void MoreButtonClicked(object sender, RoutedEventArgs e)
-        {
-            ReviewsWindow rWindow = new ReviewsWindow();
-            rWindow.Show();
-        }
-
-        private void hyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void HyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             //true if the shell should be used when starting the process; false if the process should be created directly from the executable file.
             //The default is true on.NET Framework apps and false on.NET Core apps.

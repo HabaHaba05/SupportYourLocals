@@ -7,10 +7,10 @@ using System.Windows.Media;
 
 namespace SuppLocals
 {
-    public abstract class Service
+    public abstract class Vendor
     {
         //Constructor
-        public Service()
+        public Vendor()
         {
             color = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         }
@@ -23,6 +23,10 @@ namespace SuppLocals
 
         //Latitude and Longitude
         public Location location;
+
+        public List<Review> reviews = new List<Review>();
+
+        public int[] reviewsCount = { 0, 0, 0, 0, 0, 0 };
 
 
     }
