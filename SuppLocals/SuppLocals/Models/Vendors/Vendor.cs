@@ -7,10 +7,10 @@ using System.Windows.Media;
 
 namespace SuppLocals
 {
-    public abstract class Service
+    public abstract class Vendor
     {
         //Constructor
-        public Service()
+        public Vendor()
         {
             color = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         }

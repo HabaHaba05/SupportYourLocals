@@ -11,9 +11,9 @@ namespace SuppLocals
     public partial class ReviewsWindow : Window
     {
         private readonly List<string> STARS = new List<string>{"☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
-        private Service _service;
+        private readonly Vendor _service;
        
-        public ReviewsWindow(Service service)
+        public ReviewsWindow(Vendor service)
         {
             
             // by default
@@ -28,12 +28,12 @@ namespace SuppLocals
                 rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);
             }
 
-            updateRatingCounts();
+            UpdateRatingCounts();
         }
 
         
         // Adding user comment when button pressed
-        private void confirmClicked(object sender, RoutedEventArgs e)
+        private void ConfirmClicked(object sender, RoutedEventArgs e)
         {
             var user = reviewer.Text;
             var comment = comments.Text;
@@ -51,7 +51,7 @@ namespace SuppLocals
                 _service.reviews.Add(r);
 
                 rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);
-                updateRatingCounts();
+                UpdateRatingCounts();
 
                 // clearing fields after comment commited
                 reviewer.Clear();
@@ -59,7 +59,7 @@ namespace SuppLocals
             }
         }
 
-        private void updateRatingCounts()
+        private void UpdateRatingCounts()
         {
             ZeroRating.Text = _service.reviewsCount[0].ToString();
             OneRating.Text = _service.reviewsCount[1].ToString();

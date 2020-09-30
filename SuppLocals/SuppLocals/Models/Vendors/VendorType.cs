@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SuppLocals
 {
-    public enum ServiceType
+    public enum VendorType
     {
         FOOD = 0,                   //Red Pin
         CAR_REPAIR,             //Green Pin
