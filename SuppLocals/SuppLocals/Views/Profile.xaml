@@ -17,8 +17,8 @@
         <Border CornerRadius="10" Grid.RowSpan="1">
             <Border.Background>
                 <LinearGradientBrush>
-                    <GradientStop Color="#F8D0C6" Offset="0.0"/>
-                    <GradientStop Color="#F8D0C6" Offset="1"/>
+                    <GradientStop Color="#CCBA8B" Offset="0.0"/>
+                    <GradientStop Color="#CCBA8B" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
@@ -45,11 +45,11 @@
                  FontWeight="Bold"
                  FontSize="20"
                  BorderThickness="0"
-                 Foreground="#FA5D53"
+                 Foreground="Black"
                  Background="Transparent"/>
         <Border  
                  Height="2"
-                 Background="#FA5D53"
+                 Background="Black"
                  Opacity="1"
                  Margin="215,-20,65,0" />
         
@@ -61,7 +61,7 @@
                  FontFamily="Tahoma"
                  FontWeight="Bold"
                  FontSize="20"
-                 Foreground="#FA5D53"/>
+                 Foreground="Black"/>
 
         <!-- FirstName Style-->
         <TextBox x:Name="NameBox"  
@@ -74,13 +74,13 @@
                  FontWeight="Bold"
                  FontSize="20"
                  BorderThickness="0"
-                 Foreground="#FA5D53"
+                 Foreground="Black"
                  Background="Transparent"
                  Width="150" />
 
         <Border  
                  Height="2"
-                 Background="#FA5D53"
+                 Background="Black"
                  Opacity="1"
                  Margin="215,60,65,0" />
         
@@ -92,7 +92,7 @@
                  FontFamily="Tahoma"
                  FontWeight="Bold"
                  FontSize="20"
-                 Foreground="#FA5D53"/>
+                 Foreground="Black"/>
         
         <!-- LastName Style-->
         <TextBox x:Name="LastNameBox"          
@@ -104,12 +104,12 @@
                  FontWeight="Bold"
                  FontSize="20"
                  BorderThickness="0"
-                 Foreground="#FA5D53"
+                 Foreground="Black"
                  Background="Transparent"
                  Width="150"/>
         <Border  
                  Height="2"
-                 Background="#FA5D53"
+                 Background="Black"
                  Opacity="1"
                  Margin="215, 140,65,0" />
         
@@ -120,7 +120,7 @@
                FontFamily="Tahoma"
                FontWeight="Bold"
                FontSize="20"
-               Foreground="#FA5D53"/>
+               Foreground="Black"/>
 
         <!-- Adress Style-->
         <TextBox x:Name="AdressBox"             
@@ -131,12 +131,12 @@
                  FontWeight="Bold"
                  FontSize="20"
                  BorderThickness="0"
-                 Foreground="#FA5D53"
+                 Foreground="Black"
                  Background="Transparent"
                  Width="150"/>
         <Border  
                  Height="2"
-                 Background="#FA5D53"
+                 Background="Black"
                  Opacity="1"
                  Margin="215,220,65,0" />
 
@@ -147,7 +147,7 @@
                FontFamily="Tahoma"
                FontWeight="Bold"
                FontSize="20"
-               Foreground="#FA5D53"/>
+               Foreground="Black"/>
         
         <!-- Button section -->
         <Button x:Name="ChangePasswordBtn" Content="Change password" 

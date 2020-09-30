@@ -20,6 +20,7 @@
   <ItemGroup>
     <None Remove="146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
     <None Remove="Assets\title.png" />
+    <None Remove="Assets\title1.png" />
     <None Remove="backArrow.png" />
     <None Remove="Assets\SuppLogo.png" />
     <None Remove="Assets\usericon.jpg" />
@@ -47,6 +48,8 @@
   <ItemGroup>
 
     <Resource Include="Assets\146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
+
+    <Resource Include="Assets\title1.png" />
     <Resource Include="Assets\usericon.jpg" />
     <Resource Include="Assets\download.png" />
     <Resource Include="Assets\backArrow.png" />
