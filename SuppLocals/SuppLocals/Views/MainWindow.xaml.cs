@@ -42,8 +42,6 @@ namespace SuppLocals
 
         public MainWindow()
         {
-
-
             // Testing stuff
             List<Vendor> testFood = new List<Vendor>
             {
@@ -711,11 +709,7 @@ namespace SuppLocals
             }
 
             return true;
-        }
-
-
-
-        
+        }     
     }
 
 }

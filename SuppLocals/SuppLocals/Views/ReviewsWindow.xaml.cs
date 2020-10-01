@@ -22,13 +22,6 @@ namespace SuppLocals
             _service = service;
 
             rView.Items.Clear();
-
-            foreach (Review r in service.reviews)
-            {
-                rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);
-            }
-
-            UpdateRatingCounts();
         }
 
         
@@ -46,7 +39,7 @@ namespace SuppLocals
 
             else
             {
-                Review r = new Review(user + STARS[Rating.RatingValue], comment, DateTime.Now.ToString("yyyy-MM-dd"));
+                Review r = new Review(user + "  " + STARS[Rating.RatingValue], comment, DateTime.Now.ToString("yyyy-MM-dd"));
                 _service.reviewsCount[Rating.RatingValue]++;
                 _service.reviews.Add(r);
 

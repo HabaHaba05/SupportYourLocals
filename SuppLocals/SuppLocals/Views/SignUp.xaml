@@ -15,7 +15,7 @@
       
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="100"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -24,21 +24,21 @@
         <Border CornerRadius="10" Grid.RowSpan="5">
             <Border.Background>
                 <LinearGradientBrush>
-                    <GradientStop Color="#F8D0C6" Offset="0.0"/>
-                    <GradientStop Color="#F8D0C6" Offset="1"/>
+                    <GradientStop Color="#CCBA8B" Offset="0.0"/>
+                    <GradientStop Color="#CCBA8B" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
 
         <StackPanel VerticalAlignment="Center">
-            <Image Source="/Assets/SuppLogo.png" Width="150" Visibility="Visible"/>
+            <Image Source="/Assets/title1.png" Width="90" Visibility="Visible"/>
         </StackPanel>
 
         
         
         <StackPanel Grid.Row="1">
             <StackPanel Orientation="Horizontal">
-                <Label  Foreground="#FA5D53" 
+                <Label  Foreground="Black" 
                         Content="Write your username:"
                         FontFamily="Tahoma"
                         FontSize="20"
@@ -50,7 +50,7 @@
                         FontFamily="Tahoma"
                         FontWeight="Bold"
                         FontSize="20"
-                        Foreground="#FA5D53"
+                        Foreground="Black"
                         Background="Transparent"
                         BorderThickness="0"
                         Width="235"
@@ -60,7 +60,7 @@
             </StackPanel>
             <Border Width="250"
                     Height="2"
-                    Background="#FA5D53"
+                    Background="Black"
                     Opacity="1"
                     Margin="-10 0 0 0 "/>
 
@@ -68,7 +68,7 @@
 
         <StackPanel Grid.Row="2">
             <StackPanel Orientation="Horizontal">
-                <Label  Foreground="#FA5D53" 
+                <Label  Foreground="Black" 
                         Content="Write your password:"
                         FontFamily="Tahoma"
                         FontSize="20"
@@ -79,7 +79,7 @@
                         FontFamily="Tahoma"
                         FontWeight="Bold"
                         FontSize="20"
-                        Foreground="#FA5D53"
+                        Foreground="Black"
                         Background="Transparent"
                         BorderThickness="0"
                         Width="235"
@@ -89,7 +89,7 @@
             </StackPanel>
             <Border Width="250"
                     Height="2"
-                    Background="#FA5D53"
+                    Background="Black"
                     Opacity="1"
                     Margin="-10 0 0 0 "/>
 
@@ -97,7 +97,7 @@
 
         <StackPanel Grid.Row="3">
             <StackPanel Orientation="Horizontal">
-                <Label  Foreground="#FA5D53" 
+                <Label  Foreground="Black" 
                         Content="Confirm password:"
                         FontFamily="Tahoma"
                         FontSize="20"
@@ -108,7 +108,7 @@
                         FontFamily="Tahoma"
                         FontWeight="Bold"
                         FontSize="20"
-                        Foreground="#FA5D53"
+                        Foreground="Black"
                         Background="Transparent"
                         BorderThickness="0"
                         Width="235"
@@ -118,7 +118,7 @@
             </StackPanel>
             <Border Width="250"
                     Height="2"
-                    Background="#FA5D53"
+                    Background="Black"
                     Opacity="1"
                     Margin="-20 0 0 0 "/>
 
