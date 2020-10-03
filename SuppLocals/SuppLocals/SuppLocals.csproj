@@ -19,8 +19,12 @@
 
   <ItemGroup>
     <None Remove="146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
+    <None Remove="Assets\hands.png" />
+    <None Remove="Assets\home.png" />
+    <None Remove="Assets\profile.png" />
     <None Remove="Assets\title.png" />
     <None Remove="Assets\title1.png" />
+    <None Remove="Assets\title2.png" />
     <None Remove="backArrow.png" />
     <None Remove="Assets\SuppLogo.png" />
     <None Remove="Assets\usericon.jpg" />
@@ -28,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\hands.png" />
+    <Resource Include="Assets\home.png" />
+    <Resource Include="Assets\profile.png" />
     <Resource Include="Assets\title.png" />
   </ItemGroup>
 
@@ -35,6 +42,7 @@
     <PackageReference Include="Geocoding.Core" Version="4.0.1" />
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
     <PackageReference Include="GMap.NET.Core" Version="2.0.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
@@ -50,6 +58,8 @@
     <Resource Include="Assets\146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
 
     <Resource Include="Assets\title1.png" />
+
+    <Resource Include="Assets\title2.png" />
     <Resource Include="Assets\usericon.jpg" />
     <Resource Include="Assets\download.png" />
     <Resource Include="Assets\backArrow.png" />
