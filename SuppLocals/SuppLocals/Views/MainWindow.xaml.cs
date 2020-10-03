@@ -631,8 +631,8 @@ namespace SuppLocals
         public void Hide_BtnClick(object sender, RoutedEventArgs e)
         {
             UpdateServiceListAndMap(null, null);
-            selectedServiceInfoGrid.Visibility = Visibility.Hidden;
-            Grid.SetColumnSpan(myMap, 2);
+            selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
+            Grid.SetColumnSpan(myMap, 3);
         }
 
         private void PinClicked(object sender, MouseButtonEventArgs e)
@@ -647,8 +647,7 @@ namespace SuppLocals
 
 
             selectedServiceInfoGrid.Visibility = Visibility.Visible;
-            Grid.SetColumnSpan(myMap, 1);
-
+            Grid.SetColumnSpan(myMap, 2);
         }
 
         public void Review_BtnClick(object sender, RoutedEventArgs e)

@@ -20,7 +20,7 @@ namespace SuppLocals
             else
             {
                 sPan.Visibility = Visibility.Collapsed;
-                (sender as Button).Content = "☰";
+                (sender as Button).Content = "☰ Filters";
             }          
         }
 

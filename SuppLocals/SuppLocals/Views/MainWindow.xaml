@@ -10,11 +10,11 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="25"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
@@ -54,7 +54,7 @@
 
         <Grid Height="70" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0 0 10 0">
             <StackPanel Orientation="Horizontal">
-                <Button Uid="0" Width="95" Content="HOME" Height="40" HorizontalContentAlignment="Center" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
+                <Button Uid="0" Width="95" Content="HOME" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="1" Width="95" Content="VENDORS" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="2" Width="95" Content="JOIN" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="3" Width="95" Content="ABOUT" Height="40"  HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
@@ -67,7 +67,7 @@
             </Grid>
         </Grid>
         <!--Menu-->
-        <ScrollViewer x:Name="sPan" Grid.Column="6" Grid.Row="2" Grid.ZIndex="2" Grid.RowSpan="3" MinWidth="200" Margin="6,0,4,0" Visibility="Collapsed">
+        <ScrollViewer x:Name="sPan" Grid.Column="4" Grid.Row="2" Grid.ZIndex="2" Grid.RowSpan="3" MinWidth="200" Margin="6,0,4,0" Visibility="Collapsed" Background="#CCBA8B">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -129,21 +129,27 @@
             </Grid>
         </ScrollViewer>
 
-        <Button Grid.Row="2" Grid.Column="5" VerticalAlignment="Top" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="30" Height="30" FontSize="16" HorizontalAlignment="Right"  Background ="Transparent" Panel.ZIndex="1" Click="ButtonClick" Foreground="Black" >☰</Button>
+        <Button Grid.Row="2" Grid.Column="4" VerticalAlignment="Top" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="70" Height="30" FontSize="16" HorizontalAlignment="Right"  Background ="Transparent" Panel.ZIndex="2" Click="ButtonClick" Foreground="Black" RenderTransformOrigin="0.5,0.5">☰ Filters
+            <Button.LayoutTransform>
+                <RotateTransform Angle="90"/>
+            </Button.LayoutTransform>
+        </Button>
+        
+        
 
 
         <ListBox Visibility="Hidden" x:Name="servicesLB" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" MinWidth="150" Margin="0 0 10 0"
                  SelectionMode="Single" SelectionChanged="SelectedServiceLB_Changed">
         </ListBox>
         <!--Map-->
-        <m:Map  Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="2" Grid.RowSpan="1"
+        <m:Map  Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" 
             x:Name="myMap" Mode="Road" Center="54.68,25.27" ZoomLevel="12">
 
             <m:MapLayer x:Name="RouteLayer"/>
         </m:Map>
 
         <!--Selected Service-->
-        <Grid x:Name="selectedServiceInfoGrid" Grid.Column="5" Grid.Row="1" Grid.RowSpan="2" Visibility="Hidden">
+        <Grid x:Name="selectedServiceInfoGrid" Grid.Column="3" Grid.Row="2" Visibility="Collapsed" Panel.ZIndex="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="*"/>

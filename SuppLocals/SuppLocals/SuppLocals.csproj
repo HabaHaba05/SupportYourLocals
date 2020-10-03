@@ -22,7 +22,6 @@
     <None Remove="Assets\hands.png" />
     <None Remove="Assets\home.png" />
     <None Remove="Assets\profile.png" />
-    <None Remove="Assets\title.png" />
     <None Remove="Assets\title1.png" />
     <None Remove="Assets\title2.png" />
     <None Remove="backArrow.png" />
@@ -35,7 +34,6 @@
     <Resource Include="Assets\hands.png" />
     <Resource Include="Assets\home.png" />
     <Resource Include="Assets\profile.png" />
-    <Resource Include="Assets\title.png" />
   </ItemGroup>
 
   <ItemGroup>
