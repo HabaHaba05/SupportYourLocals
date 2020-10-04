@@ -46,7 +46,6 @@
                         Margin="60 0 0 0 "/>
                         
                 <TextBox  Name="UsernameTextBox"
-                        Validation.Error="UsernameTextBox_Error"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
                         FontSize="20"

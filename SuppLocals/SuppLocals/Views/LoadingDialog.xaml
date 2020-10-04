@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SuppLocals"
         mc:Ignorable="d"
         Height="250" Width="400"
-        WindowStyle="None" WindowStartupLocation="CenterOwner" Background="LightGray"
+        WindowStyle="None" WindowStartupLocation="CenterOwner" Background="#CCBA8B"
         MouseDown="Window_MouseDown" ResizeMode="NoResize">
     <Window.Resources>
         <Storyboard x:Key="Storyboard1" AutoReverse="True" RepeatBehavior="Forever">

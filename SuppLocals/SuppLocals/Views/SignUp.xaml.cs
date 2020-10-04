@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
@@ -36,49 +37,35 @@ namespace SuppLocals
             var username = UsernameTextBox.Text;
             var password = PasswordBox1.Password;
             var repeatPassword = ConfirmPasswordBox1.Password;
-            var path = @"..\LoginInfo.txt";
-            var inUse = false;
 
-            if (!File.Exists(path))
+            if(password != repeatPassword)
             {
-                File.Create(path).Dispose();
+                MessageBox.Show("Passwords do not match");
+                return;
             }
-            else if (File.Exists(path))
-            {
-                if (username == "" || password == "")
-                {
-                    MessageBox.Show("Please enter your username or password");
-                }
-                if (password != repeatPassword)
-                {
-                    MessageBox.Show("Your password and confirmation password do not match");
-                }
-                if (username != "" && password != "" && repeatPassword != "" && password == repeatPassword)
-                {
-                    string[] lines = File.ReadAllLines(path);
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        string[] line = lines[i].Split('`');
-                        if (line[0] == username)
-                        {
-                            inUse = true;
-                            MessageBox.Show("This username is already in use");
-                            UsernameTextBox.Text = "";
-                        }
-                    }
-                    if (inUse == false)
-                    {
-                        using (StreamWriter writeText = new StreamWriter(path, true))
-                        {
-                            writeText.WriteLine(username + "`" + password + "`noPhoto");
-                        }
-                        MessageBox.Show("User was registered");
 
-                        Login login = new Login();
-                        login.Show();
-                        this.Close();
-                    }
+            using (AppDbContext db = new AppDbContext())
+            {
+                var usersList = db.Users.ToList();
+                if (usersList.FirstOrDefault(x => x.Username == username) != null)
+                {
+                    MessageBox.Show("Sorry, but username is already taken");
+                    return;
                 }
+
+                User newUser = new User()
+                {
+                    Username = username,
+                    HashedPsw = password,
+                    VendorsCount = 0
+                };
+
+                db.Users.Add(newUser);
+                db.SaveChanges();
+
+                MainWindow mainWindow = new MainWindow(newUser);
+                mainWindow.Show();
+                this.Close();
             }
         }
 
@@ -89,10 +76,6 @@ namespace SuppLocals
                 DragMove();
         }
 
-        private void UsernameTextBox_Error(object sender, System.Windows.Controls.ValidationErrorEventArgs e)
-        {
-
-        }
     }
 
 } 

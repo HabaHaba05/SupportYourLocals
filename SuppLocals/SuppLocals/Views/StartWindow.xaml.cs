@@ -25,18 +25,23 @@ namespace SuppLocals.Views
 
         private void BuyClicked(object sender, RoutedEventArgs e)
         {
-            StartWindow sWindow = this;
-            MainWindow mWindow = new MainWindow();
-            mWindow.Show();
-            sWindow.Close();
+            User user = new User
+            {
+                Username = "Anonimas",
+                VendorsCount = 0,
+                HashedPsw = ""
+            };
+
+            MainWindow map = new MainWindow(user);
+            map.Show();
+            this.Close();
         }
 
         private void JoinClicked(object sender, RoutedEventArgs e)
         {
-            StartWindow sWindow = this;
             Login lWindow = new Login();
             lWindow.Show();
-            sWindow.Close();
+            this.Close();
         }
     }
 }

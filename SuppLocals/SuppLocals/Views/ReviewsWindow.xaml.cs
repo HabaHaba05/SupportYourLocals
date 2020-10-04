@@ -38,12 +38,12 @@ namespace SuppLocals
             }
 
             else
-            {
+            {/*
                 Review r = new Review(user + "  " + STARS[Rating.RatingValue], comment, DateTime.Now.ToString("yyyy-MM-dd"));
-                _service.reviewsCount[Rating.RatingValue]++;
-                _service.reviews.Add(r);
+                _service.ReviewsCount[Rating.RatingValue]++;
+                _service.Reviews.Add(r);
 
-                rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);
+                rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);*/
                 UpdateRatingCounts();
 
                 // clearing fields after comment commited
@@ -54,12 +54,12 @@ namespace SuppLocals
 
         private void UpdateRatingCounts()
         {
-            ZeroRating.Text = _service.reviewsCount[0].ToString();
-            OneRating.Text = _service.reviewsCount[1].ToString();
-            TwoRating.Text = _service.reviewsCount[2].ToString();
-            ThreeRating.Text = _service.reviewsCount[3].ToString();
-            FourRating.Text = _service.reviewsCount[4].ToString();
-            FiveRating.Text = _service.reviewsCount[5].ToString();
+            ZeroRating.Text = _service.ReviewsCount[0].ToString();
+            OneRating.Text = _service.ReviewsCount[1].ToString();
+            TwoRating.Text = _service.ReviewsCount[2].ToString();
+            ThreeRating.Text = _service.ReviewsCount[3].ToString();
+            FourRating.Text = _service.ReviewsCount[4].ToString();
+            FiveRating.Text = _service.ReviewsCount[5].ToString();
         }
     }
 }

@@ -90,7 +90,8 @@
                 <Button Width="100" Height="30" Content="Register" Click="SignUpBtnClick"/>
             </StackPanel>
 
-            
+            <Button Width="100" Height="30" Content="Go to Map" Click="GoToMapClick"/>
+
         </StackPanel>
      
     </Grid>

@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <Compile Remove="NewFolder1\**" />
-    <Compile Remove="Models\Vendors\NewFolder\**" />
     <EmbeddedResource Remove="NewFolder1\**" />
-    <EmbeddedResource Remove="Models\Vendors\NewFolder\**" />
     <None Remove="NewFolder1\**" />
-    <None Remove="Models\Vendors\NewFolder\**" />
     <Page Remove="NewFolder1\**" />
-    <Page Remove="Models\Vendors\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +37,11 @@
     <PackageReference Include="Geocoding.Microsoft" Version="4.0.1" />
     <PackageReference Include="GMap.NET.Core" Version="2.0.1" />
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-rc.1.20451.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0-rc.1.20451.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.19041.1" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
