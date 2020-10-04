@@ -3,11 +3,29 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tabsmodel="clr-namespace:SuppLocals.TabsModel"
+        xmlns:tabs="clr-namespace:SuppLocals.Tabs"
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
         Height="450" Width="800" Background="#CCBA8B"
         WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <DataTemplate x:Name="HomeTemplate" DataType="{x:Type tabsmodel:HomeModel}">
+            <tabs:Home DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="VendorsTemplate" DataType="{x:Type tabsmodel:VendorsModel}">
+            <tabs:Vendors DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="JoinTemplate" DataType="{x:Type tabsmodel:JoinModel}">
+            <tabs:Join DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="AboutTemplate" DataType="{x:Type tabsmodel:AboutModel}">
+            <tabs:About DataContext="{Binding}"/>
+        </DataTemplate>                      
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
@@ -52,7 +70,7 @@
             <Image Source="/Assets/title2.png" Width="120" Height ="60" HorizontalAlignment="Left" Visibility="Visible" Margin="0 5 0 5"/>
         </StackPanel>
 
-        <Grid Height="70" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0 0 10 0">
+        <Grid Height="70" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0 0 10 0">
             <StackPanel Orientation="Horizontal">
                 <Button Uid="0" Width="95" Content="HOME" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="1" Width="95" Content="VENDORS" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
@@ -67,7 +85,7 @@
             </Grid>
         </Grid>
         <!--Menu-->
-        <ScrollViewer x:Name="sPan" Grid.Column="4" Grid.Row="2" Grid.ZIndex="2" Grid.RowSpan="3" MinWidth="200" Margin="6,0,4,0" Visibility="Collapsed" Background="#CCBA8B">
+        <ScrollViewer x:Name="sPan" Grid.Column="4" Grid.Row="2" Grid.ZIndex="2" Grid.RowSpan="2" MinWidth="200" Margin="6,0,4,0" Visibility="Collapsed" Background="#CCBA8B">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -145,7 +163,7 @@
         <m:Map  Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" 
             x:Name="myMap" Mode="Road" Center="54.68,25.27" ZoomLevel="12">
 
-            <m:MapLayer x:Name="RouteLayer"/>
+            <m:MapLayer x:Name="RouteLayer" HorizontalAlignment="Right" Width="745"/>
         </m:Map>
 
         <!--Selected Service-->
@@ -189,5 +207,6 @@
 
         </Grid>
 
+        <ContentControl Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding}"/>
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuppLocals.TabsModel;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,6 +63,23 @@ namespace SuppLocals
             ta.To = new Thickness((95 * index), 0, 0, 10);
             ta.Duration = new Duration(TimeSpan.FromSeconds(0.2));
             TabCursor.BeginAnimation(Button.MarginProperty, ta);
+
+            if (index.Equals(0))
+            {
+                DataContext = new HomeModel();
+            }
+            else if (index.Equals(1))
+            {
+                DataContext = new VendorsModel();
+            }
+            else if (index.Equals(2))
+            {
+                DataContext = new JoinModel();
+            }
+            else
+            {
+                DataContext = new AboutModel();
+            }
         }
 
 

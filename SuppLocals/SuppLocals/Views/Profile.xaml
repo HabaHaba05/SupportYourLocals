@@ -29,9 +29,9 @@
                  Height="158" Margin="0,9,0,0" 
                  Stroke="Black" 
                  VerticalAlignment="Top" 
-                 Width="150">
+                 Width="160">
             <Ellipse.Fill>
-                <ImageBrush ImageSource="/Assets/download.png"/>
+                <ImageBrush ImageSource="/Assets/profile.png"/>
             </Ellipse.Fill>
         </Ellipse>
 

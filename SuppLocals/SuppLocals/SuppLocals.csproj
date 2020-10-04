@@ -24,6 +24,7 @@
     <None Remove="Assets\profile.png" />
     <None Remove="Assets\title1.png" />
     <None Remove="Assets\title2.png" />
+    <None Remove="Assets\vendor.png" />
     <None Remove="backArrow.png" />
     <None Remove="Assets\SuppLogo.png" />
     <None Remove="Assets\usericon.jpg" />
@@ -66,6 +67,7 @@
 	  <Resource Include="Assets\SuppLogo.png">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</Resource>
+	  <Resource Include="Assets\vendor.png" />
     
   </ItemGroup>
   
