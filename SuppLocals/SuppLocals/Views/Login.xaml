@@ -28,7 +28,7 @@
         </Border>
 
         <StackPanel VerticalAlignment="Center">
-            <Image Source="/Assets/title1.png" Width="180" Visibility="Visible"/>
+            <Image Source="/Assets/title2.png" Width="300" Visibility="Visible"/>
         </StackPanel>
 
 
@@ -90,14 +90,8 @@
                 <Button Width="100" Height="30" Content="Register" Click="SignUpBtnClick"/>
             </StackPanel>
 
-            <StackPanel>
-                <Button Width="120" Height="30" Content="Continue as user" HorizontalAlignment="Center" 
-                 VerticalAlignment="Center" Margin="10 10" Click="ContinueBtnClick"/>
-            </StackPanel>
             
         </StackPanel>
-
-  
-       
+     
     </Grid>
 </Window>

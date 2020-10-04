@@ -31,10 +31,12 @@ namespace SuppLocals
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.InitialDirectory = "c:\\desktop";
-            dlg.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
-            dlg.RestoreDirectory = true;
+            OpenFileDialog dlg = new OpenFileDialog
+            {
+                InitialDirectory = "c:\\desktop",
+                Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp",
+                RestoreDirectory = true
+            };
             var fileName = "";
             Nullable<bool> result = dlg.ShowDialog();
 
@@ -42,8 +44,10 @@ namespace SuppLocals
             {
                 string selectedFileName = dlg.FileName;
                 fileName = selectedFileName;
-                ImageBrush myBrush = new ImageBrush();
-                myBrush.ImageSource = new BitmapImage(new Uri(selectedFileName));
+                ImageBrush myBrush = new ImageBrush
+                {
+                    ImageSource = new BitmapImage(new Uri(selectedFileName))
+                };
                 Elipse.Fill = myBrush;
             }
             
@@ -155,8 +159,10 @@ namespace SuppLocals
                     if (line[2] != "noPhoto")
                     {
                         var selectedFileName = line[2];
-                        ImageBrush myBrush = new ImageBrush();
-                        myBrush.ImageSource = new BitmapImage(new Uri(selectedFileName));
+                        ImageBrush myBrush = new ImageBrush
+                        {
+                            ImageSource = new BitmapImage(new Uri(selectedFileName))
+                        };
                         Elipse.Fill = myBrush;
                     }
                     if (line.Length == 4)

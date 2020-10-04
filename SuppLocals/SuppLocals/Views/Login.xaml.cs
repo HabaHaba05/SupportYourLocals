@@ -83,8 +83,6 @@ namespace SuppLocals
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
-
-      
+ 
     }
-
 }

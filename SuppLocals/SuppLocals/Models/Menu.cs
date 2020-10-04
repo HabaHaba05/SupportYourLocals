@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 
 namespace SuppLocals
@@ -13,13 +15,13 @@ namespace SuppLocals
             if (sPan.Visibility == Visibility.Collapsed)
             {
                 sPan.Visibility = Visibility.Visible;
-                (sender as Button).Content = "☰";
+                (sender as Button).Content = "X";
             }
             else
             {
                 sPan.Visibility = Visibility.Collapsed;
-                (sender as Button).Content = "☰";
-            }
+                (sender as Button).Content = "☰ Filters";
+            }          
         }
 
         private void ServicesClick(object sender, RoutedEventArgs e)
@@ -49,6 +51,19 @@ namespace SuppLocals
                 (sender as Button).Content = "Filters";
             }
         }
+
+
+        private void TabClicked(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse(((Button)e.Source).Uid);
+
+            ThicknessAnimation ta = new ThicknessAnimation();
+            ta.From = TabCursor.Margin;
+            ta.To = new Thickness((95 * index), 0, 0, 10);
+            ta.Duration = new Duration(TimeSpan.FromSeconds(0.2));
+            TabCursor.BeginAnimation(Button.MarginProperty, ta);
+        }
+
 
         private void HyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
