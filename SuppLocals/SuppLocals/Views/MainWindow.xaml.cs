@@ -77,7 +77,15 @@ namespace SuppLocals
             //Update VendorsList
             using (AppDbContext db = new AppDbContext())
             {
-                VendorsList = db.Vendors.ToList();
+                if (filterServiceTypeCB.SelectedItem.ToString() == "ALL")
+                {
+                    VendorsList = db.Vendors.ToList();
+                }
+                else
+                {
+                    VendorsList = db.Vendors.Where(x => x.VendorType == filterServiceTypeCB.SelectedItem.ToString()).ToList();
+                }
+
             }
 
             myMap.Children.Clear();
