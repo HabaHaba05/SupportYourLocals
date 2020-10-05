@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using BC = BCrypt.Net.BCrypt;
 
 namespace SuppLocals
 {
@@ -29,7 +30,7 @@ namespace SuppLocals
                 string password = PasswordBox.Password.ToString();
 
                 var usersList = db.Users.ToList();
-                var user = usersList.FirstOrDefault(x => (x.Username == username & password == x.HashedPsw));
+                var user = usersList.SingleOrDefault(x => (x.Username == username & BC.Verify(password, x.HashedPsw) ));
                 if (user == null)
                 {
                     MessageBox.Show("Invalid credentials");

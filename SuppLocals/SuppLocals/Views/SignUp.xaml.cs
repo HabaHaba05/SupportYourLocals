@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using BC = BCrypt.Net.BCrypt;
 
 namespace SuppLocals
 {
@@ -56,7 +57,7 @@ namespace SuppLocals
                 User newUser = new User()
                 {
                     Username = username,
-                    HashedPsw = password,
+                    HashedPsw = BC.HashPassword(password),
                     VendorsCount = 0
                 };
 
