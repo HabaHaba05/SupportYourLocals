@@ -49,6 +49,8 @@ namespace SuppLocals
                 // clearing fields after comment commited
                 reviewer.Clear();
                 comments.Clear();
+
+                Rating.UncheckAll(sender);
             }
         }
 
