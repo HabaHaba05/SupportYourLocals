@@ -124,11 +124,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="2*"/>
-                <!--Title-->
                 <RowDefinition Height="8*"/>
-                <!--About-->
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="*"/>
-                <!--Refs-->
                 <RowDefinition Height="5"/>
             </Grid.RowDefinitions>
 
@@ -140,7 +138,12 @@
                            TextAlignment="Center" TextWrapping="Wrap"/>
             </ScrollViewer>
 
-            <UniformGrid Grid.Column="1" Grid.Row="3" Rows="1">
+            <ScrollViewer Grid.Row="3" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+                <TextBlock x:Name="selectedServiceAddress"
+                           TextAlignment="Center" TextWrapping="Wrap"/>
+            </ScrollViewer>
+            
+            <UniformGrid Grid.Column="1" Grid.Row="4" Rows="1">
                 <Button Click="Hide_BtnClick">
                     <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
                 </Button>

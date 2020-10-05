@@ -85,26 +85,29 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <!-- Add a review -->
-        <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" Margin="10 5 5 5">
-            <TextBlock Text="Rating:" FontSize="13" Margin="0 0 10 0"/>
-            <local:Rating Height="17" Width="auto" VerticalAlignment="Center" Margin="0 0 0 3"/>
+        <StackPanel Grid.Row="2" Grid.Column="2" Grid.RowSpan="3" Visibility="{Binding CanComment}">
+            <!-- Add a review -->
+            <StackPanel  Orientation="Horizontal" Margin="10 5 5 5">
+                <TextBlock Text="Rating:" FontSize="13" Margin="0 0 10 0"/>
+                <local:Rating Height="17" Width="auto" VerticalAlignment="Center" Margin="0 0 0 3"/>
+            </StackPanel>
+
+            <Border BorderBrush="LightGray" BorderThickness="2"  Margin="10 0 5 0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBox x:Name="comments" Height="50" Width="auto" TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Button for confirming person's review -->
+            <Button Margin="10 5 0 5" HorizontalAlignment="Right" Width="60" Click="ConfirmClicked">Confirm
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
         </StackPanel>
-
-        <Border BorderBrush="LightGray" BorderThickness="2" Grid.Column="2" Grid.Row="3"  Margin="10 0 5 0">
-            <ScrollViewer>
-                <TextBox x:Name="comments" Height="auto" Width="auto" TextWrapping="Wrap"/>
-            </ScrollViewer>
-        </Border>
-
-        <!-- Button for confirming person's review -->
-        <Button Grid.Column="2" Grid.Row="4"  Margin="10 5 0 5" HorizontalAlignment="Right" Width="60" Click="ConfirmClicked">Confirm
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="4"/>
-                </Style>
-            </Button.Resources>
-        </Button>
 
     </Grid>
 </Window>

@@ -149,12 +149,13 @@ namespace SuppLocals
         private void PinClicked(object sender, MouseButtonEventArgs e)
         {
             Pushpin p = sender as Pushpin;
-            Vendor service = p.Tag as Vendor;
+            Vendor vendor = p.Tag as Vendor;
 
-            selectedServiceTitle.Text = service.Address;
-            selectedServiceAbout.Text = "Lat: " + service.Latitude + "\nLong: " + service.Longitude;
-            review_Btn.Tag = service;
-            findRoute_Btn.Tag = service;
+            selectedServiceTitle.Text = vendor.Title;
+            selectedServiceAbout.Text = vendor.About;
+            selectedServiceAddress.Text = $"Address: {vendor.Address} \nLat: {vendor.Latitude} \nLong: { vendor.Longitude} ";
+            review_Btn.Tag = vendor;
+            findRoute_Btn.Tag = vendor;
 
 
             selectedServiceInfoGrid.Visibility = Visibility.Visible;

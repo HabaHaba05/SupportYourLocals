@@ -17,6 +17,8 @@ namespace SuppLocals
 
         private List<Review> reviews; 
 
+        public Visibility CanComment { get; set; }
+
         public ReviewsWindow(Vendor vendor , User activeUser)
         {
             
@@ -25,6 +27,15 @@ namespace SuppLocals
             this.DataContext = this;
             _vendor = vendor;
             _user = activeUser;
+            
+            if(_vendor.UserID == _user.ID)
+            {
+                CanComment = Visibility.Hidden;
+            }
+            else
+            {
+                CanComment = Visibility.Visible;
+            }
 
             PopulateData();
         }
