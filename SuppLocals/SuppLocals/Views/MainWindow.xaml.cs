@@ -9,16 +9,20 @@ using Location = Microsoft.Maps.MapControl.WPF.Location;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Diagnostics;
+using System.Linq;
 
 namespace SuppLocals
 {
 
     public partial class MainWindow : Window
     {
-
+        //The user
         public User ActiveUser;
 
-        public List<Vendor> VendorsList = new List<Vendor>();
+        public List<Vendor> VendorsList;
+        public List<User> UsersList;
+        public List<Review> ReviewsList;
+
 
         public double circleRadius = 0;
 
@@ -29,6 +33,13 @@ namespace SuppLocals
             InitializeComponent();
 
             ActiveUser = user;
+
+            using(AppDbContext db = new AppDbContext())
+            {
+                VendorsList = db.Vendors.ToList();
+                UsersList = db.Users.ToList();
+                ReviewsList = db.Reviews.ToList();
+            }
 
             //Activates the + and – keys to allow the user to manually zoom in and out of the map
             myMap.Focus();
@@ -52,25 +63,30 @@ namespace SuppLocals
 
         private void UpdateMapChildrens(object sender, SelectionChangedEventArgs args)
         {
+            //Update VendorsList
+            using (AppDbContext db = new AppDbContext())
+            {
+                VendorsList = db.Vendors.ToList();
+            }
+
             myMap.Children.Clear();
-
-
 
             foreach (Vendor vendor in VendorsList)
             {
+                Location loc = new Location(vendor.Latitude,vendor.Longitude);
+
                 if (!(bool)filterDistanceCheck.IsChecked ||
-                    MapMethods.DistanceBetweenPlaces(vendor.Location, ActiveUser.Location) <= circleRadius)
+                    MapMethods.DistanceBetweenPlaces(loc, ActiveUser.Location) <= circleRadius)
                 {
                     Pushpin pushpin = new Pushpin();
                     pushpin.MouseUp += PinClicked;
                     pushpin.Tag = vendor;
 
-                    pushpin.Location = new Location(vendor.Location.Latitude, vendor.Location.Longitude);
+                    pushpin.Location = new Location(loc.Latitude, loc.Longitude);
                     //pushpin.Background = vendor.color;
                     myMap.Children.Add(pushpin);
                 }
             }
-
 
             if ((bool)filterDistanceCheck.IsChecked)
             {
@@ -136,7 +152,7 @@ namespace SuppLocals
             Vendor service = p.Tag as Vendor;
 
             selectedServiceTitle.Text = service.Address;
-            selectedServiceAbout.Text = "Lat: " + service.Location.Latitude + "\nLong: " + service.Location.Longitude;
+            selectedServiceAbout.Text = "Lat: " + service.Latitude + "\nLong: " + service.Longitude;
             review_Btn.Tag = service;
             findRoute_Btn.Tag = service;
 
@@ -148,9 +164,9 @@ namespace SuppLocals
         public void Review_BtnClick(object sender, RoutedEventArgs e)
         {
             Button b = sender as Button;
-            Vendor service = b.Tag as Vendor;
+            Vendor vendor = b.Tag as Vendor;
 
-            ReviewsWindow reviewsWindow = new ReviewsWindow(service);
+            ReviewsWindow reviewsWindow = new ReviewsWindow(vendor, ActiveUser);
             reviewsWindow.Show();
         }
 
@@ -165,7 +181,7 @@ namespace SuppLocals
             }
             if (ActiveUser.Location != null)
             {
-                LocationCollection tempRouteLine = MapMethods.GetRoute(ActiveUser.Location, service.Location);
+                LocationCollection tempRouteLine = MapMethods.GetRoute(ActiveUser.Location, new Location(service.Latitude,service.Longitude));
 
                 if (tempRouteLine == null)
                 {
@@ -238,9 +254,15 @@ namespace SuppLocals
             e.Handled = true;
         }
 
+
         #endregion
 
-
+        private void CreateVendorClick(object sender, RoutedEventArgs e)
+        {
+            CreateVendor cv = new CreateVendor(ActiveUser);
+            cv.ShowDialog();
+            UpdateMapChildrens(null,null);
+        }
     }
 
 }

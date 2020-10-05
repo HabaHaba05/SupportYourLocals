@@ -10,7 +10,6 @@ namespace SuppLocals
     {
         public List<Review> Reviews = new List<Review>();
 
-        public Location Location;
 
         public int[] ReviewsCount = { 0, 0, 0, 0, 0, 0 };
 

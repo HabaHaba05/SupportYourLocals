@@ -87,8 +87,6 @@
 
         <!-- Add a review -->
         <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" Margin="10 5 5 5">
-            <TextBlock Text="Your name:" FontSize="13"/>
-            <TextBox x:Name="reviewer" Margin="10 0 30 0" Height="20" Width="100" MaxLength="15" TextWrapping="NoWrap"/>
             <TextBlock Text="Rating:" FontSize="13" Margin="0 0 10 0"/>
             <local:Rating Height="17" Width="auto" VerticalAlignment="Center" Margin="0 0 0 3"/>
         </StackPanel>
