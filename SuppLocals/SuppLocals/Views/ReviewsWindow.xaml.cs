@@ -50,14 +50,15 @@ namespace SuppLocals
                 MessageBox.Show("Comment can't be empty");
                 return;
             }
-            using(AppDbContext db = new AppDbContext())
+            using(ReviewsDbTable db = new ReviewsDbTable())
             {
                 Review r = new Review()
                 {
                     VendorID = _vendor.ID,
                     SenderUsername = _user.Username,
                     Text = comment,
-                    Stars = Rating.RatingValue
+                    Stars = Rating.RatingValue,
+                    Date = DateTime.Now.ToString("yyyy-MM-dd")
                 };
 
                 db.Reviews.Add(r);
@@ -84,18 +85,16 @@ namespace SuppLocals
         {
             rView.Items.Clear();
 
-            using(AppDbContext db = new AppDbContext())
+            using ReviewsDbTable db = new ReviewsDbTable();
+            reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
+
+            foreach (var review in reviews)
             {
-                reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
-
-                foreach(var review in reviews)
-                {
-                    _vendor.ReviewsCount[review.Stars]++;
-                    rView.Items.Add(review.SenderUsername + " " + STARS[review.Stars] +"\n" + review.Text);
-                }
-
-                UpdateRatingCounts();
+                _vendor.ReviewsCount[review.Stars]++;
+                rView.Items.Add(review.SenderUsername + " " + STARS[review.Stars] + "\n" + review.Text + "\n" + review.Date);
             }
+
+            UpdateRatingCounts();
         }
     }
 }

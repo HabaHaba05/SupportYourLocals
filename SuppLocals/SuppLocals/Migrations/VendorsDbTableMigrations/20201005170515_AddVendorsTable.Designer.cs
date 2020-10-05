@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuppLocals;
 
-namespace SuppLocals.Migrations
+namespace SuppLocals.Migrations.VendorsDbTableMigrations
 {
-    [DbContext(typeof(AppDbContext))]
-    [Migration("20201004191942_TablesAdded")]
-    partial class TablesAdded
+    [DbContext(typeof(VendorsDbTable))]
+    [Migration("20201005170515_AddVendorsTable")]
+    partial class AddVendorsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,55 +19,6 @@ namespace SuppLocals.Migrations
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.1.20451.13");
-
-            modelBuilder.Entity("SuppLocals.Review", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("SenderUsername")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Stars")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VendorID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("SuppLocals.User", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("HashedPsw")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VendorsCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Users");
-                });
 
             modelBuilder.Entity("SuppLocals.Vendor", b =>
                 {

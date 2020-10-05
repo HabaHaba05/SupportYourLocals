@@ -19,7 +19,7 @@ namespace SuppLocals
     /// </summary>
     public partial class CreateVendor : Window
     {
-        private User currUser;
+        private readonly User currUser;
         public CreateVendor(User user)
         {
             currUser = user;
@@ -41,7 +41,7 @@ namespace SuppLocals
                     return;
                 }
 
-                using (AppDbContext db = new AppDbContext())
+                using (VendorsDbTable db = new VendorsDbTable())
                 {
                     Vendor vendor = new Vendor()
                     {
@@ -54,8 +54,11 @@ namespace SuppLocals
                         UserID = currUser.ID
                     };
 
-                    var user = db.Users.SingleOrDefault(x => x.ID == currUser.ID);
-                    user.VendorsCount++;
+                    using (UsersDbTable dbUser = new UsersDbTable())
+                    {
+                        var user = dbUser.Users.SingleOrDefault(x => x.ID == currUser.ID);
+                        user.VendorsCount++;
+                    }
 
                     db.Vendors.Add(vendor);
 

@@ -45,29 +45,27 @@ namespace SuppLocals
                 return;
             }
 
-            using (AppDbContext db = new AppDbContext())
+            using UsersDbTable db = new UsersDbTable();
+            var usersList = db.Users.ToList();
+            if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
             {
-                var usersList = db.Users.ToList();
-                if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
-                {
-                    MessageBox.Show("Sorry, but username is already taken");
-                    return;
-                }
-
-                User newUser = new User()
-                {
-                    Username = username,
-                    HashedPsw = BC.HashPassword(password),
-                    VendorsCount = 0
-                };
-
-                db.Users.Add(newUser);
-                db.SaveChanges();
-
-                MainWindow mainWindow = new MainWindow(newUser);
-                mainWindow.Show();
-                this.Close();
+                MessageBox.Show("Sorry, but username is already taken");
+                return;
             }
+
+            User newUser = new User()
+            {
+                Username = username,
+                HashedPsw = BC.HashPassword(password),
+                VendorsCount = 0
+            };
+
+            db.Users.Add(newUser);
+            db.SaveChanges();
+
+            MainWindow mainWindow = new MainWindow(newUser);
+            mainWindow.Show();
+            this.Close();
         }
 
         // Method which allow user drag window aroud their screen

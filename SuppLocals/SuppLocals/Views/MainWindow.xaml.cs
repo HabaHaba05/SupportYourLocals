@@ -45,11 +45,10 @@ namespace SuppLocals
             }
 
 
-            using (AppDbContext db = new AppDbContext())
+            using (VendorsDbTable db = new VendorsDbTable())
             {
                 VendorsList = db.Vendors.ToList();
-                UsersList = db.Users.ToList();
-                ReviewsList = db.Reviews.ToList();
+
             }
 
             //Activates the + and – keys to allow the user to manually zoom in and out of the map
@@ -75,7 +74,7 @@ namespace SuppLocals
         private void UpdateMapChildrens(object sender, SelectionChangedEventArgs args)
         {
             //Update VendorsList
-            using (AppDbContext db = new AppDbContext())
+            using (VendorsDbTable db = new VendorsDbTable())
             {
                 if (filterServiceTypeCB.SelectedItem.ToString() == "ALL")
                 {
