@@ -15,7 +15,7 @@
       
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="100"/>
+            <RowDefinition />
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -55,7 +55,11 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-220 40 0 0 "/>
+                        Margin="-170 40 0 0 "
+                        Text="{Binding Email, 
+                        UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Email]}"  />
             </StackPanel>
             <Border Width="250"
                     Height="2"
@@ -86,7 +90,11 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-220 40 0 0 "/>
+                        Margin="-220 40 0 0 "
+                        Text="{Binding Username, 
+                        UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Username]}"/>
             </StackPanel>
             <Border Width="250"
                     Height="2"
@@ -115,7 +123,7 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-220 40 0 0 "/>
+                        Margin="-215 40 0 0 "/>
             </StackPanel>
             <Border Width="250"
                     Height="2"
@@ -144,7 +152,7 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-200 40 0 0 "/>
+                        Margin="-195 40 0 0 "/>
             </StackPanel>
             <Border Width="250"
                     Height="2"

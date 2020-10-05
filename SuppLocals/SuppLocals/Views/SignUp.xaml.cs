@@ -22,7 +22,7 @@ namespace SuppLocals
         public SignUp()
         {
             InitializeComponent();
-
+            this.DataContext = new ValidateUsername();
         }
 
         private void BackButtonClick(object sender, RoutedEventArgs e)

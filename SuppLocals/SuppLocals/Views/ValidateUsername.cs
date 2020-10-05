@@ -1,46 +1,52 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 
 namespace SuppLocals
 {
-    public class ValidateUsername : IDataErrorInfo
+    public class ValidateUsername : ObservableObject ,IDataErrorInfo
     {
         public ValidateUsername()
         {
             /* Set default Username and email */
             this.Username = "";
-            //this.Email = "";
+            this.Email = "";
         }
 
         public string Username { get; set; }
-        //public string Email { get; set; }
+        public string Email { get; set; }
 
-        public string Error
-        {
-            get { return null; }
-        }
+        public string Error{get { return null; }}
+
+        public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
 
         public string this[string columnName]
         {
             get
             {
+                string result = null;
+
                 switch (columnName)
                 {
                     case "Username":
                         if (this.Username == "")
-                            return "Username can not be empty!";
-                        if (this.Username.Length < 5)
-                            return "Username has to contain from 5 to 12 symbols!";
+                            result = "Username can not be empty!";
+                        else if (this.Username.Length < 5)
+                            result = "Username has to contain from 5 to 12 symbols!";
                         break;
-
-                    /*case "Email":
+                    case "Email":
                         if (this.Email == "")
-                            return "Email can not be empty!";
-
-                        break;*/
+                            result = "Email can not be empty!";
+                        break;
                 }
 
-                return string.Empty;
+                if (ErrorCollection.ContainsKey(columnName))
+                    ErrorCollection[columnName] = result;
+                else if (result != null)
+                    ErrorCollection.Add(columnName, result);
+
+                OnPropertyChanged("ErrorCollection");
+                return result;
             }
         }
     }

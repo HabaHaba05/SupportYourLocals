@@ -54,18 +54,8 @@
                         Margin="-110 25 0 0 "
                         Text="{Binding Username, 
                         UpdateSourceTrigger=PropertyChanged, 
-                        ValidatesOnDataErrors=True}">
-                    <Validation.ErrorTemplate>
-                        <ControlTemplate>
-                            <StackPanel>
-                                <!-- Placeholder for the TextBox itself -->
-                                <AdornedElementPlaceholder x:Name="Username"/>
-                                <TextBlock Text="{Binding [0].ErrorContent}" 
-                                Foreground="Red" 
-                                FontSize="10" FontFamily="Helvetica"/>
-                            </StackPanel>
-                        </ControlTemplate>
-                    </Validation.ErrorTemplate>
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Username]}">
                 </TextBox>
             </StackPanel>
             <Border Width="250"
