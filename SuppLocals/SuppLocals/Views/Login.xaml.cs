@@ -20,6 +20,7 @@ namespace SuppLocals
         public Login()
         {
             InitializeComponent();
+            this.DataContext = new ValidateUsername();
         }
 
         public void LogInBtnClick(object sender, RoutedEventArgs e)

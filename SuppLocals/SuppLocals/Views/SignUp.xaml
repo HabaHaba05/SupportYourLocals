@@ -19,9 +19,10 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Border CornerRadius="10" Grid.RowSpan="5">
+        <Border CornerRadius="10" Grid.RowSpan="6">
             <Border.Background>
                 <LinearGradientBrush>
                     <GradientStop Color="#CCBA8B" Offset="0.0"/>
@@ -31,12 +32,42 @@
         </Border>
 
         <StackPanel VerticalAlignment="Center">
-            <Image Source="/Assets/title1.png" Width="90" Visibility="Visible"/>
+            <Image Source="/Assets/title1.png" 
+                   Width="70" Visibility="Visible"/>
         </StackPanel>
 
-        
-        
         <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="Black" 
+                        Content="Write your email:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <TextBox  Name="EmailAdressBox"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="-220 40 0 0 "/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="Black"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+
+
+        <StackPanel Grid.Row="2">
             <StackPanel Orientation="Horizontal">
                 <Label  Foreground="Black" 
                         Content="Write your username:"
@@ -65,7 +96,7 @@
 
         </StackPanel>
 
-        <StackPanel Grid.Row="2">
+        <StackPanel Grid.Row="3">
             <StackPanel Orientation="Horizontal">
                 <Label  Foreground="Black" 
                         Content="Write your password:"
@@ -94,7 +125,7 @@
 
         </StackPanel>
 
-        <StackPanel Grid.Row="3">
+        <StackPanel Grid.Row="4">
             <StackPanel Orientation="Horizontal">
                 <Label  Foreground="Black" 
                         Content="Confirm password:"
@@ -136,7 +167,7 @@
                 Click="SignUp_ButtonClick"/>
 
             <Button 
-                Margin="0 20 0 0"
+                Margin="0 0 0 0"
                 Width="120"
                 FontSize="20"
                 Height="30" 

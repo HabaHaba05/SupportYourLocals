@@ -51,7 +51,22 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-110 25 0 0 "/>
+                        Margin="-110 25 0 0 "
+                        Text="{Binding Username, 
+                        UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}">
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate>
+                            <StackPanel>
+                                <!-- Placeholder for the TextBox itself -->
+                                <AdornedElementPlaceholder x:Name="Username"/>
+                                <TextBlock Text="{Binding [0].ErrorContent}" 
+                                Foreground="Red" 
+                                FontSize="10" FontFamily="Helvetica"/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Validation.ErrorTemplate>
+                </TextBox>
             </StackPanel>
             <Border Width="250"
                     Height="2"
