@@ -8,6 +8,38 @@
         mc:Ignorable="d"
         Height="450" Width="800" Background="#CCBA8B"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ControlTemplate x:Key="PushpinFOODTemplate" TargetType="m:Pushpin">
+            <Grid>
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource= "/../Assets/foodpin.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Name ="PushpinCarTemplate" x:Key="PushpinCAR_REPAIRTemplate" TargetType="m:Pushpin">
+            <Grid>
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource= "/../Assets/carRepairPin.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Name ="PushpinOtherTemplate" x:Key="PushpinOTHERTemplate" TargetType="m:Pushpin">
+            <Grid>
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource= "/../Assets/otherPin.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25"/>
@@ -92,7 +124,7 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <Button Content="Create Vendor" Click="CreateVendorClick"/>
+                    <Button x:Name ="CreateVendorBtn" Content="Create Vendor" Click="CreateVendorClick" />
 
 
                 </StackPanel>

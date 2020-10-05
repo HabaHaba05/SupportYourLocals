@@ -16,6 +16,8 @@ namespace SuppLocals
 
     public partial class MainWindow : Window
     {
+
+
         //The user
         public User ActiveUser;
 
@@ -23,18 +25,27 @@ namespace SuppLocals
         public List<User> UsersList;
         public List<Review> ReviewsList;
 
-
         public double circleRadius = 0;
-
        
         public MainWindow(User user)
         {
+
             //By default
             InitializeComponent();
 
             ActiveUser = user;
 
-            using(AppDbContext db = new AppDbContext())
+            if (user.Username == "Anonimas")
+            {
+                CreateVendorBtn.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                CreateVendorBtn.Visibility = Visibility.Visible;
+            }
+
+
+            using (AppDbContext db = new AppDbContext())
             {
                 VendorsList = db.Vendors.ToList();
                 UsersList = db.Users.ToList();
@@ -47,7 +58,7 @@ namespace SuppLocals
 
 
             //Add service types to the filterServiceTypeCB in order to filter services by their type
-            List<String> types = new List<String>
+            List<string> types = new List<string>
             {
                 "ALL"
             };
@@ -79,11 +90,17 @@ namespace SuppLocals
                     MapMethods.DistanceBetweenPlaces(loc, ActiveUser.Location) <= circleRadius)
                 {
                     Pushpin pushpin = new Pushpin();
+                      
                     pushpin.MouseUp += PinClicked;
                     pushpin.Tag = vendor;
+                    pushpin.ToolTip = vendor.Title;
+
+                    ControlTemplate mytemplate = (ControlTemplate)FindResource($"Pushpin{vendor.VendorType}Template");                    
+
+                    pushpin.Template = mytemplate;
+
 
                     pushpin.Location = new Location(loc.Latitude, loc.Longitude);
-                    //pushpin.Background = vendor.color;
                     myMap.Children.Add(pushpin);
                 }
             }
@@ -114,6 +131,10 @@ namespace SuppLocals
             distanceFilterPanel.Visibility = Visibility.Visible;
             circleRadius = radiusSlider.Value;
             myMap.Center = ActiveUser.Location;
+            selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
+            Grid.SetColumnSpan(myMap, 3);
+
+
             UpdateMapChildrens(null, null);
         }
         private void RadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -160,6 +181,8 @@ namespace SuppLocals
 
             selectedServiceInfoGrid.Visibility = Visibility.Visible;
             Grid.SetColumnSpan(myMap, 2);
+
+            UpdateMapChildrens(null, null);
         }
 
         public void Review_BtnClick(object sender, RoutedEventArgs e)

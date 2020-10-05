@@ -48,7 +48,7 @@ namespace SuppLocals
             using (AppDbContext db = new AppDbContext())
             {
                 var usersList = db.Users.ToList();
-                if (usersList.FirstOrDefault(x => x.Username == username) != null)
+                if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
                 {
                     MessageBox.Show("Sorry, but username is already taken");
                     return;
