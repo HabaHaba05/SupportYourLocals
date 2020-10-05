@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 
 namespace SuppLocals
@@ -11,57 +12,90 @@ namespace SuppLocals
     public partial class ReviewsWindow : Window
     {
         private readonly List<string> STARS = new List<string>{"☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
-        private readonly Vendor _service;
-       
-        public ReviewsWindow(Vendor service)
+        private readonly Vendor _vendor;
+        private readonly User _user;
+
+        private List<Review> reviews; 
+
+        public Visibility CanComment { get; set; }
+
+        public ReviewsWindow(Vendor vendor , User activeUser)
         {
             
             // by default
             InitializeComponent();
             this.DataContext = this;
-            _service = service;
+            _vendor = vendor;
+            _user = activeUser;
+            
+            if(_vendor.UserID == _user.ID)
+            {
+                CanComment = Visibility.Hidden;
+            }
+            else
+            {
+                CanComment = Visibility.Visible;
+            }
 
-            rView.Items.Clear();
+            PopulateData();
         }
 
         
         // Adding user comment when button pressed
         private void ConfirmClicked(object sender, RoutedEventArgs e)
         {
-            var user = reviewer.Text;
             var comment = comments.Text;
-
-            if (user.Length.Equals(0) || comment.Length.Equals(0))
+            if (String.IsNullOrEmpty(comment))
             {
-                MessageBox.Show("You cannot post an empty review!");
+                MessageBox.Show("Comment can't be empty");
                 return;
             }
-
-            else
+            using(AppDbContext db = new AppDbContext())
             {
-                Review r = new Review(user + "  " + STARS[Rating.RatingValue], comment, DateTime.Now.ToString("yyyy-MM-dd"));
-                _service.reviewsCount[Rating.RatingValue]++;
-                _service.reviews.Add(r);
+                Review r = new Review()
+                {
+                    VendorID = _vendor.ID,
+                    SenderUsername = _user.Username,
+                    Text = comment,
+                    Stars = Rating.RatingValue
+                };
 
-                rView.Items.Add(r.Sender + "\n" + r.Text + "\n" + r.Date);
-                UpdateRatingCounts();
-
-                // clearing fields after comment commited
-                reviewer.Clear();
-                comments.Clear();
-
-                Rating.UncheckAll(sender);
+                db.Reviews.Add(r);
+                db.SaveChanges();
             }
+
+            PopulateData();
+
+            comments.Clear();
+            
         }
 
         private void UpdateRatingCounts()
         {
-            ZeroRating.Text = _service.reviewsCount[0].ToString();
-            OneRating.Text = _service.reviewsCount[1].ToString();
-            TwoRating.Text = _service.reviewsCount[2].ToString();
-            ThreeRating.Text = _service.reviewsCount[3].ToString();
-            FourRating.Text = _service.reviewsCount[4].ToString();
-            FiveRating.Text = _service.reviewsCount[5].ToString();
+            ZeroRating.Text = _vendor.ReviewsCount[0].ToString();
+            OneRating.Text = _vendor.ReviewsCount[1].ToString();
+            TwoRating.Text = _vendor.ReviewsCount[2].ToString();
+            ThreeRating.Text = _vendor.ReviewsCount[3].ToString();
+            FourRating.Text = _vendor.ReviewsCount[4].ToString();
+            FiveRating.Text = _vendor.ReviewsCount[5].ToString();
+        }
+
+        private void PopulateData()
+        {
+            rView.Items.Clear();
+
+            using(AppDbContext db = new AppDbContext())
+            {
+                reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
+
+                foreach(var review in reviews)
+                {
+                    _vendor.ReviewsCount[review.Stars]++;
+                    rView.Items.Add(review.SenderUsername + " " + STARS[review.Stars] +"\n" + review.Text);
+                }
+
+                UpdateRatingCounts();
+            }
         }
     }
 }

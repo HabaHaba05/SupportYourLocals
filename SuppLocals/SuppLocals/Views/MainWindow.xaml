@@ -3,27 +3,41 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:tabsmodel="clr-namespace:SuppLocals.TabsModel"
-        xmlns:tabs="clr-namespace:SuppLocals.Tabs"
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
         Height="450" Width="800" Background="#CCBA8B"
         WindowStartupLocation="CenterScreen">
-    
+
     <Window.Resources>
-        <DataTemplate x:Name="HomeTemplate" DataType="{x:Type tabsmodel:HomeModel}">
-            <tabs:Home DataContext="{Binding}"/>
-        </DataTemplate>
-        <DataTemplate x:Name="VendorsTemplate" DataType="{x:Type tabsmodel:VendorsModel}">
-            <tabs:Vendors DataContext="{Binding}"/>
-        </DataTemplate>
-        <DataTemplate x:Name="JoinTemplate" DataType="{x:Type tabsmodel:JoinModel}">
-            <tabs:Join DataContext="{Binding}"/>
-        </DataTemplate>
-        <DataTemplate x:Name="AboutTemplate" DataType="{x:Type tabsmodel:AboutModel}">
-            <tabs:About DataContext="{Binding}"/>
-        </DataTemplate>                      
+        <ControlTemplate x:Key="PushpinFOODTemplate" TargetType="m:Pushpin">
+            <Grid>
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource= "/../Assets/foodpin.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Name ="PushpinCarTemplate" x:Key="PushpinCAR_REPAIRTemplate" TargetType="m:Pushpin">
+            <Grid>
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource= "/../Assets/carRepairPin.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Name ="PushpinOtherTemplate" x:Key="PushpinOTHERTemplate" TargetType="m:Pushpin">
+            <Grid>
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource= "/../Assets/otherPin.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        
     </Window.Resources>
     
     <Grid>
@@ -70,7 +84,7 @@
             <Image Source="/Assets/title2.png" Width="120" Height ="60" HorizontalAlignment="Left" Visibility="Visible" Margin="0 5 0 5"/>
         </StackPanel>
 
-        <Grid Height="70" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0 0 10 0">
+        <Grid Height="70" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0 0 10 0">
             <StackPanel Orientation="Horizontal">
                 <Button Uid="0" Width="95" Content="HOME" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="1" Width="95" Content="VENDORS" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
@@ -85,7 +99,7 @@
             </Grid>
         </Grid>
         <!--Menu-->
-        <ScrollViewer x:Name="sPan" Grid.Column="4" Grid.Row="2" Grid.ZIndex="2" Grid.RowSpan="2" MinWidth="200" Margin="6,0,4,0" Visibility="Collapsed" Background="#CCBA8B">
+        <ScrollViewer x:Name="sPan" Grid.Column="4" Grid.Row="2" Grid.ZIndex="2" Grid.RowSpan="3" MinWidth="200" Margin="6,0,4,0" Visibility="Collapsed" Background="#CCBA8B">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -93,44 +107,12 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Vertical">
-
-                    <TextBlock Text="|Menu|" FontSize="30" HorizontalAlignment="Center" Margin="0 30 0 50"/>
-
-                    <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Vendors" Click="ServicesClick">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="4"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-
-                    <!--Create PushPins-->
-                    <!--Services list-->
-                    <StackPanel Name="servicePanel" Grid.Column="1" Grid.Row="1" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
-                        <TextBlock Text="Vendor type" Padding="5" HorizontalAlignment="Center" />
-                        <ComboBox x:Name="createServiceCB"/>
-
-                        <TextBlock Text="Address" Padding="5" HorizontalAlignment="Center" />
-                        <TextBox x:Name="addressTextBox" Height="20" TextWrapping="NoWrap" KeyUp="AddressTextBox_Changed"
-                             GotFocus="AddressTextBox_GotFocus" LostFocus="AddressTextBox_LostFocus"/>
-
-                        <ScrollViewer x:Name="addressSuggest" Width="{Binding ElementName=addressTextBox, Path=ActualWidth}"
-                            Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <StackPanel Name="resultStack"></StackPanel>
-                        </ScrollViewer>
-
-                        <Button x:Name="confirmBtn" Click="AddPushPin" Content="Confirm"/>
-                    </StackPanel>
-
-
-                    <Button Width="150" Height="30" FontSize="16" VerticalAlignment="Center" Content="Filters" HorizontalAlignment="Center"  Click="FilterClick"/>
-
-
+                                        
                     <!--Filters-->
 
-                    <StackPanel Name="filterPanel" Grid.Column="1" Grid.Row="4" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" Visibility="Collapsed">
+                    <StackPanel Name="filterPanel" Grid.Column="1" Grid.Row="4" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" >
                         <TextBlock Text="Filter:" Padding="5" HorizontalAlignment="Center" />
-                        <ComboBox x:Name="filterServiceTypeCB" SelectionChanged="UpdateServiceListAndMap"/>
+                        <ComboBox x:Name="filterServiceTypeCB" SelectionChanged="UpdateMapChildrens"/>
                         <CheckBox x:Name="filterDistanceCheck" Margin="0 10 0 0" Content="Filter by distance" Checked="DistanceFilterChecked" Unchecked="DistanceFilterUnchecked" />
                         <StackPanel x:Name="distanceFilterPanel" Margin="0 10 0 0" Visibility="Hidden">
                             <TextBox TextAlignment="Center" Text="{Binding ElementName=radiusSlider , Path=Value, StringFormat=N2 }"/>
@@ -141,8 +123,10 @@
                             </DockPanel>
                         </StackPanel>
                     </StackPanel>
-                    
-                    
+
+                    <Button x:Name ="CreateVendorBtn" Content="Create Vendor" Click="CreateVendorClick" />
+
+
                 </StackPanel>
             </Grid>
         </ScrollViewer>
@@ -154,15 +138,12 @@
         </Button>
         
         
-
-        <ListBox Visibility="Hidden" x:Name="servicesLB" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" MinWidth="150" Margin="0 0 10 0"
-                 SelectionMode="Single" SelectionChanged="SelectedServiceLB_Changed">
-        </ListBox>
         <!--Map-->
         <m:Map  Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" 
             x:Name="myMap" Mode="Road" Center="54.68,25.27" ZoomLevel="12">
 
-            <m:MapLayer x:Name="RouteLayer" HorizontalAlignment="Right" Width="745"/>
+            <m:MapLayer x:Name="RouteLayer"/>
+
         </m:Map>
 
         <!--Selected Service-->
@@ -175,11 +156,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="2*"/>
-                <!--Title-->
                 <RowDefinition Height="8*"/>
-                <!--About-->
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="*"/>
-                <!--Refs-->
                 <RowDefinition Height="5"/>
             </Grid.RowDefinitions>
 
@@ -191,7 +170,12 @@
                            TextAlignment="Center" TextWrapping="Wrap"/>
             </ScrollViewer>
 
-            <UniformGrid Grid.Column="1" Grid.Row="3" Rows="1">
+            <ScrollViewer Grid.Row="3" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+                <TextBlock x:Name="selectedServiceAddress"
+                           TextAlignment="Center" TextWrapping="Wrap"/>
+            </ScrollViewer>
+            
+            <UniformGrid Grid.Column="1" Grid.Row="4" Rows="1">
                 <Button Click="Hide_BtnClick">
                     <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
                 </Button>
@@ -206,6 +190,5 @@
 
         </Grid>
 
-        <ContentControl Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding}"/>
     </Grid>
 </Window>
