@@ -10,6 +10,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Diagnostics;
 using System.Linq;
+using SuppLocals.TabsModel;
+using SuppLocals.Tabs;
 
 namespace SuppLocals
 {
@@ -23,9 +25,8 @@ namespace SuppLocals
 
         public List<Vendor> VendorsList;
 
-
         public double CircleRadius { get; set; }
-       
+
         public MainWindow(User user)
         {
             //By default
@@ -40,10 +41,14 @@ namespace SuppLocals
             if (ActiveUser.Username == "Anonimas")
             {
                 CreateVendorBtn.Visibility = Visibility.Hidden;
+                AnonymTabs.Visibility = Visibility.Visible;
+                VendorTabs.Visibility = Visibility.Hidden;
             }
             else
             {
                 CreateVendorBtn.Visibility = Visibility.Visible;
+                AnonymTabs.Visibility = Visibility.Hidden;
+                VendorTabs.Visibility = Visibility.Visible;
             }
 
 
@@ -69,6 +74,7 @@ namespace SuppLocals
 
             filterServiceTypeCB.ItemsSource = types;
             filterServiceTypeCB.SelectedIndex = 0;  //This also calls UpdateMapChildrens
+
         }
 
         private void UpdateMapChildrens(object sender, SelectionChangedEventArgs args)
@@ -87,18 +93,18 @@ namespace SuppLocals
 
             foreach (Vendor vendor in tempVendors)
             {
-                Location loc = new Location(vendor.Latitude,vendor.Longitude);
+                Location loc = new Location(vendor.Latitude, vendor.Longitude);
 
                 if (!(bool)filterDistanceCheck.IsChecked ||
                     MapMethods.DistanceBetweenPlaces(loc, ActiveUser.Location) <= CircleRadius)
                 {
                     Pushpin pushpin = new Pushpin();
-                      
+
                     pushpin.MouseUp += PinClicked;
                     pushpin.Tag = vendor;
                     pushpin.ToolTip = vendor.Title;
 
-                    ControlTemplate mytemplate = (ControlTemplate)FindResource($"Pushpin{vendor.VendorType}Template");                    
+                    ControlTemplate mytemplate = (ControlTemplate)FindResource($"Pushpin{vendor.VendorType}Template");
 
                     pushpin.Template = mytemplate;
 
@@ -179,6 +185,8 @@ namespace SuppLocals
         {
             UpdateMapChildrens(null, null);
             selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
+            sPan.Visibility = Visibility.Collapsed;
+            FilterButton.Content = "☰ Filters";
             Grid.SetColumnSpan(myMap, 3);
         }
 
@@ -195,6 +203,8 @@ namespace SuppLocals
 
 
             selectedServiceInfoGrid.Visibility = Visibility.Visible;
+            sPan.Visibility = Visibility.Collapsed;
+            FilterButton.Content = "☰ Filters";
             Grid.SetColumnSpan(myMap, 2);
 
             UpdateMapChildrens(null, null);
@@ -213,14 +223,14 @@ namespace SuppLocals
         {
             Button b = sender as Button;
             Vendor service = b.Tag as Vendor;
-            
-            if(ActiveUser.Location == null)
+
+            if (ActiveUser.Location == null)
             {
                 ActiveUser.Location = await MapMethods.GetLiveLocation(this);
             }
             if (ActiveUser.Location != null)
             {
-                LocationCollection tempRouteLine = MapMethods.GetRoute(ActiveUser.Location, new Location(service.Latitude,service.Longitude));
+                LocationCollection tempRouteLine = MapMethods.GetRoute(ActiveUser.Location, new Location(service.Latitude, service.Longitude));
 
                 if (tempRouteLine == null)
                 {
@@ -251,26 +261,26 @@ namespace SuppLocals
             if (sPan.Visibility == Visibility.Collapsed)
             {
                 sPan.Visibility = Visibility.Visible;
-                (sender as Button).Content = "X";
+                FilterButton.Content = "X";
+
+                BrushConverter converter = new BrushConverter();
+                FilterButton.Background = (Brush)converter.ConvertFrom("#CCBA8B");
+
+                Grid.SetColumn(FilterButton, 3);
+
+                selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
+                Grid.SetColumnSpan(myMap, 3);
             }
             else
             {
                 sPan.Visibility = Visibility.Collapsed;
-                (sender as Button).Content = "☰ Filters";
-            }
-        }
+                FilterButton.Content = "☰ Filters";
 
-        private void FilterClick(object sender, RoutedEventArgs e)
-        {
-            if (filterPanel.Visibility == Visibility.Collapsed)
-            {
-                filterPanel.Visibility = Visibility.Visible;
-                (sender as Button).Content = "Filters";
-            }
-            else
-            {
-                filterPanel.Visibility = Visibility.Collapsed;
-                (sender as Button).Content = "Filters";
+                FilterButton.Background = Brushes.Transparent;
+                Grid.SetColumn(FilterButton, 4);
+
+                selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
+                Grid.SetColumnSpan(myMap, 3);
             }
         }
 
@@ -281,10 +291,72 @@ namespace SuppLocals
             ThicknessAnimation ta = new ThicknessAnimation
             {
                 From = TabCursor.Margin,
-                To = new Thickness((95 * index), 0, 0, 10),
+                To = new Thickness((120 * index), 0, 0, 10),
                 Duration = new Duration(TimeSpan.FromSeconds(0.2))
             };
             TabCursor.BeginAnimation(Button.MarginProperty, ta);
+
+
+            FilterButton.Visibility = Visibility.Hidden;
+            sPan.Visibility = Visibility.Collapsed;
+            FilterColumn.Width = new GridLength(20);
+
+            if (index.Equals(0))
+            {
+                FilterButton.Visibility = Visibility.Visible;
+                Grid.SetColumn(FilterButton, 4);
+                FilterButton.Content = "☰ Filters";
+                FilterColumn.Width = new GridLength(0, GridUnitType.Auto);
+
+                DataContext = new HomeModel();
+            }
+
+            else if (index.Equals(1)) 
+            { 
+                if (ActiveUser.Username == "Anonimas") { DataContext = new VendorsModel(); }
+                else { DataContext = new MyServicesModel(); }
+            }
+            
+            else if (index.Equals(2)) 
+            {
+                if (ActiveUser.Username == "Anonimas") { DataContext = new FAQModel(); } 
+                else { DataContext = new AddServiceModel(); }
+            }
+            else { DataContext = new AboutModel(); }
+        }
+
+        
+        private void ProfileClicked(object sender, RoutedEventArgs e)
+        {
+            if (ProfilePan.Visibility == Visibility.Collapsed)
+            {
+                ProfilePan.Visibility = Visibility.Visible;
+                profileButton.Background = new SolidColorBrush(Color.FromRgb(250, 250, 249));
+
+                if(ActiveUser.Username == "Anonimas")
+                {
+                    LogOutPanel.Visibility = Visibility.Hidden;
+                    SignInPanel.Visibility = Visibility.Visible;
+                }
+
+                else 
+                {
+                    SignInPanel.Visibility = Visibility.Hidden;
+                    LogOutPanel.Visibility = Visibility.Visible; 
+                }
+            }
+            else
+            {
+                ProfilePan.Visibility = Visibility.Collapsed;
+                profileButton.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
+            }
+        }
+
+        private void SignInClicked(object sender, RoutedEventArgs e)
+        {
+            Login lWindow = new Login();
+            lWindow.Show();
+            this.Close();
         }
 
         #endregion

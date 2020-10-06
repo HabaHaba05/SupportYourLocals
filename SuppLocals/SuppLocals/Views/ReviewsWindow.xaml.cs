@@ -59,6 +59,7 @@ namespace SuppLocals
                     Text = comment,
                     Stars = Rating.RatingValue,
                     Date = DateTime.Now.ToString("yyyy-MM-dd")
+
                 };
 
                 db.Reviews.Add(r);
