@@ -196,7 +196,7 @@ namespace SuppLocals
             sPan.Visibility = Visibility.Collapsed;
             FilterButton.Content = "☰ Filters";
             Grid.SetColumnSpan(myMap, 2);
-
+            Grid.SetColumnSpan(FilterButton, 4);
             UpdateMapChildrens(null, null);
         }
 

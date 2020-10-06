@@ -1,12 +1,15 @@
 ﻿
+using SuppLocals.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using BC = BCrypt.Net.BCrypt;
@@ -22,8 +25,16 @@ namespace SuppLocals
         public SignUp()
         {
             InitializeComponent();
+            var userList = getList();
+            /*UsernameTextBox.TextChanged += delegate (object sender, TextChangedEventArgs args)
+            {
+                usernameUsingCheck(sender, args, userList);
+            };*/
+
+            this.DataContext = new ValidateUsername();
 
         }
+
 
         private void BackButtonClick(object sender, RoutedEventArgs e)
         {
@@ -38,6 +49,7 @@ namespace SuppLocals
             var username = UsernameTextBox.Text;
             var password = PasswordBox1.Password;
             var repeatPassword = ConfirmPasswordBox1.Password;
+            var email = EmailAdressBox.Text;
 
             if(password != repeatPassword)
             {
@@ -46,6 +58,7 @@ namespace SuppLocals
             }
 
             using UsersDbTable db = new UsersDbTable();
+
             var usersList = db.Users.ToList();
             if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
             {
@@ -63,10 +76,16 @@ namespace SuppLocals
             db.Users.Add(newUser);
             db.SaveChanges();
 
+
+            //EmailSender esender = new EmailSender();
+            //esender.SendEmail(email);
+
             MainWindow mainWindow = new MainWindow(newUser);
             mainWindow.Show();
             this.Close();
         }
+
+        
 
         // Method which allow user drag window aroud their screen
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -75,6 +94,55 @@ namespace SuppLocals
                 DragMove();
         }
 
+
+        private void usernameUsingCheck(object sender, TextChangedEventArgs args, List<User> userList)
+        {
+            var username = UsernameTextBox.Text;
+            if (userList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
+            {
+                usernameUsingLabel.Content = "Username is already taken";
+            }
+            else
+            {
+                usernameUsingLabel.Content = "";
+            }
+        }
+
+        private List<User> getList()
+        {
+            var userList = new List<User>();
+            using (UsersDbTable db = new UsersDbTable())
+            {
+                userList = db.Users.ToList();
+            }
+            return userList;
+        }
+
+        private void UsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
+                || UsernameTextBox.Text.Length < 5 || UsernameTextBox.Text.Length > 12)
+            {
+                applyBtn.IsEnabled = false;
+            }
+            else
+            {
+                applyBtn.IsEnabled = true;
+            }
+        }
+
+        private void PasswordBox1_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
+                ||UsernameTextBox.Text.Length < 5 || UsernameTextBox.Text.Length > 12 )
+            {
+                applyBtn.IsEnabled = false;
+            }
+            else
+            {
+                applyBtn.IsEnabled = true;
+            }
+        }
     }
 
 } 
