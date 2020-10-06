@@ -77,8 +77,9 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel HorizontalAlignment="Stretch">
-                        <Image Source="/Assets/usericon.jpg" Stretch="None" HorizontalAlignment="Left"/>
-                        <TextBlock Margin="30 0 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
+                        <Image Source="/Assets/usericon.jpg" Stretch="None" Margin="0 0 0 0" HorizontalAlignment="Left"/>
+                        <TextBlock Margin="30 -20 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
+                        <Button Content="Reply" FontSize="12" Height="20" Width="40" HorizontalAlignment="Right"/>
                         <Separator Name="MySeparator" Height="1" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="LightGray"/>
                     </StackPanel>
                 </DataTemplate>

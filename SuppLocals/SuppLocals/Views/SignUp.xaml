@@ -34,8 +34,9 @@
         </Border>
 
         <StackPanel VerticalAlignment="Center">
-            <Image Source="/Assets/title1.png" 
-                   Width="70" Visibility="Visible"/>
+
+            <Image Source="/Assets/title2.png" Width="180" Visibility="Visible"/>
+
         </StackPanel>
 
         <StackPanel Grid.Row="1">
