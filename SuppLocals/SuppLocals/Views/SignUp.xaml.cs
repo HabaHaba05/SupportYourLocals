@@ -109,7 +109,7 @@ namespace SuppLocals
         private void UsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
-                || UsernameTextBox.Text.Length < 5 || UsernameTextBox.Text.Length > 12)
+                || UsernameTextBox.Text.Length < 5)
             {
                 applyBtn.IsEnabled = false;
             }
@@ -121,8 +121,10 @@ namespace SuppLocals
 
         private void PasswordBox1_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            var s = PasswordBox1.Password.ToString().Length;
+            //MessageBox.Show(s.ToString());
             if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
-                ||UsernameTextBox.Text.Length < 5 || UsernameTextBox.Text.Length > 12 )
+                ||UsernameTextBox.Text.Length < 5 || PasswordBox1.Password.ToString().Length < 8 )
             {
                 applyBtn.IsEnabled = false;
             }
