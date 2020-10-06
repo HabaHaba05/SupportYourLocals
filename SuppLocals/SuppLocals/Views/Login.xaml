@@ -52,13 +52,16 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-110 25 0 0 "
+
+                        TextChanged="usernameTextChangedEventHandler"
+                        Margin="-110 25 0 0 "/>
                         MaxLength="12"
                         Text="{Binding Username, 
                         UpdateSourceTrigger=PropertyChanged, 
                         ValidatesOnDataErrors=True}"
                         ToolTip="{Binding ErrorCollection[Username]}">
                 </TextBox>
+
             </StackPanel>
             <Border Width="250"
                     Height="2"
@@ -91,6 +94,7 @@
                         HorizontalContentAlignment="Left"
                         Opacity="1"
                         Height="25"
+                        PasswordChanged="passwordTextChangedEventHandler"
                         Margin="-110 35 0 0 "/>
             </StackPanel>
             <Border Width="250"
@@ -99,7 +103,7 @@
                     Opacity="0.5"/>
             
             <StackPanel Orientation="Horizontal" Margin="100 30 0 0">
-                <Button Width="100" Height="30" Content="Login" Click="LogInBtnClick"/>
+                <Button x:Name="loginBtn" Width="100" Height="30" Content="Login" Click="LogInBtnClick" IsEnabled="False"/>
                 <Button Width="100" Height="30" Content="Register" Click="SignUpBtnClick"/>
             </StackPanel>
 
