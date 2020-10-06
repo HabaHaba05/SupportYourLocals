@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-
+using System.Net.Mail;
 
 namespace SuppLocals
 {
@@ -16,6 +16,7 @@ namespace SuppLocals
         public string Username { get; set; }
         public string Email { get; set; }
 
+
         public string Error{get { return null; }}
 
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
@@ -29,7 +30,7 @@ namespace SuppLocals
                 switch (columnName)
                 {
                     case "Username":
-                        if (this.Username == "")
+                        if (string.IsNullOrWhiteSpace(Username))
                             result = "Username can not be empty!";
                         else if (this.Username.Length < 5)
                             result = "Username has to contain from 5 to 12 symbols!";
@@ -37,6 +38,8 @@ namespace SuppLocals
                     case "Email":
                         if (this.Email == "")
                             result = "Email can not be empty!";
+                        else if (IsValidEmail(this.Email) == false)
+                            result = "Email is not valid!";
                         break;
                 }
 
@@ -49,5 +52,21 @@ namespace SuppLocals
                 return result;
             }
         }
+
+        public bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
+
+
 }

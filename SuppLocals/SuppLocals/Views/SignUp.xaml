@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
+        
         mc:Ignorable="d"
         Title="SignUp" Height="500" Width="400"
         AllowsTransparency="true" Background="Transparent"
@@ -56,6 +57,7 @@
                         HorizontalContentAlignment="Left"
                         Opacity="1"
                         Margin="-170 40 0 0 "
+                        MaxLength="20"
                         Text="{Binding Email, 
                         UpdateSourceTrigger=PropertyChanged, 
                         ValidatesOnDataErrors=True}"
@@ -91,6 +93,7 @@
                         HorizontalContentAlignment="Left"
                         Opacity="1"
                         Margin="-220 40 0 0 "
+                        MaxLength="12"
                         Text="{Binding Username, 
                         UpdateSourceTrigger=PropertyChanged, 
                         ValidatesOnDataErrors=True}"
@@ -113,7 +116,8 @@
                         FontWeight="Bold"
                         Margin="60 0 0 0 "/>
 
-                <PasswordBox   Name="PasswordBox1"
+                <PasswordBox
+                        Name="PasswordBox1"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
                         FontSize="20"
@@ -123,7 +127,8 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-215 40 0 0 "/>
+                        Margin="-215 40 0 0 "
+                        />
             </StackPanel>
             <Border Width="250"
                     Height="2"

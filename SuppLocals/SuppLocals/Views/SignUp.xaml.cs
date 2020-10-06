@@ -1,12 +1,15 @@
 ﻿
+using SuppLocals.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using BC = BCrypt.Net.BCrypt;
@@ -24,6 +27,7 @@ namespace SuppLocals
             InitializeComponent();
             this.DataContext = new ValidateUsername();
         }
+
 
         private void BackButtonClick(object sender, RoutedEventArgs e)
         {
@@ -70,12 +74,15 @@ namespace SuppLocals
             }
         }
 
+        
+
         // Method which allow user drag window aroud their screen
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
+
 
     }
 
