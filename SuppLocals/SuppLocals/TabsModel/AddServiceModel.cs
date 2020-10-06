@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SuppLocals.TabsModel
 {
-    class AddServiceModel
+    public class AddServiceModel
     {
     }
 }

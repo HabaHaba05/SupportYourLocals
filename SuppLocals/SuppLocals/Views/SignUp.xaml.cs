@@ -57,7 +57,8 @@ namespace SuppLocals
                 return;
             }
 
-            using AppDbContext db = new AppDbContext();
+            using UsersDbTable db = new UsersDbTable();
+
             var usersList = db.Users.ToList();
             if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
             {
@@ -74,6 +75,7 @@ namespace SuppLocals
 
             db.Users.Add(newUser);
             db.SaveChanges();
+
 
             //EmailSender esender = new EmailSender();
             //esender.SendEmail(email);
@@ -109,7 +111,7 @@ namespace SuppLocals
         private List<User> getList()
         {
             var userList = new List<User>();
-            using (AppDbContext db = new AppDbContext())
+            using (UsersDbTable db = new UsersDbTable())
             {
                 userList = db.Users.ToList();
             }
