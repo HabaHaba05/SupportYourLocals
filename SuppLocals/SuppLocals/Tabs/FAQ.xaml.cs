@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace SuppLocals.Tabs
 {
     /// <summary>
-    /// Interaction logic for Join.xaml
+    /// Interaction logic for FAQ.xaml
     /// </summary>
-    public partial class Join : UserControl
+    public partial class FAQ : UserControl
     {
-        public Join()
+        public FAQ()
         {
             InitializeComponent();
         }

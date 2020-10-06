@@ -7,10 +7,22 @@
              xmlns:local="clr-namespace:SuppLocals.Tabs"
              mc:Ignorable="d" 
     d:DesignHeight="340" d:DesignWidth="800">
+   
     <Grid Background="#CCBA8B">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
         <!--Map-->
-        <m:Map x:Name="myMap" Mode="Road" Center="54.68,25.27" ZoomLevel="12">
+        <m:Map Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"  x:Name="myMap" Mode="Road" Center="54.68,25.27" ZoomLevel="12">
             <m:MapLayer x:Name="RouteLayer" HorizontalAlignment="Right" Width="745"/>
-        </m:Map>    
+        </m:Map>
+
+
     </Grid>
 </UserControl>
