@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using BC = BCrypt.Net.BCrypt;
@@ -22,6 +23,11 @@ namespace SuppLocals
         public SignUp()
         {
             InitializeComponent();
+            var userList = getList();
+            /*UsernameTextBox.TextChanged += delegate (object sender, TextChangedEventArgs args)
+            {
+                usernameUsingCheck(sender, args, userList);
+            };*/
 
         }
 
@@ -77,6 +83,54 @@ namespace SuppLocals
                 DragMove();
         }
 
+        private void usernameUsingCheck(object sender, TextChangedEventArgs args, List<User> userList)
+        {
+            var username = UsernameTextBox.Text;
+            if (userList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
+            {
+                usernameUsingLabel.Content = "Username is already taken";
+            }
+            else
+            {
+                usernameUsingLabel.Content = "";
+            }
+        }
+
+        private List<User> getList()
+        {
+            var userList = new List<User>();
+            using (AppDbContext db = new AppDbContext())
+            {
+                userList = db.Users.ToList();
+            }
+            return userList;
+        }
+
+        private void UsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
+                || UsernameTextBox.Text.Length < 5 || UsernameTextBox.Text.Length > 12)
+            {
+                applyBtn.IsEnabled = false;
+            }
+            else
+            {
+                applyBtn.IsEnabled = true;
+            }
+        }
+
+        private void PasswordBox1_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
+                ||UsernameTextBox.Text.Length < 5 || UsernameTextBox.Text.Length > 12 )
+            {
+                applyBtn.IsEnabled = false;
+            }
+            else
+            {
+                applyBtn.IsEnabled = true;
+            }
+        }
     }
 
 } 

@@ -20,6 +20,7 @@ namespace SuppLocals
         public Login()
         {
             InitializeComponent();
+            //CheckifTextboxisEmpty();
         }
 
         public void LogInBtnClick(object sender, RoutedEventArgs e)
@@ -36,7 +37,6 @@ namespace SuppLocals
                     MessageBox.Show("Invalid credentials");
                     return;
                 }
-
                 MainWindow map = new MainWindow(user);
                 map.Show();
                 this.Close();
@@ -69,6 +69,30 @@ namespace SuppLocals
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
+        }
+
+        private void usernameTextChangedEventHandler(object sender, TextChangedEventArgs args)
+        {
+            if (string.IsNullOrWhiteSpace(Username.Text) || string.IsNullOrWhiteSpace(PasswordBox.Password.ToString()))
+            {
+                loginBtn.IsEnabled = false;
+            }
+            else
+            {
+                loginBtn.IsEnabled = true;
+            }
+        }
+
+        private void passwordTextChangedEventHandler(object sender, RoutedEventArgs args)
+        {
+            if (string.IsNullOrWhiteSpace(PasswordBox.Password.ToString()) || string.IsNullOrWhiteSpace(Username.Text))
+            {
+                loginBtn.IsEnabled = false;
+            }
+            else
+            {
+                loginBtn.IsEnabled = true;
+            }
         }
 
     }
