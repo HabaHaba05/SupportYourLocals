@@ -93,7 +93,7 @@ namespace SuppLocals
         }
 
 
-        private void usernameUsingCheck(object sender, TextChangedEventArgs args, List<User> userList)
+        /*private void usernameUsingCheck(object sender, TextChangedEventArgs args, List<User> userList)
         {
             var username = UsernameTextBox.Text;
             if (userList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
@@ -104,7 +104,7 @@ namespace SuppLocals
             {
                 usernameUsingLabel.Content = "";
             }
-        }
+        }*/
 
         private List<User> getList()
         {
@@ -119,7 +119,7 @@ namespace SuppLocals
         private void UsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
-                || UsernameTextBox.Text.Length < 5)
+                || UsernameTextBox.Text.Length < 5 || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
             {
                 applyBtn.IsEnabled = false;
             }
@@ -131,10 +131,21 @@ namespace SuppLocals
 
         private void PasswordBox1_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            var s = PasswordBox1.Password.ToString().Length;
-            //MessageBox.Show(s.ToString());
             if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
-                ||UsernameTextBox.Text.Length < 5 || PasswordBox1.Password.ToString().Length < 8 )
+                ||UsernameTextBox.Text.Length < 5 || PasswordBox1.Password.ToString().Length < 8  || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
+            {
+                applyBtn.IsEnabled = false;
+            }
+            else
+            {
+                applyBtn.IsEnabled = true;
+            }
+        }
+
+        private void EmailAdressBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
+                || UsernameTextBox.Text.Length < 5 || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
             {
                 applyBtn.IsEnabled = false;
             }
