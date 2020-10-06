@@ -187,7 +187,9 @@ namespace SuppLocals
 
             selectedServiceInfoGrid.Visibility = Visibility.Visible;
             sPan.Visibility = Visibility.Collapsed;
+
             FilterButton.Content = "☰ Filters";
+            Grid.SetColumn(FilterButton, 4);
             Grid.SetColumnSpan(myMap, 2);
 
             UpdateMapChildrens(null, null);
