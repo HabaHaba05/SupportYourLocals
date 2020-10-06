@@ -21,6 +21,7 @@ namespace SuppLocals
         {
             InitializeComponent();
             //CheckifTextboxisEmpty();
+            this.DataContext = new ValidateUsername();
         }
 
         public void LogInBtnClick(object sender, RoutedEventArgs e)

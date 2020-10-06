@@ -57,7 +57,7 @@ namespace SuppLocals
                     VendorID = _vendor.ID,
                     SenderUsername = _user.Username,
                     Text = comment,
-                    Stars = Rating.RatingValue
+                    Stars = Rating.RatingValue,
                 };
 
                 db.Reviews.Add(r);

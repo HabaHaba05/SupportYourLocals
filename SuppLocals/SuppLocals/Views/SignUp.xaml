@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
+        xmlns:helper="clr-namespace:SuppLocals.Helper"
+        
         mc:Ignorable="d"
         Title="SignUp" Height="500" Width="400"
         AllowsTransparency="true" Background="Transparent"
@@ -15,13 +17,14 @@
 
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="100"/>
+            <RowDefinition />
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Border CornerRadius="10" Grid.RowSpan="5">
+        <Border CornerRadius="10" Grid.RowSpan="6">
             <Border.Background>
                 <LinearGradientBrush>
                     <GradientStop Color="#CCBA8B" Offset="0.0"/>
@@ -32,12 +35,48 @@
         </Border>
 
         <StackPanel VerticalAlignment="Center">
-            <Image Source="/Assets/title1.png" Width="90" Visibility="Visible"/>
+
+            <Image Source="/Assets/title2.png" Width="180" Visibility="Visible"/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="Black" 
+                        Content="Write your email:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <TextBox  Name="EmailAdressBox"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="-170 40 0 0 "
+                        MaxLength="30"
+                        Text="{Binding Email, 
+                        UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Email]}"  />
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="Black"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
         </StackPanel>
 
 
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="2">
             <StackPanel Orientation="Horizontal">
                 <Label  Foreground="Black" 
                         Content="Write your username:"
@@ -64,37 +103,13 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-400 40 0 0 "/>
-            </StackPanel>
-            <Border Width="250"
-                    Height="2"
-                    Background="Black"
-                    Opacity="1"
-                    Margin="-10 0 0 0 "/>
+                        Margin="-220 40 0 0 "
+                        MaxLength="12"
+                        Text="{Binding Username, 
+                        UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Username]}"/>
 
-        </StackPanel>
-
-        <StackPanel Grid.Row="2">
-            <StackPanel Orientation="Horizontal">
-                <Label  Foreground="Black" 
-                        Content="Write your password:"
-                        FontFamily="Tahoma"
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Margin="60 0 0 0 "/>
-
-                <PasswordBox   Name="PasswordBox1"
-                        FontFamily="Tahoma"
-                        FontWeight="Bold"
-                        FontSize="20"
-                        Foreground="Black"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Width="235"
-                        HorizontalContentAlignment="Left"
-                        PasswordChanged="PasswordBox1_PasswordChanged"
-                        Opacity="1"
-                        Margin="-220 40 0 0 "/>
             </StackPanel>
             <Border Width="250"
                     Height="2"
@@ -107,13 +122,18 @@
         <StackPanel Grid.Row="3">
             <StackPanel Orientation="Horizontal">
                 <Label  Foreground="Black" 
-                        Content="Confirm password:"
+                        Content="Write your password:"
                         FontFamily="Tahoma"
                         FontSize="20"
                         FontWeight="Bold"
                         Margin="60 0 0 0 "/>
 
-                <PasswordBox   Name="ConfirmPasswordBox1"
+                <PasswordBox helper:PasswordHelper.Attach="True"
+                        helper:PasswordHelper.Password="{Binding Password,
+                        Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Password]}"
+                        Name="PasswordBox1"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
                         FontSize="20"
@@ -124,7 +144,45 @@
                         HorizontalContentAlignment="Left"
                         PasswordChanged="PasswordBox1_PasswordChanged"
                         Opacity="1"
-                        Margin="-200 40 0 0 "/>
+                        Margin="-215 40 0 0 "
+                        MaxLength="12"
+                        />
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="Black"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="4">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="Black" 
+                        Content="Confirm password:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <PasswordBox  helper:PasswordHelper.Attach="True"
+                        helper:PasswordHelper.Password="{Binding ConfirmPassword,
+                        Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[ConfirmPassword]}" 
+                        Name="ConfirmPasswordBox1"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        PasswordChanged="PasswordBox1_PasswordChanged"
+                        Opacity="1"
+                        Margin="-195 40 0 0 "
+                        MaxLength="12"/>
             </StackPanel>
             <Border Width="250"
                     Height="2"
@@ -148,7 +206,7 @@
                 Click="SignUp_ButtonClick"/>
 
             <Button 
-                Margin="0 20 0 0"
+                Margin="0 0 0 0"
                 Width="120"
                 FontSize="20"
                 Height="30" 
