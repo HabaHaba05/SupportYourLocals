@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="SuppLocals.Tabs.FAQ"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuppLocals.Tabs"
+             mc:Ignorable="d" 
+             d:DesignHeight="340" d:DesignWidth="800">
+    <Grid Background="#CCBA8B">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="FAQ" HorizontalAlignment="Center" FontSize="25" Margin="0 10 0 0"/>
+        <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="0 0 0 2" Margin="100 0 100 15"/>
+
+        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                
+                <Expander Header="Q: How many services can I register?" FontSize="16" FontWeight="Bold" Margin="20 5 20 5">
+                    <Grid>
+                        <TextBlock FontWeight="Normal" Text="A: The amount of services that one can register is unlimited. If you are registered, in the home screen select 'Add service'. If not, first create an account by clicking the image in the home screen in the top right corner." TextWrapping="Wrap"/>
+                    </Grid>
+                </Expander>
+
+                <Expander Grid.Row="2" Grid.ColumnSpan="3" Header="Q: Can I review vendors?" FontSize="16" FontWeight="Bold" Margin="20 5 20 5">
+                    <Grid>
+                        <TextBlock FontWeight="Normal" Text="A: Yes you can! On a map in the home screen, select a pin of service which you want to review. A panel of infomation about that service should appear on the right. Then, at the bottom click the button on the far right." TextWrapping="Wrap"/>
+                    </Grid>
+                </Expander>
+                <Expander Grid.Row="3" Grid.ColumnSpan="3" Header="Q: Where can I find a list of vendors?" FontSize="16" FontWeight="Bold" Margin="20 5 20 5">
+                    <Grid>
+                        <TextBlock FontWeight="Normal" Text="A: On the home screen select a tab called 'Vendors'. There you will be able to see all vendors." TextWrapping="Wrap"/>
+                    </Grid>
+                </Expander>
+
+                <Expander Grid.Row="4" Grid.ColumnSpan="3" Header="Q: " FontSize="16" FontWeight="Bold" Margin="20 5 20 5">
+                    <Grid>
+                        <TextBlock FontWeight="Normal" Text="A: " TextWrapping="Wrap"/>
+                    </Grid>
+                </Expander>
+            </Grid>
+        </ScrollViewer>
+        
+    </Grid>
+</UserControl>

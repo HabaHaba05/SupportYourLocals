@@ -60,7 +60,7 @@ namespace SuppLocals
             int newval = (int)e.NewValue;
             UIElementCollection childs = ((Grid)(item.Content)).Children;
 
-            ToggleButton button = new ToggleButton();
+            ToggleButton button;
 
             for (int i = 0; i < newval; i++)
             {
