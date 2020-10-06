@@ -54,7 +54,7 @@
                         Opacity="1"
 
                         TextChanged="usernameTextChangedEventHandler"
-                        Margin="-110 25 0 0 "/>
+                        Margin="-110 25 0 0 "
                         MaxLength="12"
                         Text="{Binding Username, 
                         UpdateSourceTrigger=PropertyChanged, 

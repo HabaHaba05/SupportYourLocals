@@ -103,7 +103,7 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-220 40 0 0 "
+                        Margin="-410 40 0 0 "
                         MaxLength="12"
                         Text="{Binding Username, 
                         UpdateSourceTrigger=PropertyChanged, 
