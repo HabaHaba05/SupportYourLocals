@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Net.Mail;
 
 namespace SuppLocals
@@ -11,11 +12,14 @@ namespace SuppLocals
             /* Set default Username and email */
             this.Username = "";
             this.Email = "";
+            this.Password = "";
+            this.ConfirmPassword = "";
         }
 
         public string Username { get; set; }
         public string Email { get; set; }
-
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
 
         public string Error{get { return null; }}
 
@@ -36,10 +40,25 @@ namespace SuppLocals
                             result = "Username has to contain from 5 to 12 symbols!";
                         break;
                     case "Email":
-                        if (this.Email == "")
+                        if (string.IsNullOrWhiteSpace(Email))
                             result = "Email can not be empty!";
                         else if (IsValidEmail(this.Email) == false)
                             result = "Email is not valid!";
+                        break;
+                    case "Password":
+                        if (string.IsNullOrWhiteSpace(Password))
+                            result = "Password can not be empty!";
+                        else if (this.Password.Length < 8){
+                            result = "Password has to be atleast 8 symbols long!";
+                        }
+                        break;
+                    case "ConfirmPassword":
+                        if (string.IsNullOrWhiteSpace(ConfirmPassword))
+                            result = "Password can not be empty!";
+                        else if (this.ConfirmPassword.Length < 8)
+                        {
+                            result = "Password has to be atleast 8 symbols long!";
+                        }
                         break;
                 }
 

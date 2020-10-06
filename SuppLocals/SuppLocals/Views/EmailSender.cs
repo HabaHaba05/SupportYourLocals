@@ -11,10 +11,10 @@ namespace SuppLocals
         public void SendEmail(string email)
         {
             var fromAddress = new MailAddress(email, "From Person");
-            var toAddress = new MailAddress("toemail@gmail.com", "To Person");
+            var toAddress = new MailAddress("supportlocals@inbox.lt", "To Person");
             const string fromPassword = "password";
             const string subject = "Locals to Locals";
-            const string body = "This is confirmation email.";
+            const string body = "This is confirmation email from our app LOCALS TO LOCALS.";
 
             var smtp = new SmtpClient
             {
@@ -25,14 +25,12 @@ namespace SuppLocals
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword),
                 Timeout = 10000
             };
-            using (var message = new MailMessage(fromAddress, toAddress)
+            using var message = new MailMessage(fromAddress, toAddress)
             {
                 Subject = subject,
                 Body = body
-            })
-            {
-                smtp.Send(message);
-            }
+            };
+            smtp.Send(message);
         }
     }
 }

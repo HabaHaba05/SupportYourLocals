@@ -42,6 +42,7 @@ namespace SuppLocals
             var username = UsernameTextBox.Text;
             var password = PasswordBox1.Password;
             var repeatPassword = ConfirmPasswordBox1.Password;
+            var email = EmailAdressBox.Text;
 
             if(password != repeatPassword)
             {
@@ -49,29 +50,30 @@ namespace SuppLocals
                 return;
             }
 
-            using (AppDbContext db = new AppDbContext())
+            using AppDbContext db = new AppDbContext();
+            var usersList = db.Users.ToList();
+            if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
             {
-                var usersList = db.Users.ToList();
-                if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
-                {
-                    MessageBox.Show("Sorry, but username is already taken");
-                    return;
-                }
-
-                User newUser = new User()
-                {
-                    Username = username,
-                    HashedPsw = BC.HashPassword(password),
-                    VendorsCount = 0
-                };
-
-                db.Users.Add(newUser);
-                db.SaveChanges();
-
-                MainWindow mainWindow = new MainWindow(newUser);
-                mainWindow.Show();
-                this.Close();
+                MessageBox.Show("Sorry, but username is already taken");
+                return;
             }
+
+            User newUser = new User()
+            {
+                Username = username,
+                HashedPsw = BC.HashPassword(password),
+                VendorsCount = 0
+            };
+
+            db.Users.Add(newUser);
+            db.SaveChanges();
+
+            //EmailSender esender = new EmailSender();
+            //esender.SendEmail(email);
+
+            MainWindow mainWindow = new MainWindow(newUser);
+            mainWindow.Show();
+            this.Close();
         }
 
         

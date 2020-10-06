@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
+        xmlns:helper="clr-namespace:SuppLocals.Helper"
         mc:Ignorable="d"
         Title="Login" Height="500" Width="400"
         AllowsTransparency="true" Background="Transparent"
@@ -52,6 +53,7 @@
                         HorizontalContentAlignment="Left"
                         Opacity="1"
                         Margin="-110 25 0 0 "
+                        MaxLength="12"
                         Text="{Binding Username, 
                         UpdateSourceTrigger=PropertyChanged, 
                         ValidatesOnDataErrors=True}"
@@ -70,8 +72,14 @@
                         FontSize="20"
                         FontWeight="Bold"
                         Margin="70 0 0 0 "/>
-                
-                <PasswordBox  Name="PasswordBox"
+
+                <PasswordBox  helper:PasswordHelper.Attach="True"
+                        helper:PasswordHelper.Password="{Binding Password,
+                        Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Password]}"
+                        Name="PasswordBox"
+                        MaxLength="12"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
                         Password=""

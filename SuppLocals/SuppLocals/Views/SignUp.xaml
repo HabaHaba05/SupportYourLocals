@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
+        xmlns:helper="clr-namespace:SuppLocals.Helper"
         
         mc:Ignorable="d"
         Title="SignUp" Height="500" Width="400"
@@ -57,7 +58,7 @@
                         HorizontalContentAlignment="Left"
                         Opacity="1"
                         Margin="-170 40 0 0 "
-                        MaxLength="20"
+                        MaxLength="30"
                         Text="{Binding Email, 
                         UpdateSourceTrigger=PropertyChanged, 
                         ValidatesOnDataErrors=True}"
@@ -116,7 +117,11 @@
                         FontWeight="Bold"
                         Margin="60 0 0 0 "/>
 
-                <PasswordBox
+                <PasswordBox helper:PasswordHelper.Attach="True"
+                        helper:PasswordHelper.Password="{Binding Password,
+                        Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Password]}"
                         Name="PasswordBox1"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
@@ -128,6 +133,7 @@
                         HorizontalContentAlignment="Left"
                         Opacity="1"
                         Margin="-215 40 0 0 "
+                        MaxLength="12"
                         />
             </StackPanel>
             <Border Width="250"
@@ -147,7 +153,12 @@
                         FontWeight="Bold"
                         Margin="60 0 0 0 "/>
 
-                <PasswordBox   Name="ConfirmPasswordBox1"
+                <PasswordBox  helper:PasswordHelper.Attach="True"
+                        helper:PasswordHelper.Password="{Binding ConfirmPassword,
+                        Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[ConfirmPassword]}" 
+                        Name="ConfirmPasswordBox1"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
                         FontSize="20"
@@ -157,7 +168,8 @@
                         Width="235"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-195 40 0 0 "/>
+                        Margin="-195 40 0 0 "
+                        MaxLength="12"/>
             </StackPanel>
             <Border Width="250"
                     Height="2"
