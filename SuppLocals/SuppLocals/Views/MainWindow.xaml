@@ -180,9 +180,6 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <Button x:Name ="CreateVendorBtn" Content="Create Vendor" Click="CreateVendorClick" />
-
-
                 </StackPanel>
             </Grid>
         </ScrollViewer>

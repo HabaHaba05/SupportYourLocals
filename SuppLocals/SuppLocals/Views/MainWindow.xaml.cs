@@ -40,13 +40,11 @@ namespace SuppLocals
 
             if (ActiveUser.Username == "Anonimas")
             {
-                CreateVendorBtn.Visibility = Visibility.Hidden;
                 AnonymTabs.Visibility = Visibility.Visible;
                 VendorTabs.Visibility = Visibility.Hidden;
             }
             else
             {
-                CreateVendorBtn.Visibility = Visibility.Visible;
                 AnonymTabs.Visibility = Visibility.Hidden;
                 VendorTabs.Visibility = Visibility.Visible;
             }
@@ -158,14 +156,6 @@ namespace SuppLocals
         {
             distanceFilterPanel.Visibility = Visibility.Hidden;
             UpdateMapChildrens(null, null);
-        }
-
-        private void CreateVendorClick(object sender, RoutedEventArgs e)
-        {
-            CreateVendor cv = new CreateVendor(ActiveUser);
-            cv.ShowDialog();
-            UpdateVendorsList();
-            UpdateMapChildrens(null, null);            
         }
 
         private void FilterServiceTypeCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -320,7 +310,7 @@ namespace SuppLocals
             else if (index.Equals(2)) 
             {
                 if (ActiveUser.Username == "Anonimas") { DataContext = new FAQModel(); } 
-                else { DataContext = new AddServiceModel(); }
+                else { DataContext = new AddService(ActiveUser); }
             }
             else { DataContext = new AboutModel(); }
         }
