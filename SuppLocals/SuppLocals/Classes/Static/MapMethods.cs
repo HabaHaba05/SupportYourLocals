@@ -3,8 +3,12 @@ using Geocoding.Microsoft;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using Microsoft.Maps.MapControl.WPF;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -140,12 +144,63 @@ namespace SuppLocals
             map.Children.Add(polygon);
         }
 
-        public static async Task<IEnumerable<Address>> ConvertAddressToLocation(string address)
+        public static async Task<Location> ConvertAddressToLocation(string address)
         {
-            Geocoding.IGeocoder geocoder = new BingMapsGeocoder("vuOU7tN47KBhly1BAyhi~SKpEroFcVqMGYOJVSj-2HA~AhGXS-dV_H6Ofvn920LLMyvxfUUaLfjpZTD54fSc3WO-qRE7x6225O22AP_0XjDn");
-            IEnumerable<Address> addresses = await geocoder.GeocodeAsync(address);
+            Location data = new Location();
 
-            return addresses;
+            try
+            {
+                string uri = Config.host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" + Config.GOOGLE_API_KEY;
+
+                HttpClient client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync(uri);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                JObject o = JObject.Parse(responseBody);
+
+                double lat = (double)o.SelectToken("results[0].geometry.location.lat");
+                double lng = (double)o.SelectToken("results[0].geometry.location.lng");
+
+
+                data = new Location(lat, lng);
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+            }
+
+            return data;
         }
+
+        public static async Task<string> ConvertLocationToAddress(Location location)
+        {
+            string data ="";
+
+            try
+            {
+                string uri = Config.host + "/maps/api/geocode/json?latlng=" + location.Latitude.ToString()+","+location.Longitude.ToString() + "&language=lt&key=" + Config.GOOGLE_API_KEY;
+
+                HttpClient client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync(uri);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                JObject o = JObject.Parse(responseBody);
+
+                data = (string)o.SelectToken("results[0].formatted_address");
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+            }
+
+            return data;
+        }
+
     }
 }

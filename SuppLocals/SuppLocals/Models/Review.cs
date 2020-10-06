@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualBasic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SuppLocals
@@ -21,6 +22,8 @@ namespace SuppLocals
 
         [Required]
         public int Stars { get; set; }
+
+        public string Date { get; set; }
 
     }
 }

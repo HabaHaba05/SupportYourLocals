@@ -26,22 +26,21 @@ namespace SuppLocals
 
         public void LogInBtnClick(object sender, RoutedEventArgs e)
         {
-            using (AppDbContext db = new AppDbContext())
-            {
-                var username = Username.Text;
-                string password = PasswordBox.Password.ToString();
+            using UsersDbTable db = new UsersDbTable();
+            var username = Username.Text;
+            string password = PasswordBox.Password.ToString();
 
-                var usersList = db.Users.ToList();
-                var user = usersList.SingleOrDefault(x => (x.Username == username & BC.Verify(password, x.HashedPsw) ));
-                if (user == null)
-                {
-                    MessageBox.Show("Invalid credentials");
-                    return;
-                }
-                MainWindow map = new MainWindow(user);
-                map.Show();
-                this.Close();
+            var usersList = db.Users.ToList();
+            var user = usersList.SingleOrDefault(x => (x.Username == username & BC.Verify(password, x.HashedPsw)));
+            if (user == null)
+            {
+                MessageBox.Show("Invalid credentials");
+                return;
             }
+
+            MainWindow map = new MainWindow(user);
+            map.Show();
+            this.Close();
         }
 
         private void SignUpBtnClick(object sender, RoutedEventArgs e)

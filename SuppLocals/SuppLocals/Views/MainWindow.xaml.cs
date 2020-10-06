@@ -24,38 +24,35 @@ namespace SuppLocals
         public User ActiveUser;
 
         public List<Vendor> VendorsList;
-        public List<User> UsersList;
-        public List<Review> ReviewsList;
 
-        public double circleRadius = 0;
+        public double CircleRadius { get; set; }
 
         public MainWindow(User user)
         {
-
             //By default
             InitializeComponent();
 
             ActiveUser = user;
+        }
 
-            if (user.Username == "Anonimas")
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            if (ActiveUser.Username == "Anonimas")
             {
-                CreateVendorBtn.Visibility = Visibility.Hidden;
                 AnonymTabs.Visibility = Visibility.Visible;
                 VendorTabs.Visibility = Visibility.Hidden;
             }
             else
             {
-                CreateVendorBtn.Visibility = Visibility.Visible;
                 AnonymTabs.Visibility = Visibility.Hidden;
                 VendorTabs.Visibility = Visibility.Visible;
             }
 
 
-            using (AppDbContext db = new AppDbContext())
+            using (VendorsDbTable db = new VendorsDbTable())
             {
                 VendorsList = db.Vendors.ToList();
-                UsersList = db.Users.ToList();
-                ReviewsList = db.Reviews.ToList();
             }
 
             //Activates the + and – keys to allow the user to manually zoom in and out of the map
@@ -74,26 +71,30 @@ namespace SuppLocals
             }
 
             filterServiceTypeCB.ItemsSource = types;
-            filterServiceTypeCB.SelectedIndex = 0;
-            UpdateMapChildrens(null, null);
+            filterServiceTypeCB.SelectedIndex = 0;  //This also calls UpdateMapChildrens
+
         }
 
         private void UpdateMapChildrens(object sender, SelectionChangedEventArgs args)
         {
-            //Update VendorsList
-            using (AppDbContext db = new AppDbContext())
+            List<Vendor> tempVendors;
+            if (filterServiceTypeCB.SelectedItem.ToString() == "ALL")
             {
-                VendorsList = db.Vendors.ToList();
+                tempVendors = VendorsList.ToList();
+            }
+            else
+            {
+                tempVendors = VendorsList.Where(x => x.VendorType == filterServiceTypeCB.SelectedItem.ToString()).ToList();
             }
 
             myMap.Children.Clear();
 
-            foreach (Vendor vendor in VendorsList)
+            foreach (Vendor vendor in tempVendors)
             {
                 Location loc = new Location(vendor.Latitude, vendor.Longitude);
 
                 if (!(bool)filterDistanceCheck.IsChecked ||
-                    MapMethods.DistanceBetweenPlaces(loc, ActiveUser.Location) <= circleRadius)
+                    MapMethods.DistanceBetweenPlaces(loc, ActiveUser.Location) <= CircleRadius)
                 {
                     Pushpin pushpin = new Pushpin();
 
@@ -114,12 +115,11 @@ namespace SuppLocals
             if ((bool)filterDistanceCheck.IsChecked)
             {
                 //Filter circle
-                MapMethods.DrawCircle(MapMethods.GetCircleVertices(ActiveUser.Location, circleRadius), myMap, Color.FromRgb(240, 248, 255));
+                MapMethods.DrawCircle(MapMethods.GetCircleVertices(ActiveUser.Location, CircleRadius), myMap, Color.FromRgb(240, 248, 255));
             }
         }
 
-
-        #region Filters change
+        #region Filters Tab
 
         public async void DistanceFilterChecked(object sender, RoutedEventArgs e)
         {
@@ -134,30 +134,37 @@ namespace SuppLocals
                     return;
                 }
             }
-            distanceFilterPanel.Visibility = Visibility.Visible;
-            circleRadius = radiusSlider.Value;
-            myMap.Center = ActiveUser.Location;
-            selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
-            Grid.SetColumnSpan(myMap, 3);
 
+            distanceFilterPanel.Visibility = Visibility.Visible;
+            selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
+
+            myMap.Center = ActiveUser.Location;
+
+            Grid.SetColumnSpan(myMap, 3);
 
             UpdateMapChildrens(null, null);
         }
+
         private void RadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
-            circleRadius = (float)radiusSlider.Value;
+            CircleRadius = (float)radiusSlider.Value;
             if (myMap != null)
                 UpdateMapChildrens(null, null);
         }
 
         public void DistanceFilterUnchecked(object sender, RoutedEventArgs e)
         {
-            circleRadius = 0;
             distanceFilterPanel.Visibility = Visibility.Hidden;
             UpdateMapChildrens(null, null);
         }
 
+        private void FilterServiceTypeCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
+            Grid.SetColumnSpan(myMap, 3);
+            UpdateMapChildrens(null, null);
+
+        }
 
         #endregion
 
@@ -191,7 +198,7 @@ namespace SuppLocals
             FilterButton.Content = "☰ Filters";
             Grid.SetColumn(FilterButton, 4);
             Grid.SetColumnSpan(myMap, 2);
-
+            Grid.SetColumnSpan(FilterButton, 4);
             UpdateMapChildrens(null, null);
         }
 
@@ -305,7 +312,7 @@ namespace SuppLocals
             else if (index.Equals(2)) 
             {
                 if (ActiveUser.Username == "Anonimas") { DataContext = new FAQModel(); } 
-                else { DataContext = new AddServiceModel(); }
+                else { DataContext = new AddService(ActiveUser); }
             }
             else { DataContext = new AboutModel(); }
         }
@@ -344,21 +351,20 @@ namespace SuppLocals
             this.Close();
         }
 
+        #endregion
+
         private void HyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
             e.Handled = true;
         }
 
-
-        #endregion
-
-        private void CreateVendorClick(object sender, RoutedEventArgs e)
+        private void UpdateVendorsList()
         {
-            CreateVendor cv = new CreateVendor(ActiveUser);
-            cv.ShowDialog();
-            UpdateMapChildrens(null,null);
+            using VendorsDbTable db = new VendorsDbTable();
+            VendorsList = db.Vendors.ToList();
         }
+
     }
 
 }
