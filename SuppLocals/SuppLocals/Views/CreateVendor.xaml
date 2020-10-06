@@ -4,15 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
         Title="CreateVendor" Height="500" Width="400"
-        WindowStyle="none" ResizeMode="NoResize"
+        WindowStyle="none" ResizeMode="NoResize" Background="Transparent"
         WindowStartupLocation="CenterScreen">
     <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
@@ -29,30 +31,72 @@
             <Image Source="/Assets/title1.png" Width="90" Visibility="Visible"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="1">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Title: "/>
-                <TextBox x:Name="TitleTB" Width="200" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="About: "/>
-                <TextBox x:Name="AboutTB" Width="200" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Address: "/>
-                <TextBox x:Name="AddressTB" Width="200" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Type: "/>
-                <ComboBox x:Name="TypeCB" Width="200" />
-            </StackPanel>
+        <DockPanel Grid.Row="1">
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+                    <Label Width="100" Content="Title: "/>
+                    <TextBox x:Name="TitleTB" Width="200"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
+                    <Label Width="100" Content="About: "/>
+                    <TextBox x:Name="AboutTB" Width="200" Height="60" TextWrapping="Wrap"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5">
+                    <Label Width="100" Content="Address: "/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox x:Name="AddressTB" Width="200" KeyUp="AddressChanged" Height="{Binding ElementName=TitleTB , Path=ActualHeight}"/>
+                        <ScrollViewer x:Name="AddressSuggest" Width="{Binding ElementName=AddressTB, Path=ActualWidth}"
+                                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel MaxHeight="65" x:Name="ResultStack" Background="White"></StackPanel>
+                        </ScrollViewer>
+                    </StackPanel>
+                    <Button Click="UpdatePinLocation">Show in Map</Button>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
+                    <Label Width="100" Content="Type: "/>
+                    <ComboBox x:Name="TypeCB" Width="200" />
+                </StackPanel>
+            </Grid>
+
+            <DockPanel>
+                <m:Map x:Name="SelectLocMap"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"
+                       Mode="Road" Center="54.68,25.27" ZoomLevel="12"
+                       Margin="5" MouseDoubleClick="SelectLocMap_MouseDoubleClick"
+                       MouseWheel="SelectLocMap_MouseWheel">
+
+                    <Grid>
+                        <Button 
+                                Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Content="+" Click="Plus_Click"/>
+                        <Button Height="20" Width="20" Margin="20 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                    Content="-" Click="Minus_Click"/>
+
+                        <Button Height="20"  HorizontalAlignment="Right" VerticalAlignment="Top"
+                                    Content="Confirm Location" Click="ConfirmLoc_Click"/>
+                    </Grid>
+
+                    <m:Pushpin x:Name="LocPushPin" 
+                               Location="{Binding ElementName=SelectLocMap , Path=Center}"/>
+                </m:Map>
+            
+            </DockPanel>
+
+        </DockPanel>
+
+        <StackPanel Grid.Row="2">
             <Button Content="Create" Click="CreateBtnClick"/>
             <Button Content="Cancel" Click="CancelBtnClick"/>
-
-
         </StackPanel>
-
-
+        
 
     </Grid>
 </Window>
