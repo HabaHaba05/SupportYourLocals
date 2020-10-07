@@ -5,6 +5,7 @@ using GMap.NET.MapProviders;
 using Microsoft.Maps.MapControl.WPF;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SuppLocals.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;

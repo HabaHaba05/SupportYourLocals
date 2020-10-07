@@ -10,10 +10,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Diagnostics;
 using System.Linq;
-using SuppLocals.TabsModel;
 using System.Windows.Shapes;
 
-namespace SuppLocals.Tabs
+namespace SuppLocals.Views
 {
     /// <summary>
     /// Interaction logic for Home.xaml

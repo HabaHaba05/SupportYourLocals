@@ -1,10 +1,10 @@
-﻿<Window x:Class="SuppLocals.MainWindow"
+﻿<Window x:Class="SuppLocals.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:tabsmodel="clr-namespace:SuppLocals.TabsModel"
-        xmlns:tabs="clr-namespace:SuppLocals.Tabs"
+        xmlns:viewModels="clr-namespace:SuppLocals.ViewModels"
+        xmlns:views="clr-namespace:SuppLocals.Views"
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
@@ -16,7 +16,7 @@
             <Grid>
                 <Rectangle Width="24" Height="24">
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource= "/../Assets/foodpin.png"/>
+                        <ImageBrush ImageSource= "/Assets/foodpin.png"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Grid>
@@ -25,7 +25,7 @@
             <Grid>
                 <Rectangle Width="24" Height="24">
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource= "/../Assets/carRepairPin.png"/>
+                        <ImageBrush ImageSource= "/Assets/carRepairPin.png"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Grid>
@@ -34,30 +34,30 @@
             <Grid>
                 <Rectangle Width="24" Height="24">
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource= "/../Assets/otherPin.png"/>
+                        <ImageBrush ImageSource= "/Assets/otherPin.png"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Grid>
         </ControlTemplate>
 
         <!-- Tab views templates-->
-        <DataTemplate x:Name="HomeTemplate" DataType="{x:Type tabsmodel:HomeModel}">
-            <tabs:Home DataContext="{Binding}"/>
+        <DataTemplate x:Name="HomeTemplate" DataType="{x:Type viewModels:HomeVM}">
+            <views:Home DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="VendorsTemplate" DataType="{x:Type tabsmodel:VendorsModel}">
-            <tabs:Vendors DataContext="{Binding}"/>
+        <DataTemplate x:Name="VendorsTemplate" DataType="{x:Type viewModels:VendorsVM}">
+            <views:Vendors DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="FAQTemplate" DataType="{x:Type tabsmodel:FAQModel}">
-            <tabs:FAQ DataContext="{Binding}"/>
+        <DataTemplate x:Name="FAQTemplate" DataType="{x:Type viewModels:FaqVM}">
+            <views:FAQ DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="AboutTemplate" DataType="{x:Type tabsmodel:AboutModel}">
-            <tabs:About DataContext="{Binding}"/>
+        <DataTemplate x:Name="AboutTemplate" DataType="{x:Type viewModels:AboutVM}">
+            <views:About DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="MyServicesTemplate" DataType="{x:Type tabsmodel:MyServicesModel}">
-            <tabs:MyServices DataContext="{Binding}"/>
+        <DataTemplate x:Name="MyServicesTemplate" DataType="{x:Type viewModels:MyServicesVM}">
+            <views:MyServices DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="AddServiceTemplate" DataType="{x:Type tabsmodel:AddServiceModel}">
-            <tabs:AddService DataContext="{Binding}"/>
+        <DataTemplate x:Name="AddServiceTemplate" DataType="{x:Type viewModels:AddServiceVM}">
+            <views:AddService DataContext="{Binding}"/>
         </DataTemplate>
         
     </Window.Resources>
@@ -105,7 +105,6 @@
         <StackPanel Grid.Row="1" Grid.Column="1">
             <Image Source="/Assets/title2.png" Width="120" Height ="60" HorizontalAlignment="Left" Visibility="Visible" Margin="0 5 0 5"/>
         </StackPanel>
-
         <Grid Height="70" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Right" Margin="0 0 10 0">
             <StackPanel x:Name="AnonymTabs" Orientation="Horizontal" Visibility="Visible">
                 <Button Uid="0" Width="120" Content="HOME" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>

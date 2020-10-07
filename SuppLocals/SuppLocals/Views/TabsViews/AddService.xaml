@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="SuppLocals.Views.AddService"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuppLocals"
+             xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+
+             mc:Ignorable="d" 
+             d:Height="340" d:Width="600"
+             Background="#CCBA8B">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+            <TextBlock Text="Add Your Service" FontSize="20" Margin="5 5 0 5"/>
+            <Button Name="infoButton" Width="18" Height="16"
+                    Background="Transparent" VerticalAlignment="Top" Margin="0 8 0 0"
+                    ToolTip="You can manually add the address or search for it in a map.">
+                <Image Source="/Assets/questionmark.png"/>
+            </Button>
+        </StackPanel>
+
+        <DockPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2">
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+                    <Label Width="100" Content="Title: "/>
+                    <TextBox x:Name="TitleTB" Width="200"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
+                    <Label Width="100" Content="About: "/>
+                    <TextBox x:Name="AboutTB" Width="200" Height="60" TextWrapping="Wrap"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5">
+                    <Label Width="100" Content="Address: "/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBox x:Name="AddressTB" Width="200" KeyUp="AddressChanged" Height="{Binding ElementName=TitleTB , Path=ActualHeight}"/>
+                        <ScrollViewer x:Name="AddressSuggest" Width="{Binding ElementName=AddressTB, Path=ActualWidth}"
+                                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel MaxHeight="65" x:Name="ResultStack" Background="White"></StackPanel>
+                        </ScrollViewer>
+                        <Button Click="UpdatePinLocation" Content="Show in the Map"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
+                    <Label Width="100" Content="Type: "/>
+                    <ComboBox x:Name="TypeCB" Width="200" />
+                </StackPanel>
+            </Grid>
+
+            <StackPanel VerticalAlignment="Bottom" Margin="0 0 0 10" Width="100">
+                <Button Content="Create" Click="CreateBtnClick"/>
+            </StackPanel>
+
+        </DockPanel>
+
+
+
+        <DockPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
+            <m:Map x:Name="SelectLocMap"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"
+                       Mode="Road" Center="54.68,25.27" ZoomLevel="12"
+                       Margin="5" MouseDoubleClick="SelectLocMap_MouseDoubleClick"
+                       MouseWheel="SelectLocMap_MouseWheel">
+
+                <Grid>
+                    <Button Height="40" Width="40" HorizontalAlignment="Left"
+                            VerticalAlignment="Top" Content="+" 
+                            Click="Plus_Click"/>
+                    <Button Height="40" Width="40" Margin="40 0 0 0"
+                            HorizontalAlignment="Left" VerticalAlignment="Top"
+                            Content="-" Click="Minus_Click"/>
+                    <Button Height="25" Width="110"  HorizontalAlignment="Right" Margin="5"
+                            VerticalAlignment="Top"
+                            Content="Confirm Location" Click="ConfirmLoc_Click"/>
+                </Grid>
+
+                <m:Pushpin x:Name="LocPushPin" 
+                           Location="{Binding ElementName=SelectLocMap , Path=Center}"/>
+            </m:Map>
+        </DockPanel>
+
+
+
+    </Grid>
+</UserControl>

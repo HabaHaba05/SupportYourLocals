@@ -10,10 +10,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Diagnostics;
 using System.Linq;
-using SuppLocals.TabsModel;
-using SuppLocals.Tabs;
+using SuppLocals.ViewModels;
 
-namespace SuppLocals
+namespace SuppLocals.Views
 {
 
     public partial class MainWindow : Window
@@ -298,21 +297,21 @@ namespace SuppLocals
                 FilterButton.Content = "☰ Filters";
                 FilterColumn.Width = new GridLength(0, GridUnitType.Auto);
 
-                DataContext = new HomeModel();
+                DataContext = new HomeVM();
             }
 
             else if (index.Equals(1)) 
             { 
-                if (ActiveUser.Username == "Anonimas") { DataContext = new VendorsModel(); }
-                else { DataContext = new MyServicesModel(); }
+                if (ActiveUser.Username == "Anonimas") { DataContext = new VendorsVM(); }
+                else { DataContext = new MyServicesVM(); }
             }
             
             else if (index.Equals(2)) 
             {
-                if (ActiveUser.Username == "Anonimas") { DataContext = new FAQModel(); } 
+                if (ActiveUser.Username == "Anonimas") { DataContext = new FaqVM(); } 
                 else { DataContext = new AddService(ActiveUser); }
             }
-            else { DataContext = new AboutModel(); }
+            else { DataContext = new AboutVM(); }
         }
 
         
