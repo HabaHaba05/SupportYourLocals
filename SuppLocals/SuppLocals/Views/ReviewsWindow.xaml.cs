@@ -89,6 +89,12 @@ namespace SuppLocals
             using ReviewsDbTable db = new ReviewsDbTable();
             reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
 
+
+            for(int i = 0; i < 6; i++)
+            {
+                _vendor.ReviewsCount[i] = 0;
+            }
+
             foreach (var review in reviews)
             {
                 _vendor.ReviewsCount[review.Stars]++;
