@@ -1,7 +1,7 @@
 ﻿
 namespace SuppLocals.ViewModels
 {
-    public class VendorsVM
+    public class VendorsVM : ObservableObject
     {
     }
 }

@@ -4,24 +4,131 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:SuppLocals"
              mc:Ignorable="d" 
-    d:DesignHeight="340" d:DesignWidth="800">
-   
+            d:DesignHeight="355" d:DesignWidth="775">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+    
+    
     <Grid Background="#CCBA8B">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition x:Name="FilterColumn" Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
         <!--Map-->
-        <m:Map Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"  x:Name="myMap" Mode="Road" Center="54.68,25.27" ZoomLevel="12">
-            <m:MapLayer x:Name="RouteLayer" HorizontalAlignment="Right" Width="745"/>
+        <m:Map x:Name="MyMap" Grid.Column="0"
+               Mode="Road" Center="54.68,25.27" ZoomLevel="12">
+
+            <m:Map.Children>
+                <m:MapItemsControl ItemsSource="{Binding VendorsList}">
+                    <m:MapItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <m:Pushpin Location="{Binding Location}" ToolTip="{Binding Title}" Cursor="Hand" Background="Beige">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                        <i:InvokeCommandAction Command="{Binding PushPinClick}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </m:Pushpin>
+                        </DataTemplate>
+                    </m:MapItemsControl.ItemTemplate>
+                </m:MapItemsControl>
+
+                <m:MapLayer>
+                    <m:MapPolyline Locations="{Binding RouteLine, Mode=TwoWay}" Stroke="Green" Opacity="0.85" StrokeThickness="5" />
+                </m:MapLayer>
+
+                <m:MapLayer>
+                    <m:MapPolygon Fill="AliceBlue" Stroke="Black" 
+                                  StrokeThickness="1" Opacity="0.65"
+                                  Locations="{Binding Circle , UpdateSourceTrigger=PropertyChanged}"
+                                  />
+                </m:MapLayer>
+
+
+            </m:Map.Children>
         </m:Map>
+
+
+        <!--Selected Service-->
+        <Grid x:Name="SelectedServiceInfoGrid" Grid.Column="1"
+              Visibility="{Binding SelectedVendorInfoGrid}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5"/>
+            </Grid.RowDefinitions>
+
+
+            <TextBlock x:Name="SelectedServiceTitle" Grid.Column="1" Grid.Row="1"
+                       TextAlignment="Center" TextWrapping="Wrap"/>
+            <ScrollViewer  Grid.Column="1" Grid.Row="2" 
+                           HorizontalScrollBarVisibility="Disabled" 
+                           VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="SelectedServiceAbout"
+                           TextAlignment="Center" TextWrapping="Wrap"/>
+            </ScrollViewer>
+
+            <ScrollViewer Grid.Row="3" Grid.Column="1" 
+                          VerticalScrollBarVisibility="Auto" 
+                          HorizontalScrollBarVisibility="Disabled">
+                <TextBlock x:Name="SelectedServiceAddress"
+                           TextAlignment="Center" TextWrapping="Wrap"/>
+            </ScrollViewer>
+
+            <UniformGrid Grid.Column="1" Grid.Row="4" Rows="1">
+                <Button Command="{Binding HideBtnClick}">
+                    <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
+                </Button>
+                <Button Command="{Binding FindRoute}">
+                    <Image Height="auto" Width="auto"  Source="/Assets/destination.png"/>
+                </Button>
+                <Button Command="{Binding ReviewBtnClick}">
+                    <Image Height="auto" Width="auto"  Source="/Assets/review.png"/>
+                </Button>
+            </UniformGrid>
+            
+        </Grid>
+
+        <!--Fiters-->
+        <Expander Grid.Column="4"  Background="#CCBA8B">
+            <Expander.Header>
+                    <TextBlock HorizontalAlignment="Center" Text="FILTERS" FontFamily="Champagne &amp; Limousines"/>
+            </Expander.Header>
+            <StackPanel Name="FiltersPanel" Orientation="Vertical">
+                <ComboBox ItemsSource="{Binding Path=VendorTypesList}"
+                          SelectedValue="{Binding Path=VendorTypeSelected, Mode=TwoWay}" />      
+                
+                <CheckBox IsChecked="{Binding Path=UseDistanceFilter, Mode=TwoWay}"
+                          Margin="0 5 0 5" Content="Filter by distance"/>
+                <StackPanel Margin="5 5 5 0" Visibility="{Binding Path=UseDistanceFilter, Converter={StaticResource BoolToVis}}">
+                    <TextBox TextAlignment="Center" Text="{Binding CircleRadius , StringFormat=N2 }"/>
+                    <Slider x:Name="RadiusSlider" Minimum="0" Maximum="200" Value="{Binding CircleRadius}"
+                            Cursor="Hand" TickPlacement="None"/>
+                    <DockPanel>
+                        <TextBlock TextAlignment="Left" Text="{Binding ElementName=RadiusSlider , Path=Minimum}"> km.</TextBlock>
+                        <TextBlock TextAlignment="Right" Text="{Binding ElementName=RadiusSlider , Path=Maximum}"> km.</TextBlock>
+                    </DockPanel>
+                </StackPanel>
+            </StackPanel>
+        </Expander>
 
 
     </Grid>

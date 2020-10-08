@@ -131,7 +131,7 @@ namespace SuppLocals
             return locCollection;
         }
 
-        public static void DrawCircle(LocationCollection locCollection, Map map, Color fillColor)
+        public static void DrawCircle(LocationCollection locCollection, MapLayer map, Color fillColor)
         {
             MapPolygon polygon = new MapPolygon
             {

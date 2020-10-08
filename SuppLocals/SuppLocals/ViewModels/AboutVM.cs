@@ -1,7 +1,7 @@
 ﻿
 namespace SuppLocals.ViewModels
 {
-    public class AboutVM
+    public class AboutVM : ObservableObject
     {
     }
 }

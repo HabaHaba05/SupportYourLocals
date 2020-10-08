@@ -19,20 +19,11 @@ namespace SuppLocals.Views
     /// </summary>
     public partial class Home : UserControl
     {
-        public double circleRadius = 0;
-        public List<Vendor> VendorsList;
-
         public Home()
         {
             //By default
             InitializeComponent();
-
-           
-
-            //Activates the + and – keys to allow the user to manually zoom in and out of the map
-            myMap.Focus();
-            myMap.CredentialsProvider = Config.BING_API_KEY;
-           
+            MyMap.CredentialsProvider = Config.BING_API_KEY;
         }
     }
 }

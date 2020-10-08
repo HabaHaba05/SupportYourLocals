@@ -10,7 +10,9 @@ namespace SuppLocals
     {
         public List<Review> Reviews = new List<Review>();
 
-
+        [NotMapped]
+        public Location Location { get; set; }
+        
         public int[] ReviewsCount = { 0, 0, 0, 0, 0, 0 };
 
         #region Database columns
