@@ -4,13 +4,68 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             
              xmlns:local="clr-namespace:SuppLocals"
              mc:Ignorable="d" 
             d:DesignHeight="355" d:DesignWidth="775">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+        <!-- FOOD PUSH PIN-->
+        <ControlTemplate x:Key="FOOD" TargetType="m:Pushpin">
+            <Grid>
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource= "/Assets/foodpin.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        <!-- CAR PUSH PIN-->
+        <ControlTemplate x:Key ="CAR_REPAIR" TargetType="m:Pushpin">
+            <Grid>
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource= "/Assets/carRepairPin.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+        <!-- OTHER PUSH PIN-->
+        <ControlTemplate x:Key="OTHER" TargetType="m:Pushpin">
+            <Grid>
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource= "/Assets/otherPin.png"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="MyToolTipStyle" TargetType="ToolTip">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border CornerRadius="5" BorderBrush="Black" BorderThickness="2" Background="#5c87b2">
+                            <ContentPresenter Margin="5">
+                                <ContentPresenter.Content>
+                                    <StackPanel Margin="5" MaxWidth="400">
+                                        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16" Foreground="White" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding About}" Foreground="White" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+
+
     </UserControl.Resources>
     
     
@@ -23,45 +78,60 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <!--Map-->
         <m:Map x:Name="MyMap" Grid.Column="0"
                Mode="Road" Center="54.68,25.27" ZoomLevel="12">
 
-            <m:Map.Children>
+            <m:MapLayer>
+                <m:MapPolygon Fill="AliceBlue" Stroke="Black" 
+                              StrokeThickness="1" Opacity="0.65"
+                              Locations="{Binding Circle , UpdateSourceTrigger=PropertyChanged}"
+                              />
+            </m:MapLayer>
+            
+            <m:MapLayer>
+                <m:MapPolyline Locations="{Binding RouteLine, Mode=TwoWay}" Stroke="Green" Opacity="0.85" StrokeThickness="5" />
+            </m:MapLayer>
+
+            <m:MapLayer>
                 <m:MapItemsControl ItemsSource="{Binding VendorsList}">
                     <m:MapItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <m:Pushpin Location="{Binding Location}" ToolTip="{Binding Title}" Cursor="Hand" Background="Beige">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
-                                        <i:InvokeCommandAction Command="{Binding PushPinClick}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
+                            <m:Pushpin MouseUp="Pushpin_MouseUp" Location="{Binding Location}" ToolTip="{Binding Title}" Cursor="Hand" m:MapLayer.Position="{Binding Location}" >
+                                <m:Pushpin.Style>
+                                    <Style TargetType="m:Pushpin">
+                                        <Setter Property="Template" Value="{StaticResource FOOD}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding VendorType}" Value="FOOD">
+                                                <Setter Property="Template" Value="{StaticResource FOOD}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding VendorType}" Value="CAR_REPAIR">
+                                                <Setter Property="Template" Value="{StaticResource CAR_REPAIR}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding VendorType}" Value="OTHER">
+                                                <Setter Property="Template" Value="{StaticResource OTHER}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </m:Pushpin.Style>
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Style="{StaticResource MyToolTipStyle}" />
+                                </ToolTipService.ToolTip>
                             </m:Pushpin>
+                           
                         </DataTemplate>
                     </m:MapItemsControl.ItemTemplate>
                 </m:MapItemsControl>
-
-                <m:MapLayer>
-                    <m:MapPolyline Locations="{Binding RouteLine, Mode=TwoWay}" Stroke="Green" Opacity="0.85" StrokeThickness="5" />
-                </m:MapLayer>
-
-                <m:MapLayer>
-                    <m:MapPolygon Fill="AliceBlue" Stroke="Black" 
-                                  StrokeThickness="1" Opacity="0.65"
-                                  Locations="{Binding Circle , UpdateSourceTrigger=PropertyChanged}"
-                                  />
-                </m:MapLayer>
-
-
-            </m:Map.Children>
+            </m:MapLayer>
+            
+            
         </m:Map>
 
 
         <!--Selected Service-->
-        <Grid x:Name="SelectedServiceInfoGrid" Grid.Column="1"
-              Visibility="{Binding SelectedVendorInfoGrid}">
+        <Grid x:Name="SelectedServiceInfoGrid" Grid.Column="1" Width="200"
+              Visibility="{Binding SelectedVendorInfoGrid , Mode=TwoWay, NotifyOnSourceUpdated=True}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="*"/>
@@ -77,19 +147,20 @@
             </Grid.RowDefinitions>
 
 
-            <TextBlock x:Name="SelectedServiceTitle" Grid.Column="1" Grid.Row="1"
-                       TextAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock Grid.Column="1" Grid.Row="1"
+                       TextAlignment="Center" TextWrapping="Wrap" 
+                       Text="{Binding SelectedVendor.Title}"/>
             <ScrollViewer  Grid.Column="1" Grid.Row="2" 
                            HorizontalScrollBarVisibility="Disabled" 
                            VerticalScrollBarVisibility="Auto">
-                <TextBlock x:Name="SelectedServiceAbout"
+                <TextBlock Text="{Binding SelectedVendor.About}"
                            TextAlignment="Center" TextWrapping="Wrap"/>
             </ScrollViewer>
 
             <ScrollViewer Grid.Row="3" Grid.Column="1" 
                           VerticalScrollBarVisibility="Auto" 
                           HorizontalScrollBarVisibility="Disabled">
-                <TextBlock x:Name="SelectedServiceAddress"
+                <TextBlock Text="{Binding SelectedVendor.Address}"
                            TextAlignment="Center" TextWrapping="Wrap"/>
             </ScrollViewer>
 

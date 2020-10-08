@@ -72,9 +72,16 @@ namespace SuppLocals
                    new PointLatLng(userLoc.Latitude, userLoc.Longitude),
                    new PointLatLng(finishLoc.Latitude, finishLoc.Longitude), false, false, 15);
             
+            if(route == null)
+            {
+                MessageBox.Show("Sorry we can't find route to this location");
+                return null;
+            }
+
             LocationCollection points = new LocationCollection();
             List<Location> pointsL = new List<Location>(route.Points.ConvertAll(x => new Location(x.Lat, x.Lng)));
             
+
             foreach (var x in pointsL)
             {
                 points.Add(x);

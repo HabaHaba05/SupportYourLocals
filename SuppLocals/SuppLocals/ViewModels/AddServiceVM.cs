@@ -2,7 +2,7 @@
 
 namespace SuppLocals.ViewModels
 {
-    public class AddServiceVM : ObservableObject
+    public class AddServiceVM : BaseViewModel
     {
     }
 }

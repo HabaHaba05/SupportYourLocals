@@ -1,10 +1,10 @@
-﻿using Geocoding;
-using Microsoft.Maps.MapControl.WPF;
+﻿using Microsoft.Maps.MapControl.WPF;
+using SuppLocals.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Location = Microsoft.Maps.MapControl.WPF.Location;
@@ -32,7 +32,7 @@ namespace SuppLocals.ViewModels
 
         private LocationCollection _routeLine;
 
-        private LocationCollection _circle;
+        private ObservableCollection<Location> _circle;
 
         private Visibility _selectedVendorInfoGrid = Visibility.Collapsed;
 
@@ -46,6 +46,7 @@ namespace SuppLocals.ViewModels
             set
             {
                 _circleRadius = value;
+                ResetToNulls();
                 UpdateCircle();
                 UpdateVendorsList();
                 NotifyPropertyChanged("CircleRadius");
@@ -71,6 +72,7 @@ namespace SuppLocals.ViewModels
             set
             {
                 _selectedVendor = value;
+                RouteLine = null;
                 NotifyPropertyChanged("SelectedVendor");
             }
         }
@@ -92,8 +94,10 @@ namespace SuppLocals.ViewModels
         { 
             get 
             {
-                List<string> x = new List<string>();
-                x.Add("ALL");
+                List<string> x = new List<string>
+                {
+                    "ALL"
+                };
                 foreach (var type in Enum.GetValues(typeof(VendorType)))
                 {
                     x.Add(type.ToString());
@@ -112,6 +116,7 @@ namespace SuppLocals.ViewModels
             set
             {
                 _vendorTypeSelected = value;
+                ResetToNulls();
                 UpdateVendorsList();
                 NotifyPropertyChanged("VendorTypeSelected");
             }
@@ -123,21 +128,13 @@ namespace SuppLocals.ViewModels
             set 
             {
                 _useDistanceFilter = value;
-                if (value)
-                {
-                    GetLiveLocation();
-                }
-                else
-                {
-                    Circle = null;
-                    UpdateVendorsList();
-                }
-                
+                ResetToNulls();
+                UserDistanceFilterChange();
                 NotifyPropertyChanged("UseDistanceFilter");
             }
         }
 
-        public LocationCollection Circle
+        public ObservableCollection<Location> Circle
         {
             get { return _circle; }
             set
@@ -166,7 +163,7 @@ namespace SuppLocals.ViewModels
         private ICommand _findRoute;
         private ICommand _hideBtnClick;
         private ICommand _reviewBtnClick;
-        private ICommand _pushPinClick;
+
         #endregion
 
         #region public
@@ -175,10 +172,7 @@ namespace SuppLocals.ViewModels
         {
             get
             {
-                return _findRoute ??= new CommandHandler(() => 
-                {
-                    RouteLine = MapMethods.GetRoute(user.Location, _selectedVendor.Location);
-                });
+                return _findRoute ??= new CommandHandler(() => CalcRoute()); ;
             }
         }    
 
@@ -186,31 +180,22 @@ namespace SuppLocals.ViewModels
         {
             get
             {
-                return _hideBtnClick ??= new CommandHandler(() => { RouteLine = null; SelectedVendorInfoGrid = Visibility.Collapsed; });
+                return _hideBtnClick ??= new CommandHandler(() => { ResetToNulls(); });
             }
         }
 
         public ICommand ReviewBtnClick { get
             {
                 return _reviewBtnClick ??= new CommandHandler(() => {
-                    return;
+                    ReviewsWindow reviewsWindow = new ReviewsWindow(_selectedVendor, user);
+                    reviewsWindow.ShowDialog();
                 });
             } }
 
-        public ICommand PushPinClick
-        {
-            get
-            {
-                return _pushPinClick ??= new CommandHandler(() =>
-                {
-                    SelectedVendorInfoGrid = Visibility.Visible;
-                });
-            }
-        }
-
         #endregion
         #endregion
 
+        #region Constructor
         public HomeVM(Window window, User user)
         {
             this.mainWindow = window;
@@ -223,11 +208,25 @@ namespace SuppLocals.ViewModels
                 allVendorsList.ForEach(x => x.Location = new Location(x.Latitude, x.Longitude));
                 VendorsList = allVendorsList;
             }
-
         }
 
+        #endregion
 
         #region Methods
+
+        private async void UserDistanceFilterChange()
+        {
+            if (_useDistanceFilter)
+            {
+                await GetLiveLocation();
+            }
+            else
+            {
+                Circle = null;
+            }
+            UpdateVendorsList();
+
+        }
 
         private void UpdateVendorsList()
         {
@@ -242,19 +241,28 @@ namespace SuppLocals.ViewModels
             }
         }
 
-        private async void GetLiveLocation()
+        private async Task GetLiveLocation()
         {
-            if(user.Location == null && _useDistanceFilter)
-            {
-                user.Location = await MapMethods.GetLiveLocation(mainWindow);
-            }
-            UpdateVendorsList();
+            user.Location ??= await MapMethods.GetLiveLocation(mainWindow);
         }
 
         private void UpdateCircle()
         {
             Circle = MapMethods.GetCircleVertices(user.Location, _circleRadius);
             
+        }
+
+        private async void CalcRoute()
+        {
+            await GetLiveLocation();
+            RouteLine = MapMethods.GetRoute(user.Location, _selectedVendor.Location);
+        }
+
+        private void ResetToNulls()
+        {
+            SelectedVendorInfoGrid = Visibility.Collapsed;
+            RouteLine = null;
+            SelectedVendor = null;
         }
 
         #endregion

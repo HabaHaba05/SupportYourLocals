@@ -1,16 +1,7 @@
-﻿using System;
-using Microsoft.Maps.MapControl.WPF;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Input;
-using Location = Microsoft.Maps.MapControl.WPF.Location;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Shapes;
+using SuppLocals.ViewModels;
 
 namespace SuppLocals.Views
 {
@@ -25,5 +16,15 @@ namespace SuppLocals.Views
             InitializeComponent();
             MyMap.CredentialsProvider = Config.BING_API_KEY;
         }
+
+        private void Pushpin_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var selectedVendor = (sender as FrameworkElement).DataContext as Vendor;
+            SelectedServiceInfoGrid.Visibility = Visibility.Visible;
+            var x = (HomeVM)this.DataContext;
+            x.SelectedVendor = selectedVendor;
+        }   
+
+
     }
 }
