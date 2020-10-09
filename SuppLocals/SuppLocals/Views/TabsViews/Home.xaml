@@ -168,7 +168,7 @@
                 <Button Command="{Binding HideBtnClick}">
                     <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
                 </Button>
-                <Button Command="{Binding FindRoute}">
+                <Button Command="{Binding FindRouteBtnClick}">
                     <Image Height="auto" Width="auto"  Source="/Assets/destination.png"/>
                 </Button>
                 <Button Command="{Binding ReviewBtnClick}">
