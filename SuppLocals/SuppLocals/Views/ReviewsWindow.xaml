@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
         mc:Ignorable="d"
-        Title="ReviewsWindow" Height="400" Width="600" Background="#CCBA8B">
+        WindowStartupLocation="CenterScreen"
+        Title="ReviewsWindow" Height="450" Width="600" Background="#CCBA8B">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--0-->
@@ -19,14 +20,14 @@
             <!--0-->
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="70"/>
             <!--4-->
 
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="1" Margin="5 5 5 0">
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="5 5 5 0" Orientation="Horizontal">
             <TextBlock Text="Ratings &amp; Reviews" FontSize="20"/>
         </StackPanel>
 
@@ -35,7 +36,11 @@
         </StackPanel>
 
         <!-- Display ratings -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5 5 5 5">
+        <Border Grid.Row="1" Grid.Column="1" Margin="5 5 5 5" Background="White" CornerRadius="4">
+        <StackPanel >
+
+            <TextBlock FontSize="40" x:Name="Average" HorizontalAlignment="Center"/>
+            <TextBlock Text="Average" Foreground="Gray" HorizontalAlignment="Center"/>
 
             <!-- Rating Taable -->
             <Grid>
@@ -52,37 +57,67 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock FontSize="14" Grid.Row="0" Grid.Column="0" Margin="0 10 0 5" Text="5 Stars   ★★★★★"/>
-                <TextBlock FontSize="14" Grid.Row="0" Grid.Column="1" Name="FiveRating" Margin="0 10 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="0" Grid.Column="0" Margin="5 10 0 5" Text="5 Stars   ★★★★★"/>
+                <TextBlock FontSize="14" Grid.Row="0" Grid.Column="1" Name="FiveRating" Margin="5 10 0 5"/>
 
-                <TextBlock FontSize="14" Grid.Row="1" Grid.Column="0" Margin="0 0 0 5" Text="4 Stars   ★★★★☆"/>
-                <TextBlock FontSize="14" Grid.Row="1" Grid.Column="1" Name="FourRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="1" Grid.Column="0" Margin="5 0 0 5" Text="4 Stars   ★★★★☆"/>
+                <TextBlock FontSize="14" Grid.Row="1" Grid.Column="1" Name="FourRating" Margin="5 0 0 5"/>
 
-                <TextBlock FontSize="14" Grid.Row="2" Grid.Column="0" Margin="0 0 0 5" Text="3 Stars   ★★★☆☆"/>
-                <TextBlock FontSize="14" Grid.Row="2" Grid.Column="1" Name="ThreeRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="2" Grid.Column="0" Margin="5 0 0 5" Text="3 Stars   ★★★☆☆"/>
+                <TextBlock FontSize="14" Grid.Row="2" Grid.Column="1" Name="ThreeRating" Margin="5 0 0 5"/>
 
-                <TextBlock FontSize="14" Grid.Row="3" Grid.Column="0" Margin="0 0 0 5" Text="2 Stars   ★★☆☆☆"/>
-                <TextBlock FontSize="14" Grid.Row="3" Grid.Column="1" Name="TwoRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="3" Grid.Column="0" Margin="5 0 0 5" Text="2 Stars   ★★☆☆☆"/>
+                <TextBlock FontSize="14" Grid.Row="3" Grid.Column="1" Name="TwoRating" Margin="5 0 0 5"/>
 
-                <TextBlock FontSize="14" Grid.Row="4" Grid.Column="0" Margin="0 0 0 5" Text="1 Star    ★☆☆☆☆"/>
-                <TextBlock FontSize="14" Grid.Row="4" Grid.Column="1" Name="OneRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="4" Grid.Column="0" Margin="5 0 0 5" Text="1 Star    ★☆☆☆☆"/>
+                <TextBlock FontSize="14" Grid.Row="4" Grid.Column="1" Name="OneRating" Margin="5 0 0 5"/>
 
-                <TextBlock FontSize="14" Grid.Row="5" Grid.Column="0" Margin="0 0 0 5" Text="0 Stars   ☆☆☆☆☆"/>
-                <TextBlock FontSize="14" Grid.Row="5" Grid.Column="1" Name="ZeroRating" Margin="0 0 0 5"/>
+                <TextBlock FontSize="14" Grid.Row="5" Grid.Column="0" Margin="5 0 0 5" Text="0 Stars   ☆☆☆☆☆"/>
+                <TextBlock FontSize="14" Grid.Row="5" Grid.Column="1" Name="ZeroRating" Margin="5 0 0 5"/>
             </Grid>
         </StackPanel>
+        </Border>
 
         <!-- Display reviews -->
         <ListView x:Name ="rView" Grid.Column="2" Grid.Row="1" Margin="10 0 5 0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel HorizontalAlignment="Stretch">
-                        <Image Source="/Assets/usericon.jpg" Stretch="None" Margin="0 0 0 0" HorizontalAlignment="Left"/>
-                        <TextBlock Margin="30 -20 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
-                        <Button Content="Reply" FontSize="12" Height="20" Width="40" HorizontalAlignment="Right"/>
-                        <Separator Name="MySeparator" Height="1" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="LightGray"/>
-                    </StackPanel>
+                    <Grid x:Name="ItemGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        
+                        <StackPanel Grid.Row="0" HorizontalAlignment="Stretch">
+                            <Image Source="/Assets/usericon.jpg" Stretch="None" Margin="0 0 0 0" HorizontalAlignment="Left"/>
+                            <TextBlock Margin="30 -20 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
+                            <Button x:Name="ReplyButton" Content="Reply" FontSize="12" Height="20" Width="40"
+                                    HorizontalAlignment="Right" Click="ReplyClicked">
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="Button.Click">
+                                        <BeginStoryboard>
+                                            
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
+                            </Button>
+
+                            <Expander Header="Reply" HorizontalAlignment="Left">
+                                <TextBox Height="auto" Width="auto" Margin="40 0 0 0"/>
+                            </Expander>
+                            <Separator Height="1" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="LightGray"/>
+                        </StackPanel>
+
+
+                        <StackPanel x:Name="ReplyPanel" Grid.Row="1" Height="50">
+
+                            <TextBox Height="auto" Width="auto" Background="Red"
+                                     TextWrapping="Wrap" TextAlignment="Justify"
+                                     Margin="40 0 0 0"/>
+                        </StackPanel>
+                    </Grid>
                 </DataTemplate>
+
             </ListView.ItemTemplate>
         </ListView>
 
@@ -99,14 +134,20 @@
                 </ScrollViewer>
             </Border>
 
-            <!-- Button for confirming person's review -->
-            <Button Margin="10 5 0 5" HorizontalAlignment="Right" Width="60" Click="ConfirmClicked">Confirm
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="4"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
+            <Grid Grid.Column="2" Grid.Row="3" Height="auto">
+                <TextBlock Text="Comment can't be empty!" FontSize="14" FontWeight="Bold" Margin="10 5 0 0"
+                           x:Name="ConfirmError" HorizontalAlignment="Left" 
+                           Foreground="Red" Visibility="Hidden"/>
+
+                <!-- Button for confirming person's review -->
+                <Button Margin="10 5 0 5" HorizontalAlignment="Right" Height="25" Width="60" Click="ConfirmClicked">Confirm
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
 
         </StackPanel>
 

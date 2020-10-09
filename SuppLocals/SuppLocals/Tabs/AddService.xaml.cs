@@ -58,6 +58,7 @@ namespace SuppLocals.Tabs
                     {
                         var user = dbUser.Users.SingleOrDefault(x => x.ID == currUser.ID);
                         user.VendorsCount++;
+                        dbUser.SaveChanges();
                     }
 
                     db.Vendors.Add(vendor);
@@ -90,8 +91,6 @@ namespace SuppLocals.Tabs
             }
             ResultStack.Children.Clear();
         }
-
-
         #endregion
 
         #region Autocomplete address
