@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:SuppLocals"
              StartupUri="Views/StartWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="Resources/ButtonTheme.xaml"/>
+                <ResourceDictionary Source="Resources/ButtonTheme.xaml"/>
     </Application.Resources>
 </Application>

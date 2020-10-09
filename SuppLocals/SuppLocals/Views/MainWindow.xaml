@@ -1,10 +1,10 @@
-﻿<Window x:Class="SuppLocals.MainWindow"
+﻿<Window x:Class="SuppLocals.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:tabsmodel="clr-namespace:SuppLocals.TabsModel"
-        xmlns:tabs="clr-namespace:SuppLocals.Tabs"
+        xmlns:viewModels="clr-namespace:SuppLocals.ViewModels"
+        xmlns:views="clr-namespace:SuppLocals.Views"
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
@@ -12,52 +12,25 @@
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
 
     <Window.Resources>
-        <ControlTemplate x:Key="PushpinFOODTemplate" TargetType="m:Pushpin">
-            <Grid>
-                <Rectangle Width="24" Height="24">
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource= "/../Assets/foodpin.png"/>
-                    </Rectangle.Fill>
-                </Rectangle>
-            </Grid>
-        </ControlTemplate>
-        <ControlTemplate x:Name ="PushpinCarTemplate" x:Key="PushpinCAR_REPAIRTemplate" TargetType="m:Pushpin">
-            <Grid>
-                <Rectangle Width="24" Height="24">
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource= "/../Assets/carRepairPin.png"/>
-                    </Rectangle.Fill>
-                </Rectangle>
-            </Grid>
-        </ControlTemplate>
-        <ControlTemplate x:Name ="PushpinOtherTemplate" x:Key="PushpinOTHERTemplate" TargetType="m:Pushpin">
-            <Grid>
-                <Rectangle Width="24" Height="24">
-                    <Rectangle.Fill>
-                        <ImageBrush ImageSource= "/../Assets/otherPin.png"/>
-                    </Rectangle.Fill>
-                </Rectangle>
-            </Grid>
-        </ControlTemplate>
-
+        
         <!-- Tab views templates-->
-        <DataTemplate x:Name="HomeTemplate" DataType="{x:Type tabsmodel:HomeModel}">
-            <tabs:Home DataContext="{Binding}"/>
+        <DataTemplate x:Name="HomeTemplate" DataType="{x:Type viewModels:HomeVM}">
+            <views:Home DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="VendorsTemplate" DataType="{x:Type tabsmodel:VendorsModel}">
-            <tabs:Vendors DataContext="{Binding}"/>
+        <DataTemplate x:Name="VendorsTemplate" DataType="{x:Type viewModels:VendorsVM}">
+            <views:Vendors DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="FAQTemplate" DataType="{x:Type tabsmodel:FAQModel}">
-            <tabs:FAQ DataContext="{Binding}"/>
+        <DataTemplate x:Name="FAQTemplate" DataType="{x:Type viewModels:FaqVM}">
+            <views:FAQ DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="AboutTemplate" DataType="{x:Type tabsmodel:AboutModel}">
-            <tabs:About DataContext="{Binding}"/>
+        <DataTemplate x:Name="AboutTemplate" DataType="{x:Type viewModels:AboutVM}">
+            <views:About DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="MyServicesTemplate" DataType="{x:Type tabsmodel:MyServicesModel}">
-            <tabs:MyServices DataContext="{Binding}"/>
+        <DataTemplate x:Name="MyServicesTemplate" DataType="{x:Type viewModels:MyServicesVM}">
+            <views:MyServices DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="AddServiceTemplate" DataType="{x:Type tabsmodel:AddServiceModel}">
-            <tabs:AddService DataContext="{Binding}"/>
+        <DataTemplate x:Name="AddServiceTemplate" DataType="{x:Type viewModels:AddServiceVM}">
+            <views:AddService DataContext="{Binding}"/>
         </DataTemplate>
         
     </Window.Resources>
@@ -68,7 +41,6 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition x:Name="FilterColumn" Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
@@ -105,7 +77,6 @@
         <StackPanel Grid.Row="1" Grid.Column="1">
             <Image Source="/Assets/title2.png" Width="120" Height ="60" HorizontalAlignment="Left" Visibility="Visible" Margin="0 5 0 5"/>
         </StackPanel>
-
         <Grid Height="70" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Right" Margin="0 0 10 0">
             <StackPanel x:Name="AnonymTabs" Orientation="Horizontal" Visibility="Visible">
                 <Button Uid="0" Width="120" Content="HOME" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
@@ -154,88 +125,7 @@
             </Grid>
         </Border>
 
-        <!--Menu-->
-        <ScrollViewer x:Name="sPan" Grid.Column="4" Grid.Row="2" Grid.ZIndex="2" Grid.RowSpan="3" Grid.ColumnSpan="2" MinWidth="200" Margin="6,0,4,0" Visibility="Collapsed" Background="#CCBA8B">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Vertical">
-
-                    <!--Filters-->
-
-                    <StackPanel Name="filterPanel" Grid.Column="1" Grid.Row="4" MinWidth="150" Orientation="Vertical" Margin="5 0 5 10" >
-                        <TextBlock Text="Filter:" Padding="5" HorizontalAlignment="Center" />
-                        <ComboBox x:Name="filterServiceTypeCB" SelectionChanged="FilterServiceTypeCB_SelectionChanged"/>
-                        <CheckBox x:Name="filterDistanceCheck" Margin="0 10 0 0" Content="Filter by distance" Checked="DistanceFilterChecked" Unchecked="DistanceFilterUnchecked" />
-                        <StackPanel x:Name="distanceFilterPanel" Margin="0 10 0 0" Visibility="Hidden">
-                            <TextBox TextAlignment="Center" Text="{Binding ElementName=radiusSlider , Path=Value, StringFormat=N2 }"/>
-                            <Slider x:Name="radiusSlider" Minimum="0" Maximum="20" Value="{Binding CircleRadius, Mode=TwoWay}" ValueChanged="RadiusSlider_ValueChanged" Cursor="Hand" TickPlacement="None"/>
-                            <DockPanel>
-                                <TextBlock TextAlignment="Left" Text="{Binding ElementName=radiusSlider , Path=Minimum}"> km.</TextBlock>
-                                <TextBlock TextAlignment="Right" Text="{Binding ElementName=radiusSlider , Path=Maximum}"> km.</TextBlock>
-                            </DockPanel>
-                        </StackPanel>
-                    </StackPanel>
-
-                </StackPanel>
-            </Grid>
-        </ScrollViewer>
-
-        <Button x:Name="FilterButton" Grid.Row="2" Grid.Column="4" VerticalAlignment="Top" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="80" Height="30" FontSize="16" HorizontalAlignment="Right"  Background ="Transparent" Panel.ZIndex="2" Click="ButtonClick" Foreground="Black" Margin="0 10 0 0" Visibility="Visible">☰ Filters</Button>
-
-        <!--Map-->
-        <m:Map  Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" 
-            x:Name="myMap" Mode="Road" Center="54.68,25.27" ZoomLevel="12">
-
-        </m:Map>
-
-        <!--Selected Service-->
-        <Grid x:Name="selectedServiceInfoGrid" Grid.Column="3" Grid.Row="2" Visibility="Collapsed" Panel.ZIndex="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="10"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="5"/>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="8*"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5"/>
-            </Grid.RowDefinitions>
-
-
-            <TextBlock x:Name="selectedServiceTitle" Grid.Column="1" Grid.Row="1"
-                       TextAlignment="Center" TextWrapping="Wrap"/>
-            <ScrollViewer  Grid.Column="1" Grid.Row="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <TextBlock x:Name="selectedServiceAbout"
-                           TextAlignment="Center" TextWrapping="Wrap"/>
-            </ScrollViewer>
-
-            <ScrollViewer Grid.Row="3" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
-                <TextBlock x:Name="selectedServiceAddress"
-                           TextAlignment="Center" TextWrapping="Wrap"/>
-            </ScrollViewer>
-            
-            <UniformGrid Grid.Column="1" Grid.Row="4" Rows="1">
-                <Button Click="Hide_BtnClick">
-                    <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
-                </Button>
-                <Button x:Name="findRoute_Btn" Click="FindRoute_BtnClick">
-                    <Image Height="auto" Width="auto"  Source="/Assets/destination.png"/>
-                </Button>
-                <Button x:Name="review_Btn" Click="Review_BtnClick">
-                    <Image Height="auto" Width="auto"  Source="/Assets/review.png"/>
-                </Button>
-            </UniformGrid>
-
-
-        </Grid>
-        
         <ContentControl Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding}"/>
     </Grid>
 </Window>

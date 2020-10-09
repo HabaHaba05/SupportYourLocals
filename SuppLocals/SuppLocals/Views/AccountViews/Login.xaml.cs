@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using BC = BCrypt.Net.BCrypt;
 
-namespace SuppLocals
+namespace SuppLocals.Views
 {
     /// <summary>
     /// Interaction logic for Login.xaml

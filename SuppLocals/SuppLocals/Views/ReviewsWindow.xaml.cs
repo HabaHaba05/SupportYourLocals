@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 
-namespace SuppLocals
+namespace SuppLocals.Views
 {
     /// <summary>
     /// Interaction logic for ReviewsWindow.xaml

@@ -5,6 +5,7 @@ using GMap.NET.MapProviders;
 using Microsoft.Maps.MapControl.WPF;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SuppLocals.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,9 +72,16 @@ namespace SuppLocals
                    new PointLatLng(userLoc.Latitude, userLoc.Longitude),
                    new PointLatLng(finishLoc.Latitude, finishLoc.Longitude), false, false, 15);
             
+            if(route == null)
+            {
+                MessageBox.Show("Sorry we can't find route to this location");
+                return null;
+            }
+
             LocationCollection points = new LocationCollection();
             List<Location> pointsL = new List<Location>(route.Points.ConvertAll(x => new Location(x.Lat, x.Lng)));
             
+
             foreach (var x in pointsL)
             {
                 points.Add(x);
@@ -130,7 +138,7 @@ namespace SuppLocals
             return locCollection;
         }
 
-        public static void DrawCircle(LocationCollection locCollection, Map map, Color fillColor)
+        public static void DrawCircle(LocationCollection locCollection, MapLayer map, Color fillColor)
         {
             MapPolygon polygon = new MapPolygon
             {

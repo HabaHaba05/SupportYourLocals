@@ -14,7 +14,7 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using BC = BCrypt.Net.BCrypt;
 
-namespace SuppLocals
+namespace SuppLocals.Views
 {
     /// <summary>
     /// Interaction logic for SignUp.xaml
