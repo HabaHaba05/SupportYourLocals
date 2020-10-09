@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace SuppLocals.Helper
+namespace SuppLocals
 {
     public static class PasswordHelper
     {
@@ -69,9 +66,7 @@ namespace SuppLocals.Helper
         private static void Attach(DependencyObject sender,
             DependencyPropertyChangedEventArgs e)
         {
-            PasswordBox passwordBox = sender as PasswordBox;
-
-            if (passwordBox == null)
+            if (!(sender is PasswordBox passwordBox))
                 return;
 
             if ((bool)e.OldValue)

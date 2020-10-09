@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 using Location = Microsoft.Maps.MapControl.WPF.Location;
 
-namespace SuppLocals.Tabs
+namespace SuppLocals.Views
 {
     /// <summary>
     /// Interaction logic for AddService.xaml
@@ -26,6 +26,11 @@ namespace SuppLocals.Tabs
             TypeCB.SelectedIndex = 0;
 
             SelectLocMap.CredentialsProvider = Config.BING_API_KEY;
+        }
+
+        public AddService()
+        {
+
         }
 
         #region Buttons

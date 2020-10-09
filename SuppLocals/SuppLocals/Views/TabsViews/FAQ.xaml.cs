@@ -11,14 +11,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SuppLocals.Tabs
+namespace SuppLocals.Views
 {
     /// <summary>
-    /// Interaction logic for Vendors.xaml
+    /// Interaction logic for FAQ.xaml
     /// </summary>
-    public partial class Vendors : UserControl
+    public partial class FAQ : UserControl
     {
-        public Vendors()
+        public FAQ()
         {
             InitializeComponent();
         }

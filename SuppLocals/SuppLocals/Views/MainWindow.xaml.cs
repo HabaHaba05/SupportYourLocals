@@ -10,10 +10,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Diagnostics;
 using System.Linq;
-using SuppLocals.TabsModel;
-using SuppLocals.Tabs;
+using SuppLocals.ViewModels;
 
-namespace SuppLocals
+namespace SuppLocals.Views
 {
 
     public partial class MainWindow : Window
@@ -23,16 +22,14 @@ namespace SuppLocals
         //The user
         public User ActiveUser;
 
-        public List<Vendor> VendorsList;
-
-        public double CircleRadius { get; set; }
-
         public MainWindow(User user)
         {
             //By default
             InitializeComponent();
 
             ActiveUser = user;
+
+            DataContext = new HomeVM(this,ActiveUser);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -49,232 +46,9 @@ namespace SuppLocals
                 VendorTabs.Visibility = Visibility.Visible;
             }
 
-
-            using (VendorsDbTable db = new VendorsDbTable())
-            {
-                VendorsList = db.Vendors.ToList();
-            }
-
-            //Activates the + and – keys to allow the user to manually zoom in and out of the map
-            myMap.Focus();
-            myMap.CredentialsProvider = Config.BING_API_KEY;
-
-
-            //Add service types to the filterServiceTypeCB in order to filter services by their type
-            List<string> types = new List<string>
-            {
-                "ALL"
-            };
-            foreach (var type in Enum.GetValues(typeof(VendorType)))
-            {
-                types.Add(type.ToString());
-            }
-
-            filterServiceTypeCB.ItemsSource = types;
-            filterServiceTypeCB.SelectedIndex = 0;  //This also calls UpdateMapChildrens
-
         }
-
-        private void UpdateMapChildrens(object sender, SelectionChangedEventArgs args)
-        {
-            List<Vendor> tempVendors;
-            if (filterServiceTypeCB.SelectedItem.ToString() == "ALL")
-            {
-                tempVendors = VendorsList.ToList();
-            }
-            else
-            {
-                tempVendors = VendorsList.Where(x => x.VendorType == filterServiceTypeCB.SelectedItem.ToString()).ToList();
-            }
-
-            myMap.Children.Clear();
-
-            foreach (Vendor vendor in tempVendors)
-            {
-                Location loc = new Location(vendor.Latitude, vendor.Longitude);
-
-                if (!(bool)filterDistanceCheck.IsChecked ||
-                    MapMethods.DistanceBetweenPlaces(loc, ActiveUser.Location) <= CircleRadius)
-                {
-                    Pushpin pushpin = new Pushpin();
-
-                    pushpin.MouseUp += PinClicked;
-                    pushpin.Tag = vendor;
-                    pushpin.ToolTip = vendor.Title;
-
-                    ControlTemplate mytemplate = (ControlTemplate)FindResource($"Pushpin{vendor.VendorType}Template");
-
-                    pushpin.Template = mytemplate;
-
-
-                    pushpin.Location = new Location(loc.Latitude, loc.Longitude);
-                    myMap.Children.Add(pushpin);
-                }
-            }
-
-            if ((bool)filterDistanceCheck.IsChecked)
-            {
-                //Filter circle
-                MapMethods.DrawCircle(MapMethods.GetCircleVertices(ActiveUser.Location, CircleRadius), myMap, Color.FromRgb(240, 248, 255));
-            }
-        }
-
-        #region Filters Tab
-
-        public async void DistanceFilterChecked(object sender, RoutedEventArgs e)
-        {
-
-            if (ActiveUser.Location == null)
-            {
-                ActiveUser.Location = await MapMethods.GetLiveLocation(this);
-
-                if (ActiveUser.Location == null)
-                {
-                    filterDistanceCheck.IsChecked = false;
-                    return;
-                }
-            }
-
-            distanceFilterPanel.Visibility = Visibility.Visible;
-            selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
-
-            myMap.Center = ActiveUser.Location;
-
-            Grid.SetColumnSpan(myMap, 3);
-
-            UpdateMapChildrens(null, null);
-        }
-
-        private void RadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            CircleRadius = (float)radiusSlider.Value;
-            if (myMap != null)
-                UpdateMapChildrens(null, null);
-        }
-
-        public void DistanceFilterUnchecked(object sender, RoutedEventArgs e)
-        {
-            distanceFilterPanel.Visibility = Visibility.Hidden;
-            UpdateMapChildrens(null, null);
-        }
-
-        private void FilterServiceTypeCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
-            Grid.SetColumnSpan(myMap, 3);
-            UpdateMapChildrens(null, null);
-
-        }
-
-        #endregion
-
-
-        #region Vendor About Tab
-
-        public void Hide_BtnClick(object sender, RoutedEventArgs e)
-        {
-            UpdateMapChildrens(null, null);
-            selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
-            sPan.Visibility = Visibility.Collapsed;
-            FilterButton.Content = "☰ Filters";
-            Grid.SetColumnSpan(myMap, 3);
-        }
-
-        private void PinClicked(object sender, MouseButtonEventArgs e)
-        {
-            Pushpin p = sender as Pushpin;
-            Vendor vendor = p.Tag as Vendor;
-
-            selectedServiceTitle.Text = vendor.Title;
-            selectedServiceAbout.Text = vendor.About;
-            selectedServiceAddress.Text = $"Address: {vendor.Address} \nLat: {vendor.Latitude} \nLong: { vendor.Longitude} ";
-            review_Btn.Tag = vendor;
-            findRoute_Btn.Tag = vendor;
-
-
-            selectedServiceInfoGrid.Visibility = Visibility.Visible;
-            sPan.Visibility = Visibility.Collapsed;
-
-            FilterButton.Content = "☰ Filters";
-            Grid.SetColumn(FilterButton, 4);
-            Grid.SetColumnSpan(myMap, 2);
-            Grid.SetColumnSpan(FilterButton, 4);
-            UpdateMapChildrens(null, null);
-        }
-
-        public void Review_BtnClick(object sender, RoutedEventArgs e)
-        {
-            Button b = sender as Button;
-            Vendor vendor = b.Tag as Vendor;
-
-            ReviewsWindow reviewsWindow = new ReviewsWindow(vendor, ActiveUser);
-            reviewsWindow.Show();
-        }
-
-        public async void FindRoute_BtnClick(object sender, RoutedEventArgs e)
-        {
-            Button b = sender as Button;
-            Vendor service = b.Tag as Vendor;
-
-            if (ActiveUser.Location == null)
-            {
-                ActiveUser.Location = await MapMethods.GetLiveLocation(this);
-            }
-            if (ActiveUser.Location != null)
-            {
-                LocationCollection tempRouteLine = MapMethods.GetRoute(ActiveUser.Location, new Location(service.Latitude, service.Longitude));
-
-                if (tempRouteLine == null)
-                {
-                    MessageBox.Show("Because we can't find you live location, we cant calculate route for You. Sorry");
-                    return;
-                }
-
-                MapPolyline routeLine = new MapPolyline()
-                {
-                    Locations = tempRouteLine,
-                    Stroke = new SolidColorBrush(Colors.Green),
-                    StrokeThickness = 5
-                };
-
-                myMap.Children.Add(routeLine);
-            }
-
-
-        }
-
-        #endregion
-
 
         #region Menu methods
-
-        private void ButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (sPan.Visibility == Visibility.Collapsed)
-            {
-                sPan.Visibility = Visibility.Visible;
-                FilterButton.Content = "X";
-
-                BrushConverter converter = new BrushConverter();
-                FilterButton.Background = (Brush)converter.ConvertFrom("#CCBA8B");
-
-                Grid.SetColumn(FilterButton, 3);
-
-                selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
-                Grid.SetColumnSpan(myMap, 3);
-            }
-            else
-            {
-                sPan.Visibility = Visibility.Collapsed;
-                FilterButton.Content = "☰ Filters";
-
-                FilterButton.Background = Brushes.Transparent;
-                Grid.SetColumn(FilterButton, 4);
-
-                selectedServiceInfoGrid.Visibility = Visibility.Collapsed;
-                Grid.SetColumnSpan(myMap, 3);
-            }
-        }
 
         private void TabClicked(object sender, RoutedEventArgs e)
         {
@@ -288,35 +62,24 @@ namespace SuppLocals
             };
             TabCursor.BeginAnimation(Button.MarginProperty, ta);
 
-
-            FilterButton.Visibility = Visibility.Hidden;
-            sPan.Visibility = Visibility.Collapsed;
-            FilterColumn.Width = new GridLength(20);
-
             if (index.Equals(0))
             {
-                FilterButton.Visibility = Visibility.Visible;
-                Grid.SetColumn(FilterButton, 4);
-                FilterButton.Content = "☰ Filters";
-                FilterColumn.Width = new GridLength(0, GridUnitType.Auto);
-
-                DataContext = new HomeModel();
+                DataContext = new HomeVM(this,ActiveUser);
             }
 
             else if (index.Equals(1)) 
             { 
-                if (ActiveUser.Username == "Anonimas") { DataContext = new VendorsModel(); }
-                else { DataContext = new MyServicesModel(); }
+                if (ActiveUser.Username == "Anonimas") { DataContext = new VendorsVM(); }
+                else { DataContext = new MyServicesVM(); }
             }
             
             else if (index.Equals(2)) 
             {
-                if (ActiveUser.Username == "Anonimas") { DataContext = new FAQModel(); } 
+                if (ActiveUser.Username == "Anonimas") { DataContext = new FaqVM(); } 
                 else { DataContext = new AddService(ActiveUser); }
             }
-            else { DataContext = new AboutModel(); }
+            else { DataContext = new AboutVM(); }
         }
-
         
         private void ProfileClicked(object sender, RoutedEventArgs e)
         {
@@ -359,11 +122,7 @@ namespace SuppLocals
             e.Handled = true;
         }
 
-        private void UpdateVendorsList()
-        {
-            using VendorsDbTable db = new VendorsDbTable();
-            VendorsList = db.Vendors.ToList();
-        }
+
 
     }
 
