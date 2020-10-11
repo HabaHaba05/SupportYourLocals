@@ -158,39 +158,12 @@ namespace SuppLocals.ViewModels
 
         #region Commands
 
-        #region private
-
-        private ICommand _findRoute;
-        private ICommand _hideBtnClick;
-        private ICommand _reviewBtnClick;
-
-        #endregion
-
         #region public
+        public RelayCommand FindRouteBtnClick {get; private set;}    
 
-        public ICommand FindRoute
-        {
-            get
-            {
-                return _findRoute ??= new CommandHandler(() => CalcRoute()); ;
-            }
-        }    
+        public RelayCommand HideBtnClick {get; private set;}
 
-        public ICommand HideBtnClick
-        {
-            get
-            {
-                return _hideBtnClick ??= new CommandHandler(() => { ResetToNulls(); });
-            }
-        }
-
-        public ICommand ReviewBtnClick { get
-            {
-                return _reviewBtnClick ??= new CommandHandler(() => {
-                    ReviewsWindow reviewsWindow = new ReviewsWindow(_selectedVendor, user);
-                    reviewsWindow.ShowDialog();
-                });
-            } }
+        public RelayCommand ReviewBtnClick { get; private set; }
 
         #endregion
         #endregion
@@ -208,6 +181,17 @@ namespace SuppLocals.ViewModels
                 allVendorsList.ForEach(x => x.Location = new Location(x.Latitude, x.Longitude));
                 VendorsList = allVendorsList;
             }
+
+            FindRouteBtnClick = new RelayCommand(o => CalcRoute(), o => true);
+            HideBtnClick = new RelayCommand(o => ResetToNulls(), o => true);
+            
+            ReviewBtnClick = new RelayCommand(o =>
+            {
+                ReviewsWindow reviewsWindow = new ReviewsWindow(_selectedVendor, user);
+                reviewsWindow.ShowDialog();
+            },
+                o => true
+            ); ;
         }
 
         #endregion
