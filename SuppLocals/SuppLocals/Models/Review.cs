@@ -23,6 +23,7 @@ namespace SuppLocals
         [Required]
         public int Stars { get; set; }
 
+        [Required]
         public string Date { get; set; }
 
     }

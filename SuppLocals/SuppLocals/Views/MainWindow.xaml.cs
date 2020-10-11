@@ -11,6 +11,9 @@ using System.Windows.Navigation;
 using System.Diagnostics;
 using System.Linq;
 using SuppLocals.ViewModels;
+using Microsoft.Win32;
+using System.Windows.Media.Imaging;
+using SuppLocals.Views.AccountViews;
 
 namespace SuppLocals.Views
 {
@@ -28,6 +31,7 @@ namespace SuppLocals.Views
             InitializeComponent();
 
             ActiveUser = user;
+            ProfileUser.Text = ActiveUser.Username;
 
             DataContext = new HomeVM(this,ActiveUser);
         }
@@ -53,6 +57,9 @@ namespace SuppLocals.Views
         private void TabClicked(object sender, RoutedEventArgs e)
         {
             int index = int.Parse(((Button)e.Source).Uid);
+
+            ProfilePan.Visibility = Visibility.Collapsed;
+            profileButton.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
 
             ThicknessAnimation ta = new ThicknessAnimation
             {
@@ -107,6 +114,23 @@ namespace SuppLocals.Views
             }
         }
 
+        private void HyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+            e.Handled = true;
+        }
+
+        #endregion
+
+        #region ProfileMethods
+        private void ProfileSettingsClicked(object sender, RoutedEventArgs e)
+        {
+            ProfileSettings profile = new ProfileSettings(ActiveUser);
+            profile.Show();
+            ProfilePan.Visibility = Visibility.Collapsed;
+        }
+
+
         private void SignInClicked(object sender, RoutedEventArgs e)
         {
             Login lWindow = new Login();
@@ -115,15 +139,6 @@ namespace SuppLocals.Views
         }
 
         #endregion
-
-        private void HyperlinkRequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
-            e.Handled = true;
-        }
-
-
-
     }
 
 }

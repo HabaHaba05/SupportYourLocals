@@ -95,7 +95,7 @@
                 <Button Uid="2" Width="120" Content="ADD SERVICE" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="3" Width="120" Content="ABOUT" Height="40"  HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Width="35" Height="35" HorizontalAlignment="Left" Visibility="Visible" Margin="10 5 5 5" Background="Transparent" Click="ProfileClicked">
-                    <Image Source="/Assets/profile.png"/>
+                    <Image x:Name="MyImage" Source="/Assets/profile.png"/>
                 </Button>
             </StackPanel>
 
@@ -109,17 +109,25 @@
         </Grid>
 
         <!-- Profile settings -->
-        <Border x:Name="ProfilePan" CornerRadius="2" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Height="90" VerticalAlignment="Top" Width="150" HorizontalAlignment="Right" Margin="0 0 10 0" Panel.ZIndex="5" Background="White" Visibility="Collapsed">
+        <Border x:Name="ProfilePan" CornerRadius="4" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" 
+                Height="auto" VerticalAlignment="Top" Width="auto" HorizontalAlignment="Right" 
+                Margin="0 0 10 0" Panel.ZIndex="5" Background="White" Visibility="Collapsed">
+            
             <Grid>
 
                 <StackPanel x:Name="SignInPanel" Visibility="Collapsed">
                     <TextBlock Text="Become a vendor" Margin="0 20 0 10" HorizontalAlignment="Center" FontSize="16"/>
-                    <Button Content="Sign In" Width="70" Height="25" VerticalAlignment="Bottom" Margin="0 0 0 10" Click="SignInClicked"/>
+                    <Button Content="Sign In" Width="70" Height="25" VerticalAlignment="Bottom" Margin="0 0 5 10" Click="SignInClicked"/>
                 </StackPanel>
 
                 <Grid x:Name="LogOutPanel" Visibility="Collapsed">
-                    <Button Content="Profile Settings" HorizontalAlignment="Center" Width="120" Height="25" Margin="10 0 0 30"/>
-                    <Button Content="Log Out" Width="70" Height="25" VerticalAlignment="Bottom" Margin="0 0 0 10"/>
+                    <TextBlock x:Name="ProfileUser" Text="{Binding}" Height="30" FontSize="18"
+                               Margin="5" Width="auto" FontWeight="Bold"
+                               VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                    
+                    <Button Content="Profile Settings" Click="ProfileSettingsClicked"
+                            HorizontalAlignment="Center" Width="120" Height="25" Margin="5 30 5 30"/>
+                    <Button Content="Log Out" Width="70" Height="25" VerticalAlignment="Bottom" Margin="0 90 0 10"/>
                 </Grid>
 
             </Grid>
