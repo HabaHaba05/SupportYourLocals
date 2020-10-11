@@ -9,7 +9,7 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Background="#CCBA8B">
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition/>
@@ -38,7 +38,7 @@
                 <Ellipse x:Name="PrfImage" 
                          Width="150" Height="150">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="/Assets/profile.png" />
+                        <ImageBrush x:Name="profileImage"/>
                     </Ellipse.Fill>
                 </Ellipse>
 
