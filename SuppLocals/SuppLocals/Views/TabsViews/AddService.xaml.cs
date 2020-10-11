@@ -67,7 +67,6 @@ namespace SuppLocals.Views
                     }
 
                     db.Vendors.Add(vendor);
-
                     db.SaveChanges();
                 }
 
