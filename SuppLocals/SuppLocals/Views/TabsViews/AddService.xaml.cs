@@ -14,25 +14,15 @@ namespace SuppLocals.Views
     /// </summary>
     public partial class AddService : UserControl
     {
-        private readonly User currUser;
-
-        public AddService(User user)
+        public AddService()
         {
             InitializeComponent();
 
-            currUser = user;
+            SelectLocMap.CredentialsProvider = Config.BING_API_KEY;
 
             TypeCB.ItemsSource = Enum.GetValues(typeof(VendorType));
             TypeCB.SelectedIndex = 0;
-
-            SelectLocMap.CredentialsProvider = Config.BING_API_KEY;
         }
-
-        public AddService()
-        {
-
-        }
-
         #region Buttons
 
         private async void CreateBtnClick(object sender, RoutedEventArgs e)
@@ -184,27 +174,13 @@ namespace SuppLocals.Views
             string address = await MapMethods.ConvertLocationToAddress(SelectLocMap.Center);
             if (String.IsNullOrEmpty(address))
             {
-                AddressTB.Text = "";
-                MessageBox.Show("Sorry, we cant get address of this position");
+                MessageBox.Show("Sorry, we cant get an address of this place");
                 return;
             }
             AddressTB.Text = address;
         }
+        
 
-        #endregion
-
-        #region Disable zoom with mouse or double click
-        private void SelectLocMap_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void SelectLocMap_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        #endregion
 
     }
 }

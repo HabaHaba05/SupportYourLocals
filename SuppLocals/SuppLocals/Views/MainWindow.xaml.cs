@@ -83,7 +83,7 @@ namespace SuppLocals.Views
             else if (index.Equals(2)) 
             {
                 if (ActiveUser.Username == "Anonimas") { DataContext = new FaqVM(); } 
-                else { DataContext = new AddService(ActiveUser); }
+                else { DataContext = new AddServiceVM(ActiveUser); }
             }
             else { DataContext = new AboutVM(); }
         }

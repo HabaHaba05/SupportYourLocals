@@ -5,11 +5,44 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuppLocals"
              xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
-
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"  
              mc:Ignorable="d" 
              d:Height="340" d:Width="600"
              Background="#CCBA8B">
 
+    <UserControl.Resources>
+
+        <Style TargetType="Button" x:Key="MyButton">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="MyContentPresenter" 
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Red"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="ToolTip" Value="Please fill all fields"/>
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+    </UserControl.Resources>
+    
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -45,32 +78,59 @@
 
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
                     <Label Width="100" Content="Title: "/>
-                    <TextBox x:Name="TitleTB" Width="200"/>
+                    <TextBox x:Name="TitleTB" Text="{Binding Title , ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                            ToolTip="{Binding ErrorCollection[Title]}" Width="200"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
                     <Label Width="100" Content="About: "/>
-                    <TextBox x:Name="AboutTB" Width="200" Height="60" TextWrapping="Wrap"/>
+                    <TextBox x:Name="AboutTB" ToolTip="{Binding ErrorCollection[About]}"
+                             Text="{Binding About, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             Width="200" Height="60" TextWrapping="Wrap"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5">
                     <Label Width="100" Content="Address: "/>
                     <StackPanel Orientation="Vertical">
-                        <TextBox x:Name="AddressTB" Width="200" KeyUp="AddressChanged" Height="{Binding ElementName=TitleTB , Path=ActualHeight}"/>
-                        <ScrollViewer x:Name="AddressSuggest" Width="{Binding ElementName=AddressTB, Path=ActualWidth}"
-                                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                            <StackPanel MaxHeight="65" x:Name="ResultStack" Background="White"></StackPanel>
+                        <TextBox x:Name="AddressTB" Width="200" ToolTip="{Binding ErrorCollection[Address]}"
+                                 Text="{Binding Address, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged }" 
+                                 Height="{Binding ElementName=TitleTB , Path=ActualHeight}">
+                            
+                        </TextBox>
+                        <ScrollViewer x:Name="AddressSuggest"  Visibility="{Binding VisisbleSuggestions}"
+                                      Width="{Binding ElementName=AddressTB, Path=ActualWidth}"
+                                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                      MaxHeight="65">
+                            <ItemsControl ItemsSource="{Binding SuggestStack}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" Background="White"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </ScrollViewer>
-                        <Button Click="UpdatePinLocation" Content="Show in the Map"/>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction  Command="{Binding LostFocusCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
                     <Label Width="100" Content="Type: "/>
-                    <ComboBox x:Name="TypeCB" Width="200" />
+                    <ComboBox x:Name="TypeCB" Width="200" SelectedItem="{Binding SelectedVendorType, Mode=OneWayToSource}" />
                 </StackPanel>
             </Grid>
 
             <StackPanel VerticalAlignment="Bottom" Margin="0 0 0 10" Width="100">
-                <Button Content="Create" Click="CreateBtnClick"/>
+                <Button Content="Create" Command="{Binding CreateVendorBtnClick}"
+                        Style="{StaticResource MyButton}" ToolTipService.ShowOnDisabled="True"
+                        >
+                </Button>
             </StackPanel>
 
         </DockPanel>
@@ -79,17 +139,10 @@
 
         <DockPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
             <m:Map x:Name="SelectLocMap"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"
-                       Mode="Road" Center="54.68,25.27" ZoomLevel="12"
-                       Margin="5" MouseDoubleClick="SelectLocMap_MouseDoubleClick"
-                       MouseWheel="SelectLocMap_MouseWheel">
+                   Mode="Road" Center="{Binding MyMapCenter , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                   ZoomLevel="12" Margin="5">
 
                 <Grid>
-                    <Button Height="40" Width="40" HorizontalAlignment="Left"
-                            VerticalAlignment="Top" Content="+" 
-                            Click="Plus_Click"/>
-                    <Button Height="40" Width="40" Margin="40 0 0 0"
-                            HorizontalAlignment="Left" VerticalAlignment="Top"
-                            Content="-" Click="Minus_Click"/>
                     <Button Height="25" Width="110"  HorizontalAlignment="Right" Margin="5"
                             VerticalAlignment="Top"
                             Content="Confirm Location" Click="ConfirmLoc_Click"/>
