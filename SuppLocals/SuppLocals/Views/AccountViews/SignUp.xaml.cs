@@ -45,7 +45,6 @@ namespace SuppLocals.Views
 
         private void SignUp_ButtonClick(object sender, RoutedEventArgs e)
         {
-
             var username = UsernameTextBox.Text;
             var password = PasswordBox1.Password;
             var repeatPassword = ConfirmPasswordBox1.Password;
