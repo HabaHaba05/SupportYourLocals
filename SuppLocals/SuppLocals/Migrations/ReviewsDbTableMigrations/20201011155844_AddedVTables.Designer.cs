@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuppLocals;
 
-namespace SuppLocals.Migrations
+namespace SuppLocals.Migrations.ReviewsDbTableMigrations
 {
     [DbContext(typeof(ReviewsDbTable))]
-    partial class ReviewsDbTableModelSnapshot : ModelSnapshot
+    [Migration("20201011155844_AddedVTables")]
+    partial class AddedVTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

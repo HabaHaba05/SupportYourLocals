@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuppLocals;
 
-namespace SuppLocals.Migrations
+namespace SuppLocals.Migrations.VendorsDbTableMigrations
 {
-    [DbContext(typeof(ReviewsDbTable))]
-    [Migration("20201005170411_AddReviewsTable")]
-    partial class AddReviewsTable
+    [DbContext(typeof(VendorsDbTable))]
+    [Migration("20201011155727_AddedVTables")]
+    partial class AddedVTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,33 +20,40 @@ namespace SuppLocals.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.1.20451.13");
 
-            modelBuilder.Entity("SuppLocals.Review", b =>
+            modelBuilder.Entity("SuppLocals.Vendor", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("Date")
+                    b.Property<string>("About")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SenderUsername")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Stars")
-                        .HasColumnType("int");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
 
-                    b.Property<string>("Text")
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("VendorID")
+                    b.Property<int>("UserID")
                         .HasColumnType("int");
+
+                    b.Property<string>("VendorType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Vendors");
                 });
 #pragma warning restore 612, 618
         }

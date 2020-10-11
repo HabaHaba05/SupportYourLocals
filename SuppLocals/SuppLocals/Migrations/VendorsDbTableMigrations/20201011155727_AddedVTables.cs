@@ -2,7 +2,7 @@
 
 namespace SuppLocals.Migrations.VendorsDbTableMigrations
 {
-    public partial class AddVendorsTable : Migration
+    public partial class AddedVTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

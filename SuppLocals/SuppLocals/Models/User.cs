@@ -22,6 +22,11 @@ namespace SuppLocals
         [Required]
         public string HashedPsw { get; set; }
 
+        [Required]
+        public string Email { get; set; }
+
+        public byte[] Image { get; set; }
+
         public int VendorsCount { get; set; }
 
         #endregion

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SuppLocals.Migrations
+namespace SuppLocals.Migrations.ReviewsDbTableMigrations
 {
-    public partial class AddReviewsTable : Migration
+    public partial class AddedVTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

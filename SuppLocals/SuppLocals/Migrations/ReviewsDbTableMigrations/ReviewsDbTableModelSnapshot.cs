@@ -2,17 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuppLocals;
 
-namespace SuppLocals.Migrations.UsersDbTableMigrations
+namespace SuppLocals.Migrations.ReviewsDbTableMigrations
 {
-    [DbContext(typeof(UsersDbTable))]
-    [Migration("20201005170453_AddUsersTable")]
-    partial class AddUsersTable
+    [DbContext(typeof(ReviewsDbTable))]
+    partial class ReviewsDbTableModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,27 +18,33 @@ namespace SuppLocals.Migrations.UsersDbTableMigrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.1.20451.13");
 
-            modelBuilder.Entity("SuppLocals.User", b =>
+            modelBuilder.Entity("SuppLocals.Review", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("HashedPsw")
+                    b.Property<string>("Date")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderUsername")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("VendorsCount")
+                    b.Property<int>("VendorID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Users");
+                    b.ToTable("Reviews");
                 });
 #pragma warning restore 612, 618
         }
