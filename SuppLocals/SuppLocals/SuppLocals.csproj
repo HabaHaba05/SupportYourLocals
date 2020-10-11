@@ -21,6 +21,7 @@
     <None Remove="Assets\home.png" />
     <None Remove="Assets\otherPin.png" />
     <None Remove="Assets\profile.png" />
+    <None Remove="Assets\questionmark.png" />
     <None Remove="Assets\title1.png" />
     <None Remove="Assets\title2.png" />
     <None Remove="Assets\vendor.png" />
@@ -64,6 +65,8 @@
   <ItemGroup>
 
     <Resource Include="Assets\146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
+
+    <Resource Include="Assets\questionmark.png" />
 
     <Resource Include="Assets\title1.png" />
 
