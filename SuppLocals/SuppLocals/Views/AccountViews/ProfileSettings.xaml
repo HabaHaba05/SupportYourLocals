@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals.Views.AccountViews"
         mc:Ignorable="d"
-        Height="330" Width="500"
+        Height="290" Width="500"
         ResizeMode="NoResize"
+        WindowStyle="none" 
         WindowStartupLocation="CenterScreen"
         Background="#CCBA8B">
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition/>
@@ -20,8 +21,6 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        
         
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
             <StackPanel Orientation="Horizontal">
@@ -35,10 +34,9 @@
             </StackPanel>
 
             <Button Margin="40" Background="Transparent" Click="ProfileImageClicked">
-                <Ellipse x:Name="PrfImage" 
-                         Width="150" Height="150">
+                <Ellipse Width="150" Height="150">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="/Assets/profile.png" />
+                        <ImageBrush x:Name="profileImage"/>
                     </Ellipse.Fill>
                 </Ellipse>
 
