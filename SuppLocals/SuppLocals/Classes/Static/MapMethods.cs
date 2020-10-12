@@ -138,20 +138,6 @@ namespace SuppLocals
             return locCollection;
         }
 
-        public static void DrawCircle(LocationCollection locCollection, MapLayer map, Color fillColor)
-        {
-            MapPolygon polygon = new MapPolygon
-            {
-                Fill = new SolidColorBrush(fillColor),
-                Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 1,
-                Opacity = 0.65,
-                Locations = locCollection
-            };
-
-            map.Children.Add(polygon);
-        }
-
         public static async Task<Location> ConvertAddressToLocation(string address)
         {
             Location data = new Location();
