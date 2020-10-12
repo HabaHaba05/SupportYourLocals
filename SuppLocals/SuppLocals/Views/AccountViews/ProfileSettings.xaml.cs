@@ -43,7 +43,20 @@ namespace SuppLocals.Views.AccountViews
                 };
                 PrfImage.Fill = myBrush;
             }
+
+            /*
+            using (UsersDbTable dbUser = new UsersDbTable())
+            {
+                var user = dbUser.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
+                user.Image =
+            }
+            */
+
+
         }
+
+
+
 
         private void SaveChangesClicked(object sender, RoutedEventArgs e)
         {
@@ -87,6 +100,7 @@ namespace SuppLocals.Views.AccountViews
                 var user = dbUser.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
                 user.HashedPsw = BC.HashPassword(newPassword);
                 dbUser.SaveChanges();
+                
             }
 
             OldPass.Clear();
