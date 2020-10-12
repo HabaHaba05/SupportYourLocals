@@ -40,6 +40,22 @@
             </Style.Triggers>
         </Style>
 
+        
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                     <ControlTemplate>
+                            <DockPanel>
+                                <Grid DockPanel.Dock="Left" Width="16" Height="16" VerticalAlignment="Center" Margin="180 5 0 0">
+                                    <Ellipse Width="16" Height="16" Fill="Red"/>
+                                    <Ellipse Width="3" Height="8" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 2 0 0" Fill="White"/>
+                                    <Ellipse Width="2" Height="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 2" Fill="White"/>
+                                </Grid>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
     </UserControl.Resources>
     
@@ -156,4 +172,7 @@
 
 
     </Grid>
+
+ 
+
 </UserControl>

@@ -9,13 +9,13 @@ namespace SuppLocals
 {
     public class EmailSender : SignUp
     {
-
+        
         public EmailSender()
         {
-          
+            
         }
 
-        public string code;
+        
 
         public void SendEmail(string email)
         {
@@ -25,7 +25,7 @@ namespace SuppLocals
             
             const string fromPassword = "assssds";
             const string subject = "Locals to Locals";
-            string body = "This is temporary code to login; " + HoldCode();
+            string body = "This is temporary code to login: ";
 
             using var smtp = new SmtpClient
             {
@@ -59,11 +59,6 @@ namespace SuppLocals
             return finalString;
         }   
 
-        public string HoldCode()
-        {
-            string bybys = GenerateRandomString();
-            return bybys;
-        }
  
     } 
 }

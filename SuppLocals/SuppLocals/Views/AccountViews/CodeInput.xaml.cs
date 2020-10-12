@@ -20,7 +20,7 @@ public partial class CodeInput : Window
             EmailSender emailSender = new EmailSender();
             
 
-            if (emailSender.HoldCode() == CodeTextBox.Text)
+            if ("" == CodeTextBox.Text)
             {
 
                 MainWindow map = new MainWindow(ActiveUser);
@@ -29,7 +29,7 @@ public partial class CodeInput : Window
             }
             else
             {
-                MessageBox.Show(emailSender.HoldCode());
+                MessageBox.Show("");
             }
 
         }
