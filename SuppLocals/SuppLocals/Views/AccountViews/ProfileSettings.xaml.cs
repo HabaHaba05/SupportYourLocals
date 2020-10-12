@@ -46,11 +46,14 @@ namespace SuppLocals.Views.AccountViews
                 fldlg = null;
 
                 insertImageData();
+                showImage();
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString());
             }
+
         }
 
         private void SaveChangesClicked(object sender, RoutedEventArgs e)
@@ -101,7 +104,6 @@ namespace SuppLocals.Views.AccountViews
             NewPass.Clear();
             ConfirmNewPass.Clear();
 
-            showImage();
             return;
         }
 
@@ -114,13 +116,12 @@ namespace SuppLocals.Views.AccountViews
         {
             using UsersDbTable db = new UsersDbTable();
 
-
             //Store binary data read from the database in a byte array
             byte[] blob = db.Users.Single(x => x.ID == ActiveUser.ID).Image;
 
             if (blob == null)
             {
-                profileImage.ImageSource = new BitmapImage(new Uri(@"C:\Users\Paulius\Desktop\Studijos\.NET\1st Semester\MasterBranch\SuppLocals\SuppLocals\Assets\profile.png"));
+                profileImage.ImageSource = new BitmapImage(new Uri(@"pack://application:,,,/Assets/profile.png", UriKind.Absolute));
             }
             else
             {
