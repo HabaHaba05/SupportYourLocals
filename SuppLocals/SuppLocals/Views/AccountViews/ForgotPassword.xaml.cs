@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SuppLocals.Views
 {
@@ -11,6 +12,7 @@ namespace SuppLocals.Views
         public ForgotPassword()
         {
             InitializeComponent();
+            this.DataContext = new ValidateUsername();
         }
 
         public void Send_Button_Click(object sender, RoutedEventArgs e)
@@ -50,6 +52,11 @@ namespace SuppLocals.Views
 
         }
 
-        
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
     }
 }

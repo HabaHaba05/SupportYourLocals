@@ -9,6 +9,7 @@
         AllowsTransparency="true" Background="Transparent"
         WindowStyle="none" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
+        MouseLeftButtonDown="Window_MouseDown"
         >
 
 

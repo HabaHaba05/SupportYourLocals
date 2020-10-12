@@ -8,7 +8,8 @@
         Height="330" Width="500"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Background="#CCBA8B">
+        Background="#CCBA8B"
+        >
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -55,7 +56,11 @@
                        FontSize="13" Margin="10"/>
 
             <Border CornerRadius="4" Width="200" BorderThickness="1" Background="White">
-                <PasswordBox x:Name="OldPass" Background="Transparent" BorderThickness="0"/>
+                <PasswordBox 
+                             x:Name="OldPass"
+                             Background="Transparent" 
+                             BorderThickness="0"
+                    />
             </Border>
 
             <TextBlock Text="New password" HorizontalAlignment="Left" 

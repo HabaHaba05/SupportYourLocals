@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SuppLocals.Views
 {
-public partial class CodeInput : Window
+    public partial class CodeInput : Window
     {
         public User ActiveUser;
 
@@ -15,10 +16,10 @@ public partial class CodeInput : Window
             InitializeComponent();
         }
 
-    public void Apply_Button_Click(object sender, RoutedEventArgs e)
-    {
+        public void Apply_Button_Click(object sender, RoutedEventArgs e)
+        {
             EmailSender emailSender = new EmailSender();
-            
+
 
             if ("" == CodeTextBox.Text)
             {
@@ -40,7 +41,13 @@ public partial class CodeInput : Window
             login.Show();
             this.Close();
         }
+
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
     }
-
-
 }

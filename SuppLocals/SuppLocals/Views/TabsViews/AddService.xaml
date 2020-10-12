@@ -16,6 +16,7 @@
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="White" />
             <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontFamily" Value="Tahoma" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
