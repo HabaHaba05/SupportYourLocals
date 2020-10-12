@@ -30,10 +30,7 @@ namespace SuppLocals.Views
 
             DataContext = new HomeVM(this, ActiveUser);
 
-            if (ActiveUser.Username != "Anonimas")
-            {
-                ProfileSettings.ShowImage(MyImage, ActiveUser);
-            }
+            MyImage.ImageSource = ActiveUser.GetProfileImage();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -129,7 +126,8 @@ namespace SuppLocals.Views
         {
             ProfileSettings profile = new ProfileSettings(ActiveUser);
             ProfilePan.Visibility = Visibility.Collapsed;
-            profile.Show();
+            profile.ShowDialog();
+            MyImage.ImageSource = ActiveUser.GetProfileImage();
         }
 
         private void LogOutClicked(object sender, RoutedEventArgs e)
