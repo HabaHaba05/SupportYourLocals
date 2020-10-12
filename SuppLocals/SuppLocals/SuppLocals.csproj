@@ -14,6 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\AccountViews\ForgotPassword.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
     <None Remove="Assets\carRepairPin.png" />
     <None Remove="Assets\foodpin.png" />
@@ -91,6 +95,10 @@
 	</Resource>
 	  <Resource Include="Assets\vendor.png" />
     
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\AccountVM\" />
   </ItemGroup>
   
 

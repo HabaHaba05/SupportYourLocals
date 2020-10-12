@@ -69,7 +69,7 @@ namespace SuppLocals.Views
                 DragMove();
         }
 
-        private void usernameTextChangedEventHandler(object sender, TextChangedEventArgs args)
+        private void UsernameTextChangedEventHandler(object sender, TextChangedEventArgs args)
         {
             if (string.IsNullOrWhiteSpace(Username.Text) || string.IsNullOrWhiteSpace(PasswordBox.Password.ToString()))
             {
@@ -81,7 +81,7 @@ namespace SuppLocals.Views
             }
         }
 
-        private void passwordTextChangedEventHandler(object sender, RoutedEventArgs args)
+        private void PasswordTextChangedEventHandler(object sender, RoutedEventArgs args)
         {
             if (string.IsNullOrWhiteSpace(PasswordBox.Password.ToString()) || string.IsNullOrWhiteSpace(Username.Text))
             {
@@ -91,6 +91,15 @@ namespace SuppLocals.Views
             {
                 loginBtn.IsEnabled = true;
             }
+        }
+
+
+
+        private void Hyperlinky_Click(object sender, RoutedEventArgs e)
+        {
+            ForgotPassword forgotPassword = new ForgotPassword();
+            forgotPassword.Show();
+            Close();
         }
 
     }
