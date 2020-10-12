@@ -29,10 +29,11 @@ namespace SuppLocals.ViewModels
 
         private double _circleRadius;
 
-
         private LocationCollection _routeLine;
 
         private Visibility _selectedVendorInfoGrid = Visibility.Collapsed;
+
+        private double _zoomLevel = 12;
 
         #endregion
 
@@ -83,7 +84,9 @@ namespace SuppLocals.ViewModels
             set
             {
                 _routeLine = value;
+                ZoomLevel += 0.01;
                 NotifyPropertyChanged("RouteLine");
+                ZoomLevel -= 0.01;
             }
         }
 
@@ -138,6 +141,16 @@ namespace SuppLocals.ViewModels
             {
                 _selectedVendorInfoGrid = value;
                 NotifyPropertyChanged("SelectedVendorInfoGrid");
+            }
+        }
+
+        public double ZoomLevel
+        {
+            get { return _zoomLevel; }
+            set
+            {
+                _zoomLevel = value;
+                NotifyPropertyChanged("ZoomLevel");
             }
         }
 

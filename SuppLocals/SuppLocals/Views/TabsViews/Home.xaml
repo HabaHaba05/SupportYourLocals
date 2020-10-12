@@ -81,12 +81,12 @@
 
         <!--Map-->
         <m:Map x:Name="MyMap" Grid.Column="0"
-               Mode="Road" Center="54.68,25.27" ZoomLevel="12">
+               Mode="Road" Center="54.68,25.27" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}">
 
             <m:MapLayer x:Name="CircleLayer"/>
 
             <m:MapLayer>
-                <m:MapPolyline Locations="{Binding RouteLine, Mode=TwoWay}" Stroke="Green" Opacity="0.85" StrokeThickness="5" />
+                <m:MapPolyline Locations="{Binding RouteLine, UpdateSourceTrigger=PropertyChanged}" Stroke="Green" Opacity="0.85" StrokeThickness="5" />
             </m:MapLayer>
 
             <m:MapLayer>
