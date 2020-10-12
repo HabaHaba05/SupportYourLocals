@@ -11,17 +11,12 @@ using System.Windows.Navigation;
 using System.Diagnostics;
 using System.Linq;
 using SuppLocals.ViewModels;
-using Microsoft.Win32;
-using System.Windows.Media.Imaging;
 using SuppLocals.Views.AccountViews;
 
 namespace SuppLocals.Views
 {
-
     public partial class MainWindow : Window
     {
-
-
         //The user
         public User ActiveUser;
 
@@ -33,7 +28,12 @@ namespace SuppLocals.Views
             ActiveUser = user;
             ProfileUser.Text = ActiveUser.Username;
 
-            DataContext = new HomeVM(this,ActiveUser);
+            DataContext = new HomeVM(this, ActiveUser);
+
+            if (ActiveUser.Username != "Anonimas")
+            {
+                ProfileSettings.ShowImage(MyImage, ActiveUser);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -93,16 +93,17 @@ namespace SuppLocals.Views
             if (ProfilePan.Visibility == Visibility.Collapsed)
             {
                 ProfilePan.Visibility = Visibility.Visible;
-                profileButton.Background = new SolidColorBrush(Color.FromRgb(250, 250, 249));
 
                 if(ActiveUser.Username == "Anonimas")
                 {
+                    profileButton.Background = new SolidColorBrush(Color.FromRgb(250, 250, 249));
                     LogOutPanel.Visibility = Visibility.Hidden;
                     SignInPanel.Visibility = Visibility.Visible;
                 }
 
                 else 
                 {
+                    profileButton1.Background = new SolidColorBrush(Color.FromRgb(250, 250, 249));
                     SignInPanel.Visibility = Visibility.Hidden;
                     LogOutPanel.Visibility = Visibility.Visible; 
                 }
@@ -111,6 +112,7 @@ namespace SuppLocals.Views
             {
                 ProfilePan.Visibility = Visibility.Collapsed;
                 profileButton.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
+                profileButton1.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
             }
         }
 
@@ -126,10 +128,23 @@ namespace SuppLocals.Views
         private void ProfileSettingsClicked(object sender, RoutedEventArgs e)
         {
             ProfileSettings profile = new ProfileSettings(ActiveUser);
-            profile.Show();
             ProfilePan.Visibility = Visibility.Collapsed;
+            profile.Show();
         }
 
+        private void LogOutClicked(object sender, RoutedEventArgs e)
+        {
+            User user = new User
+            {
+                Username = "Anonimas",
+                VendorsCount = 0,
+                HashedPsw = ""
+            };
+
+            MainWindow map = new MainWindow(user);
+            map.Show();
+            Close();
+        }
 
         private void SignInClicked(object sender, RoutedEventArgs e)
         {
@@ -140,5 +155,4 @@ namespace SuppLocals.Views
 
         #endregion
     }
-
 }

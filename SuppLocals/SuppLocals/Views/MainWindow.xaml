@@ -7,6 +7,7 @@
         xmlns:views="clr-namespace:SuppLocals.Views"
         xmlns:local="clr-namespace:SuppLocals"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        
         mc:Ignorable="d"
         Height="450" Width="800" Background="#CCBA8B"
         WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
@@ -83,7 +84,7 @@
                 <Button Uid="1" Width="120" Content="VENDORS" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="2" Width="120" Content="FAQ" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="3" Width="120" Content="ABOUT" Height="40"  HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
-                <Button x:Name="profileButton" Width="35" Height="35" HorizontalAlignment="Left" Visibility="Visible" Margin="10 5 5 5" Background="Transparent" Click="ProfileClicked">
+                <Button x:Name="profileButton" Width="40" Height="40" HorizontalAlignment="Left" Visibility="Visible" Margin="0 5 5 5" Background="Transparent" Click="ProfileClicked">
                     <Image Source="/Assets/profile.png"/>
                 </Button>
             </StackPanel>
@@ -94,12 +95,14 @@
                 <Button Uid="1" Width="120" Content="MY SERVICES" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="2" Width="120" Content="ADD SERVICE" Height="40" HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
                 <Button Uid="3" Width="120" Content="ABOUT" Height="40"  HorizontalContentAlignment="Center" Background="{x:Null}" FontSize="17" BorderBrush="{x:Null}" Click="TabClicked"/>
-                <Button Width="35" Height="35" HorizontalAlignment="Left" Visibility="Visible" Margin="10 5 5 5" Background="Transparent" Click="ProfileClicked">
-                    <Image x:Name="MyImage" Source="/Assets/profile.png"/>
+                <Button x:Name="profileButton1" Width="40" Height="40" HorizontalAlignment="Left" Visibility="Visible" Margin="0 5 5 5" Background="Transparent" Click="ProfileClicked">
+                    <Ellipse Width="35" Height="35">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="MyImage"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
                 </Button>
             </StackPanel>
-
-
 
             <Grid x:Name="TabCursor" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0 0 0 10"  Width="115" Height="3" Background="Black">
                 <Grid.RenderTransform>
@@ -127,7 +130,8 @@
                     
                     <Button Content="Profile Settings" Click="ProfileSettingsClicked"
                             HorizontalAlignment="Center" Width="120" Height="25" Margin="5 30 5 30"/>
-                    <Button Content="Log Out" Width="70" Height="25" VerticalAlignment="Bottom" Margin="0 90 0 10"/>
+                    <Button Content="Log Out" Width="70" Height="25" Click="LogOutClicked" 
+                            VerticalAlignment="Bottom" Margin="0 90 0 10"/>
                 </Grid>
 
             </Grid>

@@ -69,7 +69,8 @@ namespace SuppLocals.Views
             {
                 Username = username,
                 HashedPsw = BC.HashPassword(password),
-                VendorsCount = 0
+                VendorsCount = 0,
+                Email = email
             };
 
             db.Users.Add(newUser);
