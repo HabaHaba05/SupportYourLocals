@@ -9,23 +9,24 @@ namespace SuppLocals
 {
     public class EmailSender : SignUp
     {
+       
         
+
         public EmailSender()
         {
-            
         }
 
         
 
-        public void SendEmail(string email)
+        public void SendEmail(string email, string code)
         {
             var fromAddress = new MailAddress(email, "From Person");
-            var toAddress = new MailAddress("dddd", "To Person");
+            var toAddress = new MailAddress("age@gmail.com", "To Person");
 
             
-            const string fromPassword = "assssds";
+            const string fromPassword = "pass";
             const string subject = "Locals to Locals";
-            string body = "This is temporary code to login: ";
+            string body = "This is temporary code to login: " + code;
 
             using var smtp = new SmtpClient
             {
@@ -61,4 +62,6 @@ namespace SuppLocals
 
  
     } 
+    
 }
+    

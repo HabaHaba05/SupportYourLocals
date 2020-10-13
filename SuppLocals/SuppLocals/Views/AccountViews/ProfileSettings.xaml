@@ -60,6 +60,8 @@
                              x:Name="OldPass"
                              Background="Transparent" 
                              BorderThickness="0"
+                    
+                
                     />
             </Border>
 

@@ -8,11 +8,16 @@ namespace SuppLocals.Views
     public partial class CodeInput : Window
     {
         public User ActiveUser;
+        public string Email;
+        public string Code;
+ 
 
-
-        public CodeInput(User user)
+        public CodeInput(User user, string email , string code)
         {
+            
             ActiveUser = user;
+            Email = email;
+            Code = code;
             InitializeComponent();
         }
 
@@ -21,7 +26,7 @@ namespace SuppLocals.Views
             EmailSender emailSender = new EmailSender();
 
 
-            if ("" == CodeTextBox.Text)
+            if (Code == CodeTextBox.Text)
             {
 
                 MainWindow map = new MainWindow(ActiveUser);
@@ -30,7 +35,7 @@ namespace SuppLocals.Views
             }
             else
             {
-                MessageBox.Show("");
+                MessageBox.Show(Code);
             }
 
         }
@@ -48,6 +53,7 @@ namespace SuppLocals.Views
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
+
 
     }
 }
