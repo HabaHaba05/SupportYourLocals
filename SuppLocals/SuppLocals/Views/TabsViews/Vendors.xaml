@@ -19,7 +19,39 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="1" Text="DISCOVER ALL VENDORS" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 10 10 10"/>
-        
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding UserList}"
+                  Name ="ListView2"
+                  Background="#CCBA8B"
+                  BorderThickness="0"
+                  HorizontalAlignment="Center"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  HorizontalContentAlignment="Left" Width="480" Grid.Column="1" Foreground="Black">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="User" DisplayMemberBinding="{Binding Username}"  Width="400">
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Background" Value="#B59A56"/>
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Marketplaces" DisplayMemberBinding="{Binding VendorsCount}" Width="75">
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Background" Value="#B59A56"/>
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <EventSetter Event="PreviewMouseLeftButtonUp" Handler="ListViewItem_PreviewMouseLeftButtonDown"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
 
     </Grid>
 </UserControl>
