@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace SuppLocals
 {
@@ -36,7 +37,6 @@ namespace SuppLocals
             if (_vendor.UserID == _user.ID)
             {
                 CanComment = Visibility.Hidden;
-
             }
             else
             {
@@ -46,6 +46,7 @@ namespace SuppLocals
             PopulateData();
         }
 
+        #region ReviewMethods
 
         // Adding user comment when button pressed
         private void ConfirmClicked(object sender, RoutedEventArgs e)
@@ -122,23 +123,33 @@ namespace SuppLocals
                 {
                     _average = 0;
                 }
-
                 rView.Items.Add(review.SenderUsername + " " + STARS[review.Stars] + "\n" + review.Text + "\n" + review.Date);
             }
 
             UpdateRatingCounts();
         }
+        #endregion
 
-        public Visibility ReplyVisibility { get; set; }
-
-
-
-        private void ReplyClicked(object sender, RoutedEventArgs e)
+        #region ReplyMethods
+        private void PostComment(object sender, RoutedEventArgs e)
         {
-            ListView i = rView;
-          
+            Button btn = (Button)sender;
+            TextBox replyBox = ((Grid)btn.Parent).FindName("ReplyTextBox") as TextBox;
+
+            TextBlock comment = ((Grid)btn.Parent).FindName("UserComment") as TextBlock;
+            TextBlock commenter = ((Grid)btn.Parent).FindName("Commenter") as TextBlock;
+
+            Grid replyGrid = ((Grid)btn.Parent).FindName("ReplyGrid") as Grid;
+            Border commentGrid = ((Grid)btn.Parent).FindName("CommentGrid") as Border;
+
+            var fullComment = replyBox.Text + "\n" + DateTime.Now.ToString("yyyy-MM-dd");
+
+            replyGrid.Visibility = Visibility.Collapsed;
+            commentGrid.Visibility = Visibility.Visible;
+
+            commenter.Text = _user.Username;
+            comment.Text = fullComment; 
         }
-
-
+        #endregion
     }
 }

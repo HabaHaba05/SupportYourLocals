@@ -126,6 +126,7 @@ namespace SuppLocals.Views
         {
             ProfileSettings profile = new ProfileSettings(ActiveUser);
             ProfilePan.Visibility = Visibility.Collapsed;
+            profileButton1.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
             profile.ShowDialog();
             MyImage.ImageSource = ActiveUser.GetProfileImage();
         }
