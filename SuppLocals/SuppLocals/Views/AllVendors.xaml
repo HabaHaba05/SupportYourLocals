@@ -11,7 +11,7 @@
                   Name="listView"
                   ItemsSource="{Binding VendorList}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  Background="Transparent" HorizontalAlignment="Center" Width="653" BorderThickness="0" Foreground="Black">
+                  Background="Transparent" HorizontalAlignment="Center" Width="653" Foreground="Black" BorderBrush="Black">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Title" Width="200">

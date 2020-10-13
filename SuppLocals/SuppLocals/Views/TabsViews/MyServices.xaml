@@ -7,12 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="340" d:DesignWidth="800">
     <Grid Background="#CCBA8B">
-        <ListView Margin="115,36,115,36" x:Name="vendorListView" 
+        <ListView Margin="40,36,40,36" x:Name="vendorListView" 
                   ItemsSource="{Binding VendorList}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  Background="#CCBA8B" Foreground="Black" BorderThickness="0">
+                  Background="#CCBA8B" Foreground="Black" BorderBrush="Black">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Title" Width="200" DisplayMemberBinding ="{Binding Title}">
+                    <GridViewColumn Header="Title" Width="250" DisplayMemberBinding ="{Binding Title}">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>
@@ -25,7 +25,7 @@
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Header="About" Width="280">
+                    <GridViewColumn Header="About" Width="380">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding Path= About, Mode=TwoWay}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
@@ -43,7 +43,7 @@
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Width="56">
+                    <GridViewColumn Width="70">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>

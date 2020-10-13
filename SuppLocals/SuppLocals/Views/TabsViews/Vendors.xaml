@@ -23,20 +23,19 @@
                   ItemsSource="{Binding UserList}"
                   Name ="ListView2"
                   Background="#CCBA8B"
-                  BorderThickness="0"
-                  HorizontalAlignment="Center"
+                  HorizontalAlignment="Right"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  HorizontalContentAlignment="Left" Width="480" Grid.Column="1" Foreground="Black">
+                  HorizontalContentAlignment="Center"  Width="720" Grid.Column="1" Foreground="Black" BorderBrush="Black" Margin="0,0,10,10" Grid.RowSpan="2" RenderTransformOrigin="0.439,0.411">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="User" DisplayMemberBinding="{Binding Username}"  Width="400">
+                    <GridViewColumn Header="Vendor" DisplayMemberBinding="{Binding Username}"  Width="625">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Header="Marketplaces" DisplayMemberBinding="{Binding VendorsCount}" Width="75">
+                    <GridViewColumn Header="Marketplaces" DisplayMemberBinding="{Binding VendorsCount}" Width="100">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>
