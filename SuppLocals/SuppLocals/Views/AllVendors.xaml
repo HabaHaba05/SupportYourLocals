@@ -1,0 +1,89 @@
+﻿<Window x:Class="SuppLocals.Views.AllVendors"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SuppLocals.Views"
+        mc:Ignorable="d"
+        Title="All user vendors" Height="450" Width="800">
+    <Grid Background="#CCBA8B">
+        <ListView Margin="0,71,0,71"
+                  Name="listView"
+                  ItemsSource="{Binding VendorList}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent" HorizontalAlignment="Center" Width="700" Foreground="Black" BorderBrush="Black">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Title" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path= title, Mode=TwoWay}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Background" Value="#B59A56"/>
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="TextElement.Foreground" Value="Black"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
+                    </GridViewColumn>
+                    <GridViewColumn Header="About" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding about}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Background" Value="#B59A56"/>
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="TextElement.Foreground" Value="Black"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Address" Width="170">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding adress}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Background" Value="#B59A56"/>
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="TextElement.Foreground" Value="Black"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Vendor type" DisplayMemberBinding="{Binding vendorType}" Width="130">
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Background" Value="#B59A56"/>
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="TextElement.Foreground" Value="Black"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
