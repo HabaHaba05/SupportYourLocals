@@ -30,6 +30,11 @@
                 <Setter Property="Foreground" Value="White" />
                 <Setter Property="Background" Value="Gray" />
             </Trigger>
+
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="Background" Value="#B0B0B0" />
+            </Trigger>
         </Style.Triggers>
     </Style>
 
