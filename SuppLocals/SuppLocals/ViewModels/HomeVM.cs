@@ -1,12 +1,18 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SuppLocals.Classes.Enums;
 using SuppLocals.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Windows.UI.Xaml.Media.Animation;
 using Location = Microsoft.Maps.MapControl.WPF.Location;
 
 namespace SuppLocals.ViewModels
@@ -34,6 +40,9 @@ namespace SuppLocals.ViewModels
         private Visibility _selectedVendorInfoGrid = Visibility.Collapsed;
 
         private double _zoomLevel = 12;
+
+        private ObservableCollection<County> _counties;
+
 
         #endregion
 
@@ -154,11 +163,22 @@ namespace SuppLocals.ViewModels
             }
         }
 
+        public ObservableCollection<County> Counties
+        {
+            get { return _counties; }
+            private set
+            {
+                _counties = value;
+                NotifyPropertyChanged("Counties");
+            }
+        }
+
+
         #endregion
+
 
         #region Commands
 
-        #region public
         public RelayCommand FindRouteBtnClick {get; private set;}    
 
         public RelayCommand HideBtnClick {get; private set;}
@@ -166,13 +186,14 @@ namespace SuppLocals.ViewModels
         public RelayCommand ReviewBtnClick { get; private set; }
 
         #endregion
-        #endregion
 
         #region Constructor
         public HomeVM(Window window, User user)
         {
             this.mainWindow = window;
             this.activeUser = user;
+
+            LoadCounties();
 
             using (VendorsDbTable db = new VendorsDbTable())
             {
@@ -193,6 +214,7 @@ namespace SuppLocals.ViewModels
                 o => true
             ); ;
         }
+
 
         #endregion
 
@@ -241,6 +263,39 @@ namespace SuppLocals.ViewModels
 
         #endregion
 
+
+        #region Counties layers
+
+
+        private void LoadCounties()
+        {
+            List<County> lcnt = new List<County>();
+
+            foreach(var name in Enum.GetNames(typeof(CountiesNames)))
+            {
+                lcnt.Add(ParseJsons($"/Assets/CountiesJsons/{name}County.json"));
+            }
+
+            Counties = new ObservableCollection<County>(lcnt);
+
+        }
+
+        private County ParseJsons(string filePath)
+        {
+            JObject o1 = JObject.Parse(File.ReadAllText((string)(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent + filePath)));
+            var locations = o1.SelectToken("locations");
+
+            LocationCollection locColl = new LocationCollection();
+
+            for (int i = 0; i < locations.Count(); i++)
+            {
+                locColl.Add(new Location((double)locations[i][1], (double)locations[i][0]));
+            }
+
+            return new County(locColl);
+        }
+
+        #endregion
 
     }
 }
