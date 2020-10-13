@@ -20,14 +20,13 @@ namespace SuppLocals.Views.AccountViews
 
         
         private string imageName;
-        private string strName;
 
         public ProfileSettings(User user)
         {
             InitializeComponent();
 
             ActiveUser = user;
-            ShowImage(profileImage, ActiveUser);
+            profileImage.ImageSource = ActiveUser.GetProfileImage();
         }
 
 
@@ -35,12 +34,13 @@ namespace SuppLocals.Views.AccountViews
         {
             try
             {
-                FileDialog fldlg = new OpenFileDialog();
-                fldlg.InitialDirectory = Environment.SpecialFolder.MyPictures.ToString();
-                fldlg.Filter = "Image File (*.jpg;*.png;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
+                FileDialog fldlg = new OpenFileDialog
+                {
+                    InitialDirectory = Environment.SpecialFolder.MyPictures.ToString(),
+                    Filter = "Image File (*.jpg;*.png;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif"
+                };
                 fldlg.ShowDialog();
                 {
-                    strName = fldlg.SafeFileName;
                     imageName = fldlg.FileName;
                     ImageSourceConverter isc = new ImageSourceConverter();
                     profileImage.SetValue(Image.SourceProperty, isc.ConvertFromString(imageName));
@@ -49,8 +49,8 @@ namespace SuppLocals.Views.AccountViews
                 fldlg = null;
 
                 InsertImageData();
+                profileImage.ImageSource = ActiveUser.GetProfileImage();
 
-                ShowImage(profileImage, ActiveUser);
             }
             catch (Exception ex)
             {
@@ -114,26 +114,6 @@ namespace SuppLocals.Views.AccountViews
             Close();
         }
 
-        public static void ShowImage(ImageBrush brush, User ActiveUser)
-        {
-            using UsersDbTable db = new UsersDbTable();
-
-            //Store binary data read from the database in a byte array
-            byte[] blob = db.Users.Single(x => x.ID == ActiveUser.ID).Image;
-
-            if (blob == null)
-            {
-               brush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Assets/profile.png"));
-            }
-            else
-            {
-                var bi = new BitmapImage();
-                bi.BeginInit();
-                bi.StreamSource = new MemoryStream(blob);
-                bi.EndInit();
-                brush.ImageSource = bi;
-            }
-        }
 
         private void InsertImageData()
         {
@@ -158,6 +138,7 @@ namespace SuppLocals.Views.AccountViews
                         var user = db.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
 
                         user.Image = imgByteArr;
+                        ActiveUser.Image = imgByteArr;
 
                         db.SaveChanges();
                     }

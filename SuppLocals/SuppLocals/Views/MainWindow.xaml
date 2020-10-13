@@ -16,7 +16,7 @@
         
         <!-- Tab views templates-->
         <DataTemplate x:Name="HomeTemplate" DataType="{x:Type viewModels:HomeVM}">
-            <views:Home DataContext="{Binding}"/>
+            <views:Home  DataContext="{Binding}"/>
         </DataTemplate>
         <DataTemplate x:Name="VendorsTemplate" DataType="{x:Type viewModels:VendorsVM}">
             <views:Vendors DataContext="{Binding}"/>

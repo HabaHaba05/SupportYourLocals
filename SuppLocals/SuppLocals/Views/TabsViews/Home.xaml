@@ -81,17 +81,12 @@
 
         <!--Map-->
         <m:Map x:Name="MyMap" Grid.Column="0"
-               Mode="Road" Center="54.68,25.27" ZoomLevel="12">
+               Mode="Road" Center="54.68,25.27" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}">
+
+            <m:MapLayer x:Name="CircleLayer"/>
 
             <m:MapLayer>
-                <m:MapPolygon Fill="AliceBlue" Stroke="Black" 
-                              StrokeThickness="1" Opacity="0.65"
-                              Locations="{Binding Circle , UpdateSourceTrigger=PropertyChanged}"
-                              />
-            </m:MapLayer>
-            
-            <m:MapLayer>
-                <m:MapPolyline Locations="{Binding RouteLine, Mode=TwoWay}" Stroke="Green" Opacity="0.85" StrokeThickness="5" />
+                <m:MapPolyline Locations="{Binding RouteLine, UpdateSourceTrigger=PropertyChanged}" Stroke="Green" Opacity="0.85" StrokeThickness="5" />
             </m:MapLayer>
 
             <m:MapLayer>
@@ -192,7 +187,7 @@
                 <StackPanel Margin="5 5 5 0" Visibility="{Binding Path=UseDistanceFilter, Converter={StaticResource BoolToVis}}">
                     <TextBox TextAlignment="Center" Text="{Binding CircleRadius , StringFormat=N2 }"/>
                     <Slider x:Name="RadiusSlider" Minimum="0" Maximum="200" Value="{Binding CircleRadius}"
-                            Cursor="Hand" TickPlacement="None"/>
+                            Cursor="Hand" TickPlacement="None" ValueChanged="RadiusSlider_ValueChanged"/>
                     <DockPanel>
                         <TextBlock TextAlignment="Left" Text="{Binding ElementName=RadiusSlider , Path=Minimum}"> km.</TextBlock>
                         <TextBlock TextAlignment="Right" Text="{Binding ElementName=RadiusSlider , Path=Maximum}"> km.</TextBlock>

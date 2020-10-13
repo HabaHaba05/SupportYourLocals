@@ -14,8 +14,8 @@ namespace SuppLocals.ViewModels
     public class HomeVM : BaseViewModel
     {
         private readonly Window mainWindow;
-        private readonly User user;
         private readonly List<Vendor> allVendorsList;
+        public readonly User activeUser;
 
 
         #region Private props
@@ -29,12 +29,11 @@ namespace SuppLocals.ViewModels
 
         private double _circleRadius;
 
-
         private LocationCollection _routeLine;
 
-        private ObservableCollection<Location> _circle;
-
         private Visibility _selectedVendorInfoGrid = Visibility.Collapsed;
+
+        private double _zoomLevel = 12;
 
         #endregion
 
@@ -47,7 +46,6 @@ namespace SuppLocals.ViewModels
             {
                 _circleRadius = value;
                 ResetToNulls();
-                UpdateCircle();
                 UpdateVendorsList();
                 NotifyPropertyChanged("CircleRadius");
             }
@@ -86,7 +84,9 @@ namespace SuppLocals.ViewModels
             set
             {
                 _routeLine = value;
+                ZoomLevel += 0.01;
                 NotifyPropertyChanged("RouteLine");
+                ZoomLevel -= 0.01;
             }
         }
 
@@ -134,16 +134,6 @@ namespace SuppLocals.ViewModels
             }
         }
 
-        public ObservableCollection<Location> Circle
-        {
-            get { return _circle; }
-            set
-            {
-                _circle = value;
-                NotifyPropertyChanged("Circle");
-            }
-        }
-
         public Visibility SelectedVendorInfoGrid
         {
             get { return _selectedVendorInfoGrid; }
@@ -151,6 +141,16 @@ namespace SuppLocals.ViewModels
             {
                 _selectedVendorInfoGrid = value;
                 NotifyPropertyChanged("SelectedVendorInfoGrid");
+            }
+        }
+
+        public double ZoomLevel
+        {
+            get { return _zoomLevel; }
+            set
+            {
+                _zoomLevel = value;
+                NotifyPropertyChanged("ZoomLevel");
             }
         }
 
@@ -172,7 +172,7 @@ namespace SuppLocals.ViewModels
         public HomeVM(Window window, User user)
         {
             this.mainWindow = window;
-            this.user = user;
+            this.activeUser = user;
 
             using (VendorsDbTable db = new VendorsDbTable())
             {
@@ -204,42 +204,32 @@ namespace SuppLocals.ViewModels
             {
                 await GetLiveLocation();
             }
-            else
-            {
-                Circle = null;
-            }
-            UpdateVendorsList();
 
+            UpdateVendorsList();
         }
 
         private void UpdateVendorsList()
         {
             if (VendorTypeSelected.ToString() == "ALL")
             {
-                VendorsList = allVendorsList.Where(x => !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(user.Location, x.Location) <= CircleRadius).ToList();
+                VendorsList = allVendorsList.Where(x => !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(activeUser.Location, x.Location) <= CircleRadius).ToList();
             }
             else
             {
                 VendorsList = allVendorsList.Where(x =>
-                        (x.VendorType == VendorTypeSelected.ToString()) && (!_useDistanceFilter || MapMethods.DistanceBetweenPlaces(user.Location, x.Location) <= CircleRadius)).ToList();
+                        (x.VendorType == VendorTypeSelected.ToString()) && (!_useDistanceFilter || MapMethods.DistanceBetweenPlaces(activeUser.Location, x.Location) <= CircleRadius)).ToList();
             }
         }
 
         private async Task GetLiveLocation()
         {
-            user.Location ??= await MapMethods.GetLiveLocation(mainWindow);
-        }
-
-        private void UpdateCircle()
-        {
-            Circle = MapMethods.GetCircleVertices(user.Location, _circleRadius);
-            
+            activeUser.Location ??= await MapMethods.GetLiveLocation(mainWindow);
         }
 
         private async void CalcRoute()
         {
             await GetLiveLocation();
-            RouteLine = MapMethods.GetRoute(user.Location, _selectedVendor.Location);
+            RouteLine = MapMethods.GetRoute(activeUser.Location, _selectedVendor.Location);
         }
 
         private void ResetToNulls()

@@ -1,6 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
+using System.Windows.Media.Imaging;
 using Microsoft.Maps.MapControl.WPF;
 
 namespace SuppLocals
@@ -30,6 +33,26 @@ namespace SuppLocals
         public int VendorsCount { get; set; }
 
         #endregion
+
+
+        public BitmapImage GetProfileImage()
+        {
+            if (Image == null)
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Assets/profile.png"));
+            }
+            else
+            {
+                var bi = new BitmapImage();
+                bi.BeginInit();
+                bi.StreamSource = new MemoryStream(Image);
+                bi.EndInit();
+
+                return bi;
+            }
+        } 
+
+
     }
 
 }
