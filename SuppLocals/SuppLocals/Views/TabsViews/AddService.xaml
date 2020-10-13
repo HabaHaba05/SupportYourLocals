@@ -16,6 +16,7 @@
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="White" />
             <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontFamily" Value="Tahoma" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -41,8 +42,24 @@
         </Style>
 
 
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Left" Width="16" Height="16" VerticalAlignment="Center" Margin="180 5 0 0">
+                                <Ellipse Width="16" Height="16" Fill="Red"/>
+                                <Ellipse Width="3" Height="8" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 2 0 0" Fill="White"/>
+                                <Ellipse Width="2" Height="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 2" Fill="White"/>
+                            </Grid>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
-    
+
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -93,7 +110,7 @@
                         <TextBox x:Name="AddressTB" Width="200" ToolTip="{Binding ErrorCollection[Address]}"
                                  Text="{Binding Address, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged }" 
                                  Height="{Binding ElementName=TitleTB , Path=ActualHeight}">
-                            
+
                         </TextBox>
                         <ScrollViewer x:Name="AddressSuggest"  Visibility="{Binding VisisbleSuggestions}"
                                       Width="{Binding ElementName=AddressTB, Path=ActualWidth}"
@@ -156,4 +173,7 @@
 
 
     </Grid>
+
+
+
 </UserControl>
