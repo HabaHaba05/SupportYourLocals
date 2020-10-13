@@ -32,6 +32,8 @@ namespace SuppLocals
 
         public int VendorsCount { get; set; }
 
+        public string Email { get; set; }
+
         #endregion
 
 
