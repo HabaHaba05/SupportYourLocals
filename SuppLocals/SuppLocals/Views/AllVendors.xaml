@@ -11,7 +11,7 @@
                   Name="listView"
                   ItemsSource="{Binding VendorList}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  Background="Transparent" HorizontalAlignment="Center" Width="653" Foreground="Black" BorderBrush="Black">
+                  Background="Transparent" HorizontalAlignment="Center" Width="700" Foreground="Black" BorderBrush="Black">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Title" Width="200">
@@ -50,7 +50,7 @@
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Header="Address" Width="150">
+                    <GridViewColumn Header="Address" Width="170">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding adress}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
@@ -68,7 +68,7 @@
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Header="Vendor type" DisplayMemberBinding="{Binding vendorType}" Width="105">
+                    <GridViewColumn Header="Vendor type" DisplayMemberBinding="{Binding vendorType}" Width="130">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>

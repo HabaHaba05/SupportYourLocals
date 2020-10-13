@@ -8,9 +8,9 @@
    d:DesignHeight="340" d:DesignWidth="800">
     <Grid Background="#CCBA8B">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -23,12 +23,12 @@
                   ItemsSource="{Binding UserList}"
                   Name ="ListView2"
                   Background="#CCBA8B"
-                  HorizontalAlignment="Right"
+                  HorizontalAlignment="Center"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  HorizontalContentAlignment="Center"  Width="720" Grid.Column="1" Foreground="Black" BorderBrush="Black" Margin="0,0,10,10" Grid.RowSpan="2" RenderTransformOrigin="0.439,0.411">
+                  HorizontalContentAlignment="Center"  Width="700" Grid.Column="1" Foreground="Black" BorderBrush="Black" Margin="0,0,0,10" Grid.RowSpan="2" RenderTransformOrigin="0.439,0.411">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Vendor" DisplayMemberBinding="{Binding Username}"  Width="625">
+                    <GridViewColumn Header="Vendor" DisplayMemberBinding="{Binding Username}"  Width="600">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>
