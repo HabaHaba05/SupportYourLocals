@@ -12,18 +12,18 @@ namespace SuppLocals.Views
     /// </summary>
     public partial class Home : UserControl
     {
-        private User activeUser;
+        private User _activeUser;
 
         public Home()
         {
             //By default
             InitializeComponent();
-            MyMap.CredentialsProvider = Config.BING_API_KEY;
+            MyMap.CredentialsProvider = Config.Bing_Api_Key;
         }
 
         private void Pushpin_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var selectedVendor = (sender as FrameworkElement).DataContext as Vendor;
+            var selectedVendor = (sender as FrameworkElement)?.DataContext as Vendor;
             SelectedServiceInfoGrid.Visibility = Visibility.Visible;
             var x = (HomeVM)this.DataContext;
             x.SelectedVendor = selectedVendor;
@@ -31,11 +31,11 @@ namespace SuppLocals.Views
 
         private void RadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            activeUser ??= ((HomeVM)this.DataContext).activeUser;
+            _activeUser ??= ((HomeVM)this.DataContext).ActiveUser;
 
-            LocationCollection circleVertices = MapMethods.GetCircleVertices(activeUser.Location, RadiusSlider.Value);
+            var circleVertices = MapMethods.GetCircleVertices(_activeUser.Location, RadiusSlider.Value);
 
-            MapPolygon circle = new MapPolygon
+            var circle = new MapPolygon
             {
                 Fill = new SolidColorBrush(Colors.AliceBlue),
                 Stroke = new SolidColorBrush(Colors.Black),
@@ -46,7 +46,6 @@ namespace SuppLocals.Views
 
             CircleLayer.Children.Clear();
             CircleLayer.Children.Add(circle);
-
         }
     }
 }

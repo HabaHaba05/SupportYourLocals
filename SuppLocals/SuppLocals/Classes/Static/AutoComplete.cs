@@ -1,41 +1,40 @@
-﻿
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace SuppLocals { 
+namespace SuppLocals
+{
     public static class AutoComplete
     {
-
         //Method to get JSON from google API
         public static async Task<List<string>> GetData(string query)
         {
-            List<string> data = new List<string>();
+            var data = new List<string>();
 
             try
             {
-                string uri = Config.host + Config.path + "?input=" + query + "&types=geocode&language=lt&components=country:lt&key=" + Config.GOOGLE_API_KEY;
+                var uri = Config.Host + Config.Path + "?input=" + query +
+                          "&types=geocode&language=lt&components=country:lt&key=" + Config.Google_Api_Key;
 
-                HttpClient client = new HttpClient();
-                HttpResponseMessage response = await client.GetAsync(uri);
+                var client = new HttpClient();
+                var response = await client.GetAsync(uri);
                 response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
+                var responseBody = await response.Content.ReadAsStringAsync();
 
-                JObject o = JObject.Parse(responseBody);
+                var o = JObject.Parse(responseBody);
 
 
-                JObject jObj = (JObject)JsonConvert.DeserializeObject(responseBody);
+                var jObj = (JObject) JsonConvert.DeserializeObject(responseBody);
                 var ob = jObj["predictions"];
-                int count = ob.Count();
+                var count = ob.Count();
 
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
-                    data.Add((string)o.SelectToken("predictions[" + i + "].description"));
+                    data.Add((string) o.SelectToken("predictions[" + i + "].description"));
                 }
 
                 return data;
@@ -47,6 +46,5 @@ namespace SuppLocals {
 
             return data;
         }
-
     }
 }

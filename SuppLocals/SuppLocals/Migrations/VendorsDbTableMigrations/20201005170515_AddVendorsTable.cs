@@ -28,8 +28,7 @@ namespace SuppLocals.Migrations.VendorsDbTableMigrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Vendors");
+            migrationBuilder.DropTable(name: "Vendors");
         }
     }
 }
