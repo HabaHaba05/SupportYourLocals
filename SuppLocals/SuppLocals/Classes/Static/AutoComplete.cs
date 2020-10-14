@@ -18,7 +18,7 @@ namespace SuppLocals
             try
             {
                 var uri = Config.Host + Config.Path + "?input=" + query +
-                          "&types=geocode&language=lt&components=country:lt&key=" + Config.GoogleApiKey;
+                          "&types=geocode&language=lt&components=country:lt&key=" + Config.Google_Api_Key;
 
                 var client = new HttpClient();
                 var response = await client.GetAsync(uri);

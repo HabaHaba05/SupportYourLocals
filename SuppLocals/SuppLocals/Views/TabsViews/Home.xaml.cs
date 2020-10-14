@@ -18,7 +18,7 @@ namespace SuppLocals.Views
         {
             //By default
             InitializeComponent();
-            MyMap.CredentialsProvider = Config.BingApiKey;
+            MyMap.CredentialsProvider = Config.Bing_Api_Key;
         }
 
         private void Pushpin_MouseUp(object sender, MouseButtonEventArgs e)

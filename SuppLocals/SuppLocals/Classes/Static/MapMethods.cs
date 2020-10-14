@@ -56,7 +56,7 @@ namespace SuppLocals
         //Returns locations collection of route points
         public static LocationCollection GetRoute(Location userLoc, Location finishLoc)
         {
-            GoogleMapProvider.Instance.ApiKey = Config.GoogleApiKey;
+            GoogleMapProvider.Instance.ApiKey = Config.Google_Api_Key;
             var route = GoogleMapProvider.Instance.GetRoute(
                 new PointLatLng(userLoc.Latitude, userLoc.Longitude),
                 new PointLatLng(finishLoc.Latitude, finishLoc.Longitude), false, false, 15);
@@ -135,7 +135,7 @@ namespace SuppLocals
             try
             {
                 var uri = Config.Host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" +
-                          Config.GoogleApiKey;
+                          Config.Google_Api_Key;
 
                 var client = new HttpClient();
                 var response = await client.GetAsync(uri);
@@ -167,7 +167,7 @@ namespace SuppLocals
             try
             {
                 var uri = Config.Host + "/maps/api/geocode/json?latlng=" + location.Latitude + "," +
-                          location.Longitude + "&language=lt&key=" + Config.GoogleApiKey;
+                          location.Longitude + "&language=lt&key=" + Config.Google_Api_Key;
 
                 var client = new HttpClient();
                 var response = await client.GetAsync(uri);

@@ -13,7 +13,7 @@ namespace SuppLocals.Views
         {
             InitializeComponent();
 
-            SelectLocMap.CredentialsProvider = Config.BingApiKey;
+            SelectLocMap.CredentialsProvider = Config.Bing_Api_Key;
 
             TypeCB.ItemsSource = Enum.GetValues(typeof(VendorType));
             TypeCB.SelectedIndex = 0;

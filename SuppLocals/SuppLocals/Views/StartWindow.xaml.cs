@@ -28,8 +28,8 @@ namespace SuppLocals.Views
 
         private void JoinClicked(object sender, RoutedEventArgs e)
         {
-            var lWindow = new Login();
-            lWindow.Show();
+            var login = new Login();
+            login.Show();
             Close();
         }
     }
