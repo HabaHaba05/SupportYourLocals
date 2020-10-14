@@ -50,15 +50,21 @@ namespace SuppLocals.Views
         private void EmailTextBoxChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(emailForForgotPassword.Text))
+            {
                 sendBtn.IsEnabled = false;
+            }
             else
+            {
                 sendBtn.IsEnabled = true;
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
+            {
                 DragMove();
+            }
         }
 
         public string GenerateRandomString()
@@ -67,7 +73,11 @@ namespace SuppLocals.Views
             var stringChars = new char[8];
             var random = new Random();
 
-            for (var i = 0; i < stringChars.Length; i++) stringChars[i] = chars[random.Next(chars.Length)];
+            for (var i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
             var finalString = new string(stringChars);
             return finalString;
         }

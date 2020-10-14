@@ -29,9 +29,13 @@ namespace SuppLocals
 
 
             if (_vendor.UserID == _user.ID)
+            {
                 CanComment = Visibility.Hidden;
+            }
             else
+            {
                 CanComment = Visibility.Visible;
+            }
 
 
             PopulateData();
@@ -95,7 +99,10 @@ namespace SuppLocals
             using var db = new ReviewsDbTable();
             _reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
 
-            for (var i = 0; i < 6; i++) _vendor.ReviewsCount[i] = 0;
+            for (var i = 0; i < 6; i++)
+            {
+                _vendor.ReviewsCount[i] = 0;
+            }
 
             foreach (var review in _reviews)
             {
@@ -104,11 +111,15 @@ namespace SuppLocals
                 number += 1;
 
                 if (sum != 0 || number != 0)
+                {
                     _average = (double) sum / number;
+                }
                 else
+                {
                     _average = 0;
-                rView.Items.Add(review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" +
-                                review.Date);
+                }
+
+                rView.Items.Add(review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" + review.Date);
             }
 
             UpdateRatingCounts();

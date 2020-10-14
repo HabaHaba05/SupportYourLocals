@@ -52,14 +52,18 @@ namespace SuppLocals
             {
                 button = children[i] as ToggleButton;
                 if (button != null)
+                {
                     button.IsChecked = true;
+                }
             }
 
             for (var i = newValue; i < children.Count; i++)
             {
                 button = children[i] as ToggleButton;
                 if (button != null)
+                {
                     button.IsChecked = false;
+                }
             }
         }
 

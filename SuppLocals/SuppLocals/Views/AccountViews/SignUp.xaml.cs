@@ -26,7 +26,7 @@ namespace SuppLocals.Views
         {
             var login = new Login();
             login.Show();
-            this.Close();
+            Close();
         }
 
         private void SignUp_ButtonClick(object sender, RoutedEventArgs e)
@@ -77,7 +77,9 @@ namespace SuppLocals.Views
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
+            {
                 DragMove();
+            }
         }
 
 
@@ -106,7 +108,7 @@ namespace SuppLocals.Views
 
         private void UsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password)
                 || UsernameTextBox.Text.Length < 5 || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
             {
                 applyBtn.IsEnabled = false;
@@ -119,8 +121,8 @@ namespace SuppLocals.Views
 
         private void PasswordBox1_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
-                ||UsernameTextBox.Text.Length < 5 || PasswordBox1.Password.ToString().Length < 8  || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password)
+                ||UsernameTextBox.Text.Length < 5 || PasswordBox1.Password.Length < 8  || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
             {
                 applyBtn.IsEnabled = false;
             }
@@ -132,7 +134,7 @@ namespace SuppLocals.Views
 
         private void EmailAdressBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password.ToString()) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password.ToString())
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password)
                 || UsernameTextBox.Text.Length < 5 || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
             {
                 applyBtn.IsEnabled = false;

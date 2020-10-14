@@ -62,24 +62,34 @@ namespace SuppLocals.Views
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
+            {
                 DragMove();
+            }
         }
 
 
         private void UsernameTextChangedEventHandler(object sender, TextChangedEventArgs args)
         {
             if (string.IsNullOrWhiteSpace(Username.Text) || string.IsNullOrWhiteSpace(PasswordBox.Password))
+            {
                 loginBtn.IsEnabled = false;
+            }
             else
+            {
                 loginBtn.IsEnabled = true;
+            }
         }
 
         private void PasswordTextChangedEventHandler(object sender, RoutedEventArgs args)
         {
             if (string.IsNullOrWhiteSpace(PasswordBox.Password) || string.IsNullOrWhiteSpace(Username.Text))
+            {
                 loginBtn.IsEnabled = false;
+            }
             else
+            {
                 loginBtn.IsEnabled = true;
+            }
         }
 
 

@@ -35,15 +35,13 @@ namespace SuppLocals
             {
                 return new BitmapImage(new Uri("pack://application:,,,/Assets/profile.png"));
             }
-            else
-            {
-                var bi = new BitmapImage();
-                bi.BeginInit();
-                bi.StreamSource = new MemoryStream(Image);
-                bi.EndInit();
 
-                return bi;
-            }
+            var bi = new BitmapImage();
+            bi.BeginInit();
+            bi.StreamSource = new MemoryStream(Image);
+            bi.EndInit();
+
+            return bi;
         }
     }
 }

@@ -39,7 +39,6 @@ namespace SuppLocals.ViewModels
                 },
                 o => true
             );
-            ;
         }
 
         #endregion
@@ -127,7 +126,11 @@ namespace SuppLocals.ViewModels
                 {
                     "ALL"
                 };
-                foreach (var type in Enum.GetValues(typeof(VendorType))) x.Add(type.ToString());
+
+                foreach (var type in Enum.GetValues(typeof(VendorType)))
+                {
+                    x.Add(type.ToString());
+                }
                 _vendorTypeSelected = x[0];
                 return x;
             }
@@ -183,7 +186,10 @@ namespace SuppLocals.ViewModels
 
         private async void UserDistanceFilterChange()
         {
-            if (_useDistanceFilter) await GetLiveLocation();
+            if (_useDistanceFilter)
+            {
+                await GetLiveLocation();
+            }
 
             UpdateVendorsList();
         }
@@ -191,14 +197,18 @@ namespace SuppLocals.ViewModels
         private void UpdateVendorsList()
         {
             if (VendorTypeSelected == "ALL")
+            {
                 VendorsList = _allVendorsList.Where(x =>
                     !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <=
                     CircleRadius).ToList();
+            }
             else
+            {
                 VendorsList = _allVendorsList.Where(x =>
                     x.VendorType == VendorTypeSelected && (!_useDistanceFilter ||
                                                            MapMethods.DistanceBetweenPlaces(ActiveUser.Location,
                                                                x.Location) <= CircleRadius)).ToList();
+            }
         }
 
         private async Task GetLiveLocation()

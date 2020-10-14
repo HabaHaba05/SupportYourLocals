@@ -61,8 +61,7 @@ namespace SuppLocals.Views.AccountViews
             var newPassword = NewPass.Password;
             var newPasswordConfirm = ConfirmNewPass.Password;
 
-            if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword) ||
-                string.IsNullOrWhiteSpace(newPasswordConfirm))
+            if (string.IsNullOrWhiteSpace(oldPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(newPasswordConfirm))
             {
                 EmptyFields.Visibility = Visibility.Visible;
                 return;
@@ -114,12 +113,14 @@ namespace SuppLocals.Views.AccountViews
             Close();
         }
 
-
         private void InsertImageData()
         {
             try
             {
-                if (_imageName == "") return;
+                if (_imageName == "")
+                {
+                    return;
+                }
 
                 //Initialize a file stream to read the image file
                 var fs = new FileStream(_imageName, FileMode.Open, FileAccess.Read);

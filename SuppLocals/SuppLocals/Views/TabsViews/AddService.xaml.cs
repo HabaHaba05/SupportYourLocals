@@ -29,7 +29,5 @@ namespace SuppLocals.Views
             }
             AddressTB.Text = address;
         }
-       
-
     }
 }

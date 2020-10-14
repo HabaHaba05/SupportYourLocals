@@ -32,7 +32,10 @@ namespace SuppLocals
                 var ob = jObj["predictions"];
                 var count = ob.Count();
 
-                for (var i = 0; i < count; i++) data.Add((string) o.SelectToken("predictions[" + i + "].description"));
+                for (var i = 0; i < count; i++)
+                {
+                    data.Add((string) o.SelectToken("predictions[" + i + "].description"));
+                }
 
                 return data;
             }

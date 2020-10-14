@@ -71,7 +71,10 @@ namespace SuppLocals
             var pointsL = new List<Location>(route.Points.ConvertAll(x => new Location(x.Lat, x.Lng)));
 
 
-            foreach (var x in pointsL) points.Add(x);
+            foreach (var x in pointsL)
+            {
+                points.Add(x);
+            }
 
             return points;
         }
@@ -99,13 +102,13 @@ namespace SuppLocals
         public static LocationCollection GetCircleVertices(Location Loc, double dRadius)
         {
             var locCollection = new LocationCollection();
-            var EarthRadius = 6367; // Earth Radius in Kilometers
+            const int earthRadius = 6367; // Earth Radius in Kilometers
 
             //Convert location to radians based on
             var latitude = Math.PI / 180 * Loc.Latitude;
             var longitude = Math.PI / 180 * Loc.Longitude;
 
-            var d = dRadius / EarthRadius;
+            var d = dRadius / earthRadius;
 
             for (var x = 0; x < 360; x++)
             {
@@ -118,7 +121,7 @@ namespace SuppLocals
                 //Get location of the point
                 var pt = new Location(180.0 * latRadians / Math.PI, 180.0 * lngRadians / Math.PI);
 
-                //Add the new calculatied poitn to the collection
+                //Add the new calculated point to the collection
                 locCollection.Add(pt);
             }
 
