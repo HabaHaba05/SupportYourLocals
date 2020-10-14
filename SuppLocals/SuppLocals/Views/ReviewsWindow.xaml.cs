@@ -1,52 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace SuppLocals
 {
     /// <summary>
-    /// Interaction logic for ReviewsWindow.xaml
+    ///     Interaction logic for ReviewsWindow.xaml
     /// </summary>
     public partial class ReviewsWindow : Window
     {
-        private readonly List<string> STARS = new List<string> { "☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★" };
-        private readonly Vendor _vendor;
+        private readonly List<string> _stars = new List<string> {"☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
         private readonly User _user;
-
-        private List<Review> reviews;
+        private readonly Vendor _vendor;
 
         private double _average;
 
-        public Visibility CanComment { get; set; }
+        private List<Review> _reviews;
 
         public ReviewsWindow(Vendor vendor, User activeUser)
         {
-
             // by default
             InitializeComponent();
-            this.DataContext = this;
+            DataContext = this;
             _vendor = vendor;
             _user = activeUser;
 
 
             if (_vendor.UserID == _user.ID)
-            {
                 CanComment = Visibility.Hidden;
-            }
             else
-            {
                 CanComment = Visibility.Visible;
-            }
+
 
             PopulateData();
         }
 
-        #region ReviewMethods
+        public Visibility CanComment { get; set; }
 
         // Adding user comment when button pressed
         private void ConfirmClicked(object sender, RoutedEventArgs e)
@@ -54,21 +45,23 @@ namespace SuppLocals
             var comment = comments.Text;
             ConfirmError.Visibility = Visibility.Hidden;
 
+
             if (string.IsNullOrEmpty(comment))
             {
                 ConfirmError.Visibility = Visibility.Visible;
                 return;
             }
-            using (ReviewsDbTable db = new ReviewsDbTable())
+
+            using (var db = new ReviewsDbTable())
             {
-                Review r = new Review()
+                var r = new Review
                 {
                     VendorID = _vendor.ID,
                     SenderUsername = _user.Username,
                     Text = comment,
                     Stars = Rating.RatingValue,
-                    Date = DateTime.Now.ToString("yyyy-MM-dd")
-
+                    Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                    Reply = ""
                 };
 
                 db.Reviews.Add(r);
@@ -76,9 +69,7 @@ namespace SuppLocals
             }
 
             PopulateData();
-
             comments.Clear();
-
         }
 
         private void UpdateRatingCounts()
@@ -101,46 +92,39 @@ namespace SuppLocals
             var number = 0;
 
 
-            using ReviewsDbTable db = new ReviewsDbTable();
-            reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
+            using var db = new ReviewsDbTable();
+            _reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
 
-            for (int i = 0; i < 6; i++)
-            {
-                _vendor.ReviewsCount[i] = 0;
-            }
+            for (var i = 0; i < 6; i++) _vendor.ReviewsCount[i] = 0;
 
-            foreach (var review in reviews)
+            foreach (var review in _reviews)
             {
                 _vendor.ReviewsCount[review.Stars]++;
                 sum += review.Stars;
                 number += 1;
 
                 if (sum != 0 || number != 0)
-                {
-                    _average = ((double)sum / number);
-                }
+                    _average = (double) sum / number;
                 else
-                {
                     _average = 0;
-                }
-                rView.Items.Add(review.SenderUsername + " " + STARS[review.Stars] + "\n" + review.Text + "\n" + review.Date);
+                rView.Items.Add(review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" +
+                                review.Date);
             }
 
             UpdateRatingCounts();
         }
-        #endregion
 
-        #region ReplyMethods
         private void PostComment(object sender, RoutedEventArgs e)
         {
-            Button btn = (Button)sender;
-            TextBox replyBox = ((Grid)btn.Parent).FindName("ReplyTextBox") as TextBox;
+            var btn = (Button) sender;
+            var replyBox = ((Grid) btn.Parent).FindName("ReplyTextBox") as TextBox;
 
-            TextBlock comment = ((Grid)btn.Parent).FindName("UserComment") as TextBlock;
-            TextBlock commenter = ((Grid)btn.Parent).FindName("Commenter") as TextBlock;
+            var comment = ((Grid) btn.Parent).FindName("UserComment") as TextBlock;
+            var commenter = ((Grid) btn.Parent).FindName("Commenter") as TextBlock;
 
-            Grid replyGrid = ((Grid)btn.Parent).FindName("ReplyGrid") as Grid;
-            Border commentGrid = ((Grid)btn.Parent).FindName("CommentGrid") as Border;
+            var replyGrid = ((Grid) btn.Parent).FindName("ReplyGrid") as Grid;
+            var commentGrid = ((Grid) btn.Parent).FindName("CommentGrid") as Border;
+
 
             var fullComment = replyBox.Text + "\n" + DateTime.Now.ToString("yyyy-MM-dd");
 
@@ -148,8 +132,17 @@ namespace SuppLocals
             commentGrid.Visibility = Visibility.Visible;
 
             commenter.Text = _user.Username;
-            comment.Text = fullComment; 
+            comment.Text = fullComment;
+
+
+            // Saving reply next to the comment
+
+            using (var dbUser = new ReviewsDbTable())
+            {
+                var user = dbUser.Reviews.SingleOrDefault(x => x.VendorID == _vendor.ID);
+                user.Reply = fullComment;
+                dbUser.SaveChanges();
+            }
         }
-        #endregion
     }
 }

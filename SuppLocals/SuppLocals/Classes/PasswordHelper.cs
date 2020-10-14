@@ -53,7 +53,7 @@ namespace SuppLocals
         private static void OnPasswordPropertyChanged(DependencyObject sender,
             DependencyPropertyChangedEventArgs e)
         {
-            PasswordBox passwordBox = sender as PasswordBox;
+            var passwordBox = sender as PasswordBox;
             passwordBox.PasswordChanged -= PasswordChanged;
 
             if (!(bool)GetIsUpdating(passwordBox))
@@ -82,7 +82,7 @@ namespace SuppLocals
 
         private static void PasswordChanged(object sender, RoutedEventArgs e)
         {
-            PasswordBox passwordBox = sender as PasswordBox;
+            var passwordBox = sender as PasswordBox;
             SetIsUpdating(passwordBox, true);
             SetPassword(passwordBox, passwordBox.Password);
             SetIsUpdating(passwordBox, false);

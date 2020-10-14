@@ -1,17 +1,8 @@
-﻿
-using SuppLocals.Views;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using BC = BCrypt.Net.BCrypt;
 
 namespace SuppLocals.Views
@@ -26,19 +17,14 @@ namespace SuppLocals.Views
         {
             InitializeComponent();
             var userList = getList();
-            /*UsernameTextBox.TextChanged += delegate (object sender, TextChangedEventArgs args)
-            {
-                usernameUsingCheck(sender, args, userList);
-            };*/
 
-            this.DataContext = new ValidateUsername();
-
+            DataContext = new ValidateUsername();
         }
 
 
         private void BackButtonClick(object sender, RoutedEventArgs e)
         {
-            Login login = new Login();
+            var login = new Login();
             login.Show();
             this.Close();
         }
@@ -56,7 +42,7 @@ namespace SuppLocals.Views
                 return;
             }
 
-            using UsersDbTable db = new UsersDbTable();
+            using var db = new UsersDbTable();
 
             var usersList = db.Users.ToList();
             if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
@@ -65,7 +51,7 @@ namespace SuppLocals.Views
                 return;
             }
 
-            User newUser = new User()
+            var newUser = new User()
             {
                 Username = username,
                 HashedPsw = BC.HashPassword(password),
@@ -80,14 +66,14 @@ namespace SuppLocals.Views
             //EmailSender esender = new EmailSender();
             //esender.SendEmail(email);
 
-            MainWindow mainWindow = new MainWindow(newUser);
+            var mainWindow = new MainWindow(newUser);
             mainWindow.Show();
-            this.Close();
+            Close();
         }
 
         
 
-        // Method which allow user drag window aroud their screen
+        // Method which allow user drag window around their screen
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -108,10 +94,10 @@ namespace SuppLocals.Views
             }
         }*/
 
-        private List<User> getList()
+        private IEnumerable<User> getList()
         {
             var userList = new List<User>();
-            using (UsersDbTable db = new UsersDbTable())
+            using (var db = new UsersDbTable())
             {
                 userList = db.Users.ToList();
             }

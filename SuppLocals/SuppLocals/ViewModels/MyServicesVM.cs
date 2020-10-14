@@ -1,37 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 
 namespace SuppLocals.ViewModels
 {
     public class MyServicesVM : BaseViewModel
     {
-        private readonly User user;
-        private List<Vendor> vendorList;
-
-        public List<Vendor> VendorList
-        {
-            get
-            {
-                return vendorList;
-            }
-        }
 
         public MyServicesVM(User user)
         {
-            this.user = user;
-            vendorList = new List<Vendor>();
-            using (VendorsDbTable db = new VendorsDbTable())
+            VendorList = new List<Vendor>();
+
+            using (var db = new VendorsDbTable())
             {
                 var data = db.Vendors.ToList();
-                foreach(var vendor in data)
+                foreach (var vendor in data.Where(vendor => vendor.UserID == user.ID))
                 {
-                    if(vendor.UserID == user.ID)
-                    {
-                        vendorList.Add(vendor);
-                    }
+                    VendorList.Add(vendor);
                 }
             }
         }
+
+        public List<Vendor> VendorList { get; }
     }
 }

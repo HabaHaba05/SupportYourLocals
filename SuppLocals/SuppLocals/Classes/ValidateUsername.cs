@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Net.Mail;
 
 namespace SuppLocals
@@ -49,7 +48,7 @@ namespace SuppLocals
                         if (string.IsNullOrWhiteSpace(Password))
                             result = "Password can not be empty!";
                         else if (this.Password.Length < 8){
-                            result = "Password has to be atleast 8 symbols long!";
+                            result = "Password has to be at least 8 symbols long!";
                         }
                         break;
                     case "ConfirmPassword":
@@ -57,7 +56,7 @@ namespace SuppLocals
                             result = "Password can not be empty!";
                         else if (this.ConfirmPassword.Length < 8)
                         {
-                            result = "Password has to be atleast 8 symbols long!";
+                            result = "Password has to be at least 8 symbols long!";
                         }
                         break;
                 }
@@ -84,8 +83,5 @@ namespace SuppLocals
                 return false;
             }
         }
-
     }
-
-
 }
