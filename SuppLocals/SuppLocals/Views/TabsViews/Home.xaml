@@ -43,7 +43,7 @@
             </Grid>
         </ControlTemplate>
 
-        <Style x:Key="MyToolTipStyle" TargetType="ToolTip">
+        <Style x:Key="VendorToolTip" TargetType="ToolTip">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
@@ -53,6 +53,24 @@
                                     <StackPanel Margin="5" MaxWidth="400">
                                         <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16" Foreground="White" TextWrapping="Wrap"/>
                                         <TextBlock Text="{Binding About}" Foreground="White" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="AreaToolTip" TargetType="ToolTip">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border CornerRadius="5" BorderBrush="Black" BorderThickness="2" Background="#5c87b2">
+                            <ContentPresenter Margin="5">
+                                <ContentPresenter.Content>
+                                    <StackPanel Margin="5" MaxWidth="400">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" Foreground="White" TextWrapping="Wrap"/>
                                     </StackPanel>
                                 </ContentPresenter.Content>
                             </ContentPresenter>
@@ -99,7 +117,11 @@
                             <m:MapPolygon Fill="DarkCyan" Stroke="Red" Opacity="0.5" StrokeThickness="1" 
                                           Locations="{Binding Locations}" MouseUp="MapPolygon_MouseUp"
                                           MouseEnter="MapPolygon_MouseEnter" MouseLeave="MapPolygon_MouseLeave">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Style="{StaticResource AreaToolTip}"/>
+                                </ToolTipService.ToolTip>
                             </m:MapPolygon>
+                            
                         </DataTemplate>
                     </m:MapItemsControl.ItemTemplate>
                 </m:MapItemsControl>
@@ -131,7 +153,7 @@
                                     </Style>
                                 </m:Pushpin.Style>
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Style="{StaticResource MyToolTipStyle}" />
+                                    <ToolTip Style="{StaticResource VendorToolTip}" />
                                 </ToolTipService.ToolTip>
                             </m:Pushpin>
 
