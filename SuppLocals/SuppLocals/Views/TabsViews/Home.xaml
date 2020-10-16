@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
-             
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:SuppLocals"
              mc:Ignorable="d" 
             d:DesignHeight="355" d:DesignWidth="775">
@@ -80,19 +80,25 @@
         </Grid.RowDefinitions>
 
         <!--Map-->
-        <m:Map x:Name="MyMap" Grid.Column="0"
-               Mode="Road" Center="54.68,25.27" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}">
+        <m:Map x:Name="MyMap" Grid.Column="0" ViewChangeEnd="MyMap_ViewChangeEnd"
+               Mode="Road" Center="55.2278601,23.9054659" ZoomLevel="{Binding ZoomLevel ,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 
-            
+            <StackPanel Height="25" Orientation="Horizontal" VerticalAlignment="Top">
+                <Button Margin="5 0 0 5" Height="20" Content="JumpBack" 
+                        Command="{Binding JumpBackClick}"/>
+                <Button Height="20" Content="Show Vendors" Command="{Binding ShowVendorsClick}"
+                        Margin="5 0 0 5"/>
+            </StackPanel>
 
             <m:MapLayer x:Name="CircleLayer"/>
 
             <m:MapLayer>
-                <m:MapItemsControl ItemsSource="{Binding Counties}">
+                <m:MapItemsControl ItemsSource="{Binding SelectedArea.Children ,UpdateSourceTrigger=PropertyChanged}">
                     <m:MapItemsControl.ItemTemplate>
                         <DataTemplate>
                             <m:MapPolygon Fill="DarkCyan" Stroke="Red" Opacity="0.5" StrokeThickness="1" 
-                                              Locations="{Binding Locations}">
+                                          Locations="{Binding Locations}" MouseUp="MapPolygon_MouseUp"
+                                          MouseEnter="MapPolygon_MouseEnter" MouseLeave="MapPolygon_MouseLeave">
                             </m:MapPolygon>
                         </DataTemplate>
                     </m:MapItemsControl.ItemTemplate>
@@ -128,13 +134,12 @@
                                     <ToolTip Style="{StaticResource MyToolTipStyle}" />
                                 </ToolTipService.ToolTip>
                             </m:Pushpin>
-                           
+
                         </DataTemplate>
                     </m:MapItemsControl.ItemTemplate>
                 </m:MapItemsControl>
             </m:MapLayer>
-            
-            
+
         </m:Map>
 
 

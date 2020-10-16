@@ -20,7 +20,7 @@ namespace SuppLocals.Views
 
         public StartWindow()
         {
-            InitializeComponent();   
+            InitializeComponent();
         }
 
         private void BuyClicked(object sender, RoutedEventArgs e)

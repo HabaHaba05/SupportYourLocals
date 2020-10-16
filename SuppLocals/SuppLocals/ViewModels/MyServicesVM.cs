@@ -6,21 +6,15 @@ namespace SuppLocals.ViewModels
 {
     public class MyServicesVM : BaseViewModel
     {
-        private readonly User user;
-        private List<Vendor> vendorList;
 
         public List<Vendor> VendorList
         {
-            get
-            {
-                return vendorList;
-            }
+            get;
         }
 
         public MyServicesVM(User user)
         {
-            this.user = user;
-            vendorList = new List<Vendor>();
+            VendorList = new List<Vendor>();
             using (VendorsDbTable db = new VendorsDbTable())
             {
                 var data = db.Vendors.ToList();
@@ -28,7 +22,7 @@ namespace SuppLocals.ViewModels
                 {
                     if(vendor.UserID == user.ID)
                     {
-                        vendorList.Add(vendor);
+                        VendorList.Add(vendor);
                     }
                 }
             }

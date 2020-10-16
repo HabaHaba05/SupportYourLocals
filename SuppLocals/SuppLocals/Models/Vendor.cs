@@ -33,6 +33,12 @@ namespace SuppLocals
         public string Address { get; set; }
         
         [Required]
+        public string County { get; set; }
+
+        [Required]
+        public string Municipality { get; set; }
+
+        [Required]
         public double Latitude { get; set; }
         
         [Required]

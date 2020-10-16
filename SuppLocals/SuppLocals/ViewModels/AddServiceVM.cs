@@ -158,8 +158,9 @@ namespace SuppLocals.ViewModels
 
         private async Task CreateVendor()
         {
-            Location location = await MapMethods.ConvertAddressToLocation(_address);
-            if (location.Longitude == 0)
+            List<string> placeInfo = await MapMethods.ConvertAddressToLocation(_address);
+
+            if (placeInfo.Count() == 0)
             {
                 MessageBox.Show("We cant find an address");
                 return;
@@ -173,8 +174,10 @@ namespace SuppLocals.ViewModels
                     About = _about,
                     Address = _address,
                     VendorType = SelectedVendorType,
-                    Latitude = location.Latitude,
-                    Longitude = location.Longitude,
+                    Latitude = Double.Parse(placeInfo[0]),
+                    Longitude = Double.Parse(placeInfo[1]),
+                    Municipality = placeInfo[2],
+                    County = placeInfo[3],
                     UserID = user.ID
                 };
 
@@ -250,7 +253,8 @@ namespace SuppLocals.ViewModels
 
         private async Task ChangeMapCenter()
         {
-            MyMapCenter = await MapMethods.ConvertAddressToLocation(Address);
+            List<string> data = await MapMethods.ConvertAddressToLocation(Address);
+            MyMapCenter = new Location(Double.Parse(data[0]), Double.Parse(data[1]));
         }
 
         #endregion

@@ -21,5 +21,7 @@ namespace SuppLocals
         public static readonly string host = "https://maps.googleapis.com";
         public static readonly string path = "/maps/api/place/autocomplete/json";
 
+        public static Area Country = new Area(new Location(55.2278601, 23.9054659), 6.5);
+
     }
 }

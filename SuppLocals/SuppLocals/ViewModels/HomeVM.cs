@@ -6,6 +6,7 @@ using SuppLocals.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -39,10 +40,11 @@ namespace SuppLocals.ViewModels
 
         private Visibility _selectedVendorInfoGrid = Visibility.Collapsed;
 
-        private double _zoomLevel = 12;
+        private double _zoomLevel;
 
-        private ObservableCollection<County> _counties;
+        private ObservableCollection<Area> _counties;
 
+        private Area _selectedArea;
 
         #endregion
 
@@ -163,7 +165,7 @@ namespace SuppLocals.ViewModels
             }
         }
 
-        public ObservableCollection<County> Counties
+        public ObservableCollection<Area> Counties
         {
             get { return _counties; }
             private set
@@ -173,6 +175,19 @@ namespace SuppLocals.ViewModels
             }
         }
 
+        
+
+        public Area SelectedArea{ 
+            get { return _selectedArea; }
+            set 
+            {
+
+                _selectedArea = value;
+                VendorsList = null;
+                ZoomLevel = _selectedArea.Zoom;
+                NotifyPropertyChanged("SelectedArea");
+            }
+        }
 
         #endregion
 
@@ -184,6 +199,9 @@ namespace SuppLocals.ViewModels
         public RelayCommand HideBtnClick {get; private set;}
 
         public RelayCommand ReviewBtnClick { get; private set; }
+        public RelayCommand JumpBackClick { get; private set; }
+        public RelayCommand ShowVendorsClick { get; private set; }
+
 
         #endregion
 
@@ -192,15 +210,16 @@ namespace SuppLocals.ViewModels
         {
             this.mainWindow = window;
             this.activeUser = user;
+            
+            Config.Country.Children ??= Config.Country.ParseCounties();
 
-            LoadCounties();
+            SelectedArea = Config.Country;
 
             using (VendorsDbTable db = new VendorsDbTable())
             {
                 var data = db.Vendors.ToList();
                 allVendorsList = new List<Vendor>(data);
                 allVendorsList.ForEach(x => x.Location = new Location(x.Latitude, x.Longitude));
-                VendorsList = allVendorsList;
             }
 
             FindRouteBtnClick = new RelayCommand(o => CalcRoute(), o => true);
@@ -212,7 +231,14 @@ namespace SuppLocals.ViewModels
                 reviewsWindow.ShowDialog();
             },
                 o => true
-            ); ;
+            );
+
+            JumpBackClick = new RelayCommand(o => SelectedArea = _selectedArea.Parent  , o => { 
+                //This line is needed only to hide BUG :))))
+                ZoomLevel +=0.0001f; ZoomLevel -= 0.0001f; 
+                return _selectedArea.Parent != null; } );
+
+            ShowVendorsClick = new RelayCommand(o => UpdateVendorsList(), o => true);
         }
 
 
@@ -232,6 +258,7 @@ namespace SuppLocals.ViewModels
 
         private void UpdateVendorsList()
         {
+            //Updating by filter criterium
             if (VendorTypeSelected.ToString() == "ALL")
             {
                 VendorsList = allVendorsList.Where(x => !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(activeUser.Location, x.Location) <= CircleRadius).ToList();
@@ -241,6 +268,17 @@ namespace SuppLocals.ViewModels
                 VendorsList = allVendorsList.Where(x =>
                         (x.VendorType == VendorTypeSelected.ToString()) && (!_useDistanceFilter || MapMethods.DistanceBetweenPlaces(activeUser.Location, x.Location) <= CircleRadius)).ToList();
             }
+            //Updating by selected area
+            if (_selectedArea.Level == 1)
+            {
+                VendorsList = _vendorList.Where(x => new string(x.County.Take(4).ToArray()) == new string(_selectedArea.Name.Take(4).ToArray())).ToList();
+            }
+            else if (_selectedArea.Level == 2)
+            {
+                VendorsList = _vendorList.Where(x => x.Municipality == _selectedArea.Name).ToList();
+            }
+
+
         }
 
         private async Task GetLiveLocation()
@@ -263,39 +301,6 @@ namespace SuppLocals.ViewModels
 
         #endregion
 
-
-        #region Counties layers
-
-
-        private void LoadCounties()
-        {
-            List<County> lcnt = new List<County>();
-
-            foreach(var name in Enum.GetNames(typeof(CountiesNames)))
-            {
-                lcnt.Add(ParseJsons($"/Assets/CountiesJsons/{name}County.json"));
-            }
-
-            Counties = new ObservableCollection<County>(lcnt);
-
-        }
-
-        private County ParseJsons(string filePath)
-        {
-            JObject o1 = JObject.Parse(File.ReadAllText((string)(Directory.GetParent(Environment.CurrentDirectory).Parent.Parent + filePath)));
-            var locations = o1.SelectToken("locations");
-
-            LocationCollection locColl = new LocationCollection();
-
-            for (int i = 0; i < locations.Count(); i++)
-            {
-                locColl.Add(new Location((double)locations[i][1], (double)locations[i][0]));
-            }
-
-            return new County(locColl);
-        }
-
-        #endregion
 
     }
 }

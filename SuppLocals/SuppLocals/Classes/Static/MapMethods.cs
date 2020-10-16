@@ -138,37 +138,6 @@ namespace SuppLocals
             return locCollection;
         }
 
-        public static async Task<Location> ConvertAddressToLocation(string address)
-        {
-            Location data = new Location();
-
-            try
-            {
-                string uri = Config.host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" + Config.GOOGLE_API_KEY;
-
-                HttpClient client = new HttpClient();
-                HttpResponseMessage response = await client.GetAsync(uri);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                JObject o = JObject.Parse(responseBody);
-
-                double lat = (double)o.SelectToken("results[0].geometry.location.lat");
-                double lng = (double)o.SelectToken("results[0].geometry.location.lng");
-
-
-                data = new Location(lat, lng);
-
-                return data;
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.ToString());
-            }
-
-            return data;
-        }
-
         public static async Task<string> ConvertLocationToAddress(Location location)
         {
             string data ="";
@@ -194,6 +163,87 @@ namespace SuppLocals
             }
 
             return data;
+        }
+
+        public static async Task<List<string>> ConvertAddressToLocation(string address)
+        {
+
+            List<string> data = new List<string>();
+
+            try
+            {
+                string uri = Config.host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" + Config.GOOGLE_API_KEY;
+
+                HttpClient client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync(uri);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                JObject o = JObject.Parse(responseBody);
+
+                data.Add((string)o.SelectToken("results[0].geometry.location.lat"));
+                data.Add((string)o.SelectToken("results[0].geometry.location.lng"));
+
+                    JArray address_components = (JArray)o.SelectToken("results[0].address_components");
+
+                    for (int i = 0; i < address_components.Count(); i++)
+                    {
+                        JObject zero2 = (JObject)address_components[i];
+                        string long_name = (string)zero2.SelectToken("long_name");
+                        JArray mtypes = (JArray)zero2.SelectToken("types");
+                        string Type = (string)mtypes[0];
+
+                        if (Type  == "administrative_area_level_2")
+                        {
+                            data.Add(RemoveLithuanianChars(long_name));
+                        }
+                        else if (Type == "administrative_area_level_1")
+                        {
+                            data.Add(RemoveLithuanianChars(long_name));
+                        }
+
+                    }
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+            }
+
+            return data;
+        }
+
+
+        private static string RemoveLithuanianChars(string str)
+        {
+            string answ="";
+
+            Dictionary<char, char> dict = new Dictionary<char, char>()
+            {
+                { 'ą','a'},
+                { 'č','c'},
+                { 'ę','e'},
+                { 'ė','e'},
+                { 'į','i'},
+                { 'š','s'},
+                { 'ų','u'},
+                { 'ū','u'},
+                { 'ž','z'},
+            };
+
+            foreach(var x in str)
+            {
+                if (dict.ContainsKey(x))
+                {
+                    answ += dict[x];
+                }
+                else
+                {
+                    answ += x;
+                }
+            }
+            return answ;
         }
 
     }
