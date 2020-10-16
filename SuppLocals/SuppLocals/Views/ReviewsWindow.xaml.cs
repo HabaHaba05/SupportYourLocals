@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using Windows.Foundation;
 
 namespace SuppLocals
 {
@@ -37,9 +39,9 @@ namespace SuppLocals
                 CanComment = Visibility.Visible;
             }
 
-
-            PopulateData();
+            PopulateData();  
         }
+
 
         public Visibility CanComment { get; set; }
 
@@ -49,6 +51,7 @@ namespace SuppLocals
             var comment = comments.Text;
             ConfirmError.Visibility = Visibility.Hidden;
 
+            var i = RView.Items.Count;
 
             if (string.IsNullOrEmpty(comment))
             {
@@ -61,6 +64,7 @@ namespace SuppLocals
                 var r = new Review
                 {
                     VendorID = _vendor.ID,
+                    CommentID = i,
                     SenderUsername = _user.Username,
                     Text = comment,
                     Stars = Rating.RatingValue,
@@ -73,7 +77,7 @@ namespace SuppLocals
             }
 
             PopulateData();
-            comments.Clear();
+            comments.Clear();        
         }
 
         private void UpdateRatingCounts()
@@ -90,11 +94,10 @@ namespace SuppLocals
 
         private void PopulateData()
         {
-            rView.Items.Clear();
+            RView.Items.Clear();
 
             var sum = 0;
             var number = 0;
-
 
             using var db = new ReviewsDbTable();
             _reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
@@ -119,11 +122,12 @@ namespace SuppLocals
                     _average = 0;
                 }
 
-                rView.Items.Add(review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" + review.Date);
+                RView.Items.Add(review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" + review.Date);
             }
 
             UpdateRatingCounts();
         }
+
 
         private void PostComment(object sender, RoutedEventArgs e)
         {
@@ -131,29 +135,51 @@ namespace SuppLocals
             var replyBox = ((Grid) btn.Parent).FindName("ReplyTextBox") as TextBox;
 
             var comment = ((Grid) btn.Parent).FindName("UserComment") as TextBlock;
-            var commenter = ((Grid) btn.Parent).FindName("Commenter") as TextBlock;
-
+          
             var replyGrid = ((Grid) btn.Parent).FindName("ReplyGrid") as Grid;
             var commentGrid = ((Grid) btn.Parent).FindName("CommentGrid") as Border;
 
 
-            var fullComment = replyBox.Text + "\n" + DateTime.Now.ToString("yyyy-MM-dd");
+            var fullComment = _vendor.Title + "\n" + "\n" + replyBox.Text + "\n" + DateTime.Now.ToString("yyyy-MM-dd");
 
             replyGrid.Visibility = Visibility.Collapsed;
             commentGrid.Visibility = Visibility.Visible;
 
-            commenter.Text = _user.Username;
+           
             comment.Text = fullComment;
 
-
-            // Saving reply next to the comment
-
+            // Saving the reply for the comment
+            // only works if item IS SELECTED
+            var index = RView.Items.IndexOf(RView.SelectedItem);
+            
             using (var dbUser = new ReviewsDbTable())
             {
-                var user = dbUser.Reviews.SingleOrDefault(x => x.VendorID == _vendor.ID);
+                var user = dbUser.Reviews.SingleOrDefault(x => x.CommentID == index);
                 user.Reply = fullComment;
                 dbUser.SaveChanges();
-            }
+            }  
         }
+
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var control = sender as StackPanel;
+            var commentGrid = control.FindName("CommentGrid") as Border;
+
+            var comment = control.FindName("UserComment") as TextBlock;
+
+            if (commentGrid != null)
+                MessageBox.Show("YAY! NOT NULL");
+
+              
+        }
+
+
+            //var comment = control.FindName("UserComment") as TextBlock;
+            //var replyGrid = control.FindName("ReplyGrid") as Grid;
+
+
+
+        
+
     }
 }

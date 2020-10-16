@@ -39,6 +39,10 @@ namespace SuppLocals.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CommentID")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.Property<int>("VendorID")
                         .HasColumnType("int");
 
