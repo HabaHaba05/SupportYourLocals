@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals"
         mc:Ignorable="d"
+        xmlns:viewModels="clr-namespace:SuppLocals.ViewModels"
+        xmlns:views="clr-namespace:SuppLocals.Views"
         Title="Login" Height="500" Width="400"
         AllowsTransparency="true" Background="Transparent"
         WindowStyle="none" ResizeMode="NoResize"
@@ -18,6 +20,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
+        <ContentControl Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Content="{Binding}"/>
 
         <Border CornerRadius="10" Grid.RowSpan="2">
             <Border.Background>
@@ -153,6 +156,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+
     </Window.Resources>
+    
 
 </Window>

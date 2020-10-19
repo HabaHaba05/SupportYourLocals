@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="SuppLocals.Views.ChangeProfile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SuppLocals"
+        mc:Ignorable="d"
+        Background="#CCBA8B"
+        d:Height="340" d:Width="600">
+    <Grid x:Name="grid">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
+            <StackPanel Orientation="Horizontal">
+
+                <Button Width="25" Height="25"
+                    Command="{Binding BackButtonClick}"  >
+                    <Image Source="/Assets/backarrow.png"/>
+                </Button>
+
+                <TextBlock Text="Change your profile image" 
+                           HorizontalAlignment="Center" 
+                       Margin="10 9 0 0" FontSize="17"/>
+            </StackPanel>
+
+            <Button Margin="40" Background="Transparent" >
+                <Ellipse Width="150" Height="150">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="profileImage"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+
+
+            </Button>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="3">
+            <TextBlock Text="Change your password" HorizontalAlignment="Center" 
+                       Margin="0 10 0 20 " FontSize="17"/>
+
+            <TextBlock Text="Old password" HorizontalAlignment="Left" 
+                       FontSize="13" Margin="10"/>
+
+            <Border CornerRadius="4" Width="200" BorderThickness="1" Background="White">
+                <PasswordBox local:PasswordHelper.Attach="True"
+                        local:PasswordHelper.Password="{
+                        Binding OldPassword,
+                        Mode=TwoWay,  
+                        UpdateSourceTrigger=PropertyChanged,
+                        ValidatesOnDataErrors=True}" 
+                        ToolTip="{Binding ErrorCollection[OldPassword]}"
+                             
+                        Background="Transparent" BorderThickness="0"/>
+            </Border>
+
+            <TextBlock Text="New password" HorizontalAlignment="Left" 
+                       FontSize="13" Margin="10"/>
+
+            <Border CornerRadius="4" Width="200" BorderThickness="1" Background="White">
+                <PasswordBox local:PasswordHelper.Attach="True"
+                        local:PasswordHelper.Password="{
+                        Binding NewPassword,
+                        Mode=TwoWay,  
+                        UpdateSourceTrigger=PropertyChanged,
+                        ValidatesOnDataErrors=True}" 
+                       ToolTip="{Binding ErrorCollection[OldPassword]}"
+                             
+                        Background="Transparent" 
+                        BorderThickness="0"
+                        />
+            </Border>
+
+            <TextBlock Text="Confirm new password" HorizontalAlignment="Left" 
+                       FontSize="13" Margin="10"/>
+
+            <Border CornerRadius="4" Width="200" BorderThickness="1" Background="White">
+                <PasswordBox local:PasswordHelper.Attach="True"
+                        local:PasswordHelper.Password="{
+                        Binding ConfirmNewPassword,
+                        Mode=TwoWay,  
+                        UpdateSourceTrigger=PropertyChanged,
+                        ValidatesOnDataErrors=True}"
+                             
+                        ToolTip="{Binding ErrorCollection[OldPassword]}" 
+                             
+                    x:Name="ConfirmNewPass" Background="Transparent" BorderThickness="0"/>
+            </Border>
+
+  
+
+                <Button  Margin="100 20"
+                    Content="Save changes" 
+                    Width="90" Height="25" 
+                    Command="{Binding SaveChangesClick}"/>
+
+            </StackPanel>
+
+
+    </Grid>
+</UserControl>

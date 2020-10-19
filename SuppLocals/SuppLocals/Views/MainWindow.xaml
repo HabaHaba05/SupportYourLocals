@@ -18,6 +18,9 @@
         <DataTemplate x:Name="HomeTemplate" DataType="{x:Type viewModels:HomeVM}">
             <views:Home  DataContext="{Binding}"/>
         </DataTemplate>
+        <DataTemplate x:Name="ChangeProfileSettings" DataType="{x:Type viewModels:ChangeProfileVM}">
+            <views:ChangeProfile DataContext="{Binding}"/>
+        </DataTemplate>
         <DataTemplate x:Name="VendorsTemplate" DataType="{x:Type viewModels:VendorsVM}">
             <views:Vendors DataContext="{Binding}"/>
         </DataTemplate>

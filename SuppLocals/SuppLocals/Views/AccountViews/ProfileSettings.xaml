@@ -29,7 +29,8 @@
                     <Image Source="/Assets/backarrow.png"/>
                 </Button>
                 
-                <TextBlock Text="Change your profile image" HorizontalAlignment="Center" 
+                <TextBlock Text="Change your profile image" 
+                           HorizontalAlignment="Center" 
                        Margin="10 9 0 0" FontSize="17"/>
             </StackPanel>
 

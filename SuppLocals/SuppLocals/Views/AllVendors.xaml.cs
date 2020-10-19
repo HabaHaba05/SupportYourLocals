@@ -18,7 +18,7 @@ namespace SuppLocals.Views
             GetData(username);
         }
 
-        private class Vendor
+        public class Vendor
         {
             public string Title { get; set; }
             public string About { get; set; }
