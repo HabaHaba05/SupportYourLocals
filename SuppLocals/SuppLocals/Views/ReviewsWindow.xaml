@@ -74,12 +74,13 @@
         <ListView x:Name ="RView" Grid.Column="2" Grid.Row="1" Margin="10 0 5 0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid >
-                        <StackPanel HorizontalAlignment="Stretch" Loaded="FrameworkElement_OnLoaded">
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Stretch" Loaded="ItemLoaded">
                             <Image Source="/Assets/usericon.jpg" Stretch="None" Margin="0 0 0 0" HorizontalAlignment="Left"/>
                             <TextBlock Margin="30 -20 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
                             <Separator Margin="5" Width="auto" Height="3"/>
 
+                           
                             <!-- Reply itself -->
                             <Border x:Name="CommentGrid" CornerRadius="4" Background="LightGray"
                                     Visibility="Collapsed" Margin="30 5 0 0">
@@ -133,6 +134,7 @@
                                     </Grid>
                                 </Border>
                             </Grid>
+                                
 
                         </StackPanel>
                     </Grid>
