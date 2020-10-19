@@ -15,7 +15,6 @@ namespace SuppLocals
         
         public int[] ReviewsCount = { 0, 0, 0, 0, 0, 0 };
 
-        #region Database columns
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -46,10 +45,5 @@ namespace SuppLocals
 
         [Required]
         public string VendorType { get; set; }
-
-        #endregion
-
-
-
     }
 }

@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SuppLocals.Views
 {
@@ -18,8 +9,8 @@ namespace SuppLocals.Views
     /// </summary>
     public partial class AllVendors : Window
     {
-        private List<User> userList;
-        private List<Vendor> vendorList;
+        private List<User> _userList;
+        private List<SuppLocals.Vendor> _vendorList;
 
         public AllVendors(string username)
         {
@@ -27,27 +18,26 @@ namespace SuppLocals.Views
             GetData(username);
         }
 
-        class vendor
+        private class Vendor
         {
-            public string title { get; set; }
-            public string about { get; set; }
-            public string adress { get; set; }
-            public string vendorType { get; set; }
+            public string Title { get; set; }
+            public string About { get; set; }
+            public string Address { get; set; }
+            public string VendorType { get; set; }
         }
 
         public void GetData(string username)
         { 
-            using UsersDbTable db = new UsersDbTable();
-            userList = db.Users.ToList();
-            using VendorsDbTable db1 = new VendorsDbTable();
-            vendorList = db1.Vendors.ToList();
-            var user = userList.SingleOrDefault(x => (x.Username == username));
-            foreach (var vendor in vendorList)
+            using var db = new UsersDbTable();
+            _userList = db.Users.ToList();
+
+            using var db1 = new VendorsDbTable();
+            _vendorList = db1.Vendors.ToList();
+
+            var user = _userList.SingleOrDefault(x => (x.Username == username));
+            foreach (var vendor in _vendorList.Where(vendor => user.ID == vendor.UserID))
             {
-                if (user.ID == vendor.UserID)
-                {
-                    listView.Items.Add(new vendor { title = vendor.Title, about = vendor.About, adress = vendor.Address, vendorType = vendor.VendorType });
-                }
+                listView.Items.Add(new Vendor { Title = vendor.Title, About = vendor.About, Address = vendor.Address, VendorType = vendor.VendorType });
             }
         }
     }

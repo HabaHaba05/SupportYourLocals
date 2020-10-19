@@ -15,9 +15,8 @@ namespace SuppLocals.ViewModels
 {
     public class AddServiceVM : BaseViewModel, IDataErrorInfo
     {
-        private readonly User user;
+        private readonly User _user;
 
-        #region Private props
 
         private string _title;
         private string _about;
@@ -26,13 +25,11 @@ namespace SuppLocals.ViewModels
         private Location _myMapCenter = new Location(54.68, 25.27);
 
 
-        #endregion
-
         #region Public props
       
         public string Title
         {
-            get { return _title; }
+            get => _title;
             set
             {
                 _title = value;
@@ -41,7 +38,7 @@ namespace SuppLocals.ViewModels
         }
         public string About
         {
-            get { return _about; }
+            get => _about;
             set
             {
                 _about = value;
@@ -50,7 +47,7 @@ namespace SuppLocals.ViewModels
         }
         public string Address
         {
-            get { return _address; }
+            get => _address;
             set
             {
                 if(_address == value)
@@ -68,10 +65,7 @@ namespace SuppLocals.ViewModels
 
         public ObservableCollection<TextBlock> SuggestStack
         {
-            get
-            {
-                return _suggestStack;
-            }
+            get => _suggestStack;
             set
             {
                 _suggestStack = value;
@@ -81,7 +75,7 @@ namespace SuppLocals.ViewModels
 
         public Location MyMapCenter
         {
-            get { return _myMapCenter; }
+            get => _myMapCenter;
             set
             {
                 _myMapCenter = value;
@@ -100,7 +94,7 @@ namespace SuppLocals.ViewModels
 
         #region Data validation
 
-        public string Error { get { return null; } }
+        public string Error => null;
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
         public string this[string name]
         {
@@ -140,7 +134,7 @@ namespace SuppLocals.ViewModels
 
         public AddServiceVM(User user)
         {
-            this.user = user;
+            this._user = user;
 
             CreateVendorBtnClick = new RelayCommand(async (x) => await CreateVendor(), o => AllFieldsValid());
 
@@ -153,12 +147,12 @@ namespace SuppLocals.ViewModels
 
         private bool AllFieldsValid()
         {
-            return (!String.IsNullOrEmpty(Title) || !String.IsNullOrEmpty(About) || !String.IsNullOrEmpty(Address));
+            return (!string.IsNullOrEmpty(Title) || !string.IsNullOrEmpty(About) || !string.IsNullOrEmpty(Address));
         }
 
         private async Task CreateVendor()
         {
-            List<string> placeInfo = await MapMethods.ConvertAddressToLocation(_address);
+            var placeInfo = await MapMethods.ConvertAddressToLocation(_address);
 
             if (placeInfo.Count() == 0)
             {
@@ -166,9 +160,9 @@ namespace SuppLocals.ViewModels
                 return;
             }
 
-            using (VendorsDbTable db = new VendorsDbTable())
+            await using (VendorsDbTable db = new VendorsDbTable())
             {
-                Vendor vendor = new Vendor()
+                var vendor = new Vendor()
                 {
                     Title = _title,
                     About = _about,
@@ -178,19 +172,20 @@ namespace SuppLocals.ViewModels
                     Longitude = Double.Parse(placeInfo[1]),
                     Municipality = placeInfo[2],
                     County = placeInfo[3],
-                    UserID = user.ID
+                    UserID = _user.ID
+
                 };
 
-                using (UsersDbTable dbUser = new UsersDbTable())
+                await using (UsersDbTable dbUser = new UsersDbTable())
                 {
-                    var user = dbUser.Users.SingleOrDefault(x => x.ID == this.user.ID);
+                    var user = dbUser.Users.SingleOrDefault(x => x.ID == this._user.ID);
                     user.VendorsCount++;
-                    dbUser.SaveChanges();
+                    await dbUser.SaveChangesAsync();
                 }
 
-                db.Vendors.Add(vendor);
+                await db.Vendors.AddAsync(vendor);
 
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
 
             MessageBox.Show("Created");
@@ -202,14 +197,14 @@ namespace SuppLocals.ViewModels
 
         private async Task GetAddressSuggestions()
         {
-            if (String.IsNullOrEmpty(Address))
+            if (string.IsNullOrEmpty(Address))
             {
                 return;
             };
 
             var data = await AutoComplete.GetData(Address);
 
-            List<TextBlock> list = new List<TextBlock>();
+            var list = new List<TextBlock>();
 
             foreach (var obj in data)
             {   if (obj != Address)
@@ -231,29 +226,30 @@ namespace SuppLocals.ViewModels
         
         private void AddEvents(TextBlock block)
         {
+            if (block == null) throw new ArgumentNullException(nameof(block));
             // Mouse events   
             block.MouseLeftButtonUp += (sender, e) =>
             {
-                Address = (sender as TextBlock).Text;
+                Address = (sender as TextBlock)?.Text;
                 SuggestStack = null;
             };
 
             block.MouseEnter += (sender, e) =>
             {
-                TextBlock b = sender as TextBlock;
+                var b = sender as TextBlock;
                 b.Background = Brushes.PeachPuff;
             };
 
             block.MouseLeave += (sender, e) =>
             {
-                TextBlock b = sender as TextBlock;
+                var b = sender as TextBlock;
                 b.Background = Brushes.Transparent;
             };
         }
 
         private async Task ChangeMapCenter()
         {
-            List<string> data = await MapMethods.ConvertAddressToLocation(Address);
+            var data = await MapMethods.ConvertAddressToLocation(Address);
             MyMapCenter = new Location(Double.Parse(data[0]), Double.Parse(data[1]));
         }
 

@@ -24,8 +24,7 @@ namespace SuppLocals.Migrations.UsersDbTableMigrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Users");
+            migrationBuilder.DropTable(name: "Users");
         }
     }
 }

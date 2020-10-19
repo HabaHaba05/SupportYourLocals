@@ -1,22 +1,16 @@
-﻿using Geocoding;
-using Geocoding.Microsoft;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows;
+using Windows.Devices.Geolocation;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using Microsoft.Maps.MapControl.WPF;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SuppLocals.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using Windows.Devices.Geolocation;
 using Location = Microsoft.Maps.MapControl.WPF.Location;
+using System.Linq;
 
 namespace SuppLocals
 {
@@ -25,68 +19,64 @@ namespace SuppLocals
         // Returns current user position
         public static async Task<Location> GetLiveLocation(Window window)
         {
-            Location loc = new Location(0, 0);
+            var loc = new Location(0, 0);
 
             var accessStatus = await Geolocator.RequestAccessAsync();
-            switch (accessStatus)
+            if (accessStatus == GeolocationAccessStatus.Allowed)
             {
-                case GeolocationAccessStatus.Allowed:
+                var progressDialog = new ProgressDialog
+                {
+                    Owner = window
+                };
+                Application.Current.Dispatcher.Invoke(new Action(() => window.IsEnabled = false));
+                _ = progressDialog.Dispatcher.BeginInvoke(new Action(() => progressDialog.ShowDialog()));
 
-                    ProgressDialog progressDialog = new ProgressDialog
-                    {
-                        Owner = window
-                    };
-                    Application.Current.Dispatcher.Invoke(new Action(() => window.IsEnabled = false));
-                    _ = progressDialog.Dispatcher.BeginInvoke(new Action(() => progressDialog.ShowDialog()));
+                // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
+                var geolocator = new Geolocator {DesiredAccuracyInMeters = 0};
 
-                    // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
-                    Geolocator geolocator = new Geolocator { DesiredAccuracyInMeters = 0 };
+                // Carry out the operation
+                var pos = await geolocator.GetGeopositionAsync();
 
-                    // Carry out the operation
-                    Geoposition pos = await geolocator.GetGeopositionAsync();
+                loc = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
 
-                    loc = new Location(pos.Coordinate.Point.Position.Latitude, pos.Coordinate.Point.Position.Longitude);
-
-                    Application.Current.Dispatcher.Invoke(new Action(() => window.IsEnabled = true));
-                    progressDialog.Close();
-
-
-                    break;
-                default:
-                    MessageBox.Show("We can't reach your location. Please check that the following location privacy are turned on:\n" +
-                                    "Location for this device... is turned on (not applicable in Windows 10 Mobile\n" +
-                                    "The location services setting, Location, is turned on\n" +
-                                    "Under Choose apps that can use your location, your app is set to on\n ");
-
-                    break;
+                Application.Current.Dispatcher.Invoke(new Action(() => window.IsEnabled = true));
+                progressDialog.Close();
+            }
+            else
+            {
+                MessageBox.Show(
+                    "We can't reach your location. Please check that the following location privacy are turned on:\n" +
+                    "Location for this device... is turned on (not applicable in Windows 10 Mobile\n" +
+                    "The location services setting, Location, is turned on\n" +
+                    "Under Choose apps that can use your location, your app is set to on\n ");
             }
 
             return loc;
         }
 
         //Returns locations collection of route points
-        public static LocationCollection GetRoute(Location userLoc , Location finishLoc)
+        public static LocationCollection GetRoute(Location userLoc, Location finishLoc)
         {
-            GoogleMapProvider.Instance.ApiKey = Config.GOOGLE_API_KEY;
-            MapRoute route = GoogleMapProvider.Instance.GetRoute(
-                   new PointLatLng(userLoc.Latitude, userLoc.Longitude),
-                   new PointLatLng(finishLoc.Latitude, finishLoc.Longitude), false, false, 15);
-            
-            if(route == null)
+            GoogleMapProvider.Instance.ApiKey = Config.Google_Api_Key;
+            var route = GoogleMapProvider.Instance.GetRoute(
+                new PointLatLng(userLoc.Latitude, userLoc.Longitude),
+                new PointLatLng(finishLoc.Latitude, finishLoc.Longitude), false, false, 15);
+
+            if (route == null)
             {
                 MessageBox.Show("Sorry we can't find route to this location");
                 return null;
             }
 
-            LocationCollection points = new LocationCollection();
-            List<Location> pointsL = new List<Location>(route.Points.ConvertAll(x => new Location(x.Lat, x.Lng)));
-            
+            var points = new LocationCollection();
+            var pointsL = new List<Location>(route.Points.ConvertAll(x => new Location(x.Lat, x.Lng)));
+
 
             foreach (var x in pointsL)
             {
                 points.Add(x);
             }
-            
+
             return points;
         }
 
@@ -95,43 +85,44 @@ namespace SuppLocals
         {
             double R = 6371; // Earth radius km
 
-            double sLat1 = Math.Sin(loc1.Latitude * (Math.PI / 180));
-            double sLat2 = Math.Sin(loc2.Latitude * (Math.PI / 180));
-            double cLat1 = Math.Cos(loc1.Latitude * (Math.PI / 180));
-            double cLat2 = Math.Cos(loc2.Latitude * (Math.PI / 180));
-            double cLon = Math.Cos(loc1.Longitude* (Math.PI / 180) - loc2.Longitude * (Math.PI / 180));
+            var sLat1 = Math.Sin(loc1.Latitude * (Math.PI / 180));
+            var sLat2 = Math.Sin(loc2.Latitude * (Math.PI / 180));
+            var cLat1 = Math.Cos(loc1.Latitude * (Math.PI / 180));
+            var cLat2 = Math.Cos(loc2.Latitude * (Math.PI / 180));
+            var cLon = Math.Cos(loc1.Longitude * (Math.PI / 180) - loc2.Longitude * (Math.PI / 180));
 
-            double cosD = sLat1 * sLat2 + cLat1 * cLat2 * cLon;
+            var cosD = sLat1 * sLat2 + cLat1 * cLat2 * cLon;
 
-            double d = Math.Acos(cosD);
+            var d = Math.Acos(cosD);
 
-            double dist = R * d;
+            var dist = R * d;
 
             return dist;
         }
 
         public static LocationCollection GetCircleVertices(Location Loc, double dRadius)
         {
-
             var locCollection = new LocationCollection();
-            var EarthRadius = 6367; // Earth Radius in Kilometers
+            const int earthRadius = 6367; // Earth Radius in Kilometers
 
             //Convert location to radians based on
-            var latitude = (Math.PI / 180) * (Loc.Latitude);
-            var longitude = (Math.PI / 180) * (Loc.Longitude);
+            var latitude = Math.PI / 180 * Loc.Latitude;
+            var longitude = Math.PI / 180 * Loc.Longitude;
 
-            var d = dRadius / EarthRadius;
+            var d = dRadius / earthRadius;
 
-            for (int x = 0; x < 360; x++)
+            for (var x = 0; x < 360; x++)
             {
                 var angle = x * (Math.PI / 180); //radians
-                var latRadians = Math.Asin(Math.Sin(latitude) * Math.Cos(d) + Math.Cos(latitude) * Math.Sin(d) * Math.Cos(angle));
-                var lngRadians = longitude + Math.Atan2(Math.Sin(angle) * Math.Sin(d) * Math.Cos(latitude), Math.Cos(d) - Math.Sin(latitude) * Math.Sin(latRadians));
+                var latRadians = Math.Asin(Math.Sin(latitude) * Math.Cos(d) +
+                                           Math.Cos(latitude) * Math.Sin(d) * Math.Cos(angle));
+                var lngRadians = longitude + Math.Atan2(Math.Sin(angle) * Math.Sin(d) * Math.Cos(latitude),
+                    Math.Cos(d) - Math.Sin(latitude) * Math.Sin(latRadians));
 
                 //Get location of the point
                 var pt = new Location(180.0 * latRadians / Math.PI, 180.0 * lngRadians / Math.PI);
 
-                //Add the new calculatied poitn to the collection
+                //Add the new calculated point to the collection
                 locCollection.Add(pt);
             }
 
@@ -140,20 +131,23 @@ namespace SuppLocals
 
         public static async Task<string> ConvertLocationToAddress(Location location)
         {
+
             string data ="";
 
             try
             {
-                string uri = Config.host + "/maps/api/geocode/json?latlng=" + location.Latitude.ToString()+","+location.Longitude.ToString() + "&language=lt&key=" + Config.GOOGLE_API_KEY;
+                var uri = Config.Host + "/maps/api/geocode/json?latlng=" + location.Latitude.ToString()+","+location.Longitude.ToString() + "language=lt&key=" +
+                          Config.Google_Api_Key;
 
-                HttpClient client = new HttpClient();
-                HttpResponseMessage response = await client.GetAsync(uri);
+                var client = new HttpClient();
+                var response = await client.GetAsync(uri);
                 response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
+                var responseBody = await response.Content.ReadAsStringAsync();
 
-                JObject o = JObject.Parse(responseBody);
+                var o = JObject.Parse(responseBody);
 
                 data = (string)o.SelectToken("results[0].formatted_address");
+
 
                 return data;
             }
@@ -167,19 +161,18 @@ namespace SuppLocals
 
         public static async Task<List<string>> ConvertAddressToLocation(string address)
         {
-
-            List<string> data = new List<string>();
+            var data = new List<string>();
 
             try
             {
-                string uri = Config.host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" + Config.GOOGLE_API_KEY;
+                var uri = Config.Host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" + Config.Google_Api_Key;
 
-                HttpClient client = new HttpClient();
-                HttpResponseMessage response = await client.GetAsync(uri);
+                var client = new HttpClient();
+                var response = await client.GetAsync(uri);
                 response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
+                var responseBody = await response.Content.ReadAsStringAsync();
 
-                JObject o = JObject.Parse(responseBody);
+                var o = JObject.Parse(responseBody);
 
                 data.Add((string)o.SelectToken("results[0].geometry.location.lat"));
                 data.Add((string)o.SelectToken("results[0].geometry.location.lng"));
@@ -213,7 +206,6 @@ namespace SuppLocals
 
             return data;
         }
-
 
         private static string RemoveLithuanianChars(string str)
         {
