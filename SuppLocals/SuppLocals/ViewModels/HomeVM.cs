@@ -13,6 +13,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Windows.Media.Capture;
 using Windows.UI.Xaml.Media.Animation;
 using Location = Microsoft.Maps.MapControl.WPF.Location;
 
@@ -32,7 +33,7 @@ namespace SuppLocals.ViewModels
 
         private string _vendorTypeSelected;
 
-        private bool _useDistanceFilter;
+        private bool _useDistanceFilter = false;
 
         private double _circleRadius;
 
@@ -41,8 +42,6 @@ namespace SuppLocals.ViewModels
         private Visibility _selectedVendorInfoGrid = Visibility.Collapsed;
 
         private double _zoomLevel;
-
-        private ObservableCollection<Area> _counties;
 
         private Area _selectedArea;
 
@@ -164,19 +163,7 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("ZoomLevel");
             }
         }
-
-        public ObservableCollection<Area> Counties
-        {
-            get { return _counties; }
-            private set
-            {
-                _counties = value;
-                NotifyPropertyChanged("Counties");
-            }
-        }
-
         
-
         public Area SelectedArea{ 
             get { return _selectedArea; }
             set 
@@ -185,6 +172,14 @@ namespace SuppLocals.ViewModels
                 _selectedArea = value;
                 VendorsList = null;
                 ZoomLevel = _selectedArea.Zoom;
+                if (!_selectedArea.HasChildren)
+                {
+                    VendorsList = SelectedArea.Vendors;
+                }
+                if (VendorTypesList != null && (!_selectedArea.HasChildren || _useDistanceFilter) )
+                {
+                    UpdateVendorsList();
+                }
                 NotifyPropertyChanged("SelectedArea");
             }
         }
@@ -195,9 +190,7 @@ namespace SuppLocals.ViewModels
         #region Commands
 
         public RelayCommand FindRouteBtnClick {get; private set;}    
-
         public RelayCommand HideBtnClick {get; private set;}
-
         public RelayCommand ReviewBtnClick { get; private set; }
         public RelayCommand JumpBackClick { get; private set; }
         public RelayCommand ShowVendorsClick { get; private set; }
@@ -210,11 +203,11 @@ namespace SuppLocals.ViewModels
         {
             this.mainWindow = window;
             this.activeUser = user;
-            
-            Config.Country.Children ??= Config.Country.ParseCounties();
-
             SelectedArea = Config.Country;
 
+            InitializeCommands();
+
+            //Reading all vendors
             using (VendorsDbTable db = new VendorsDbTable())
             {
                 var data = db.Vendors.ToList();
@@ -222,29 +215,68 @@ namespace SuppLocals.ViewModels
                 allVendorsList.ForEach(x => x.Location = new Location(x.Latitude, x.Longitude));
             }
 
-            FindRouteBtnClick = new RelayCommand(o => CalcRoute(), o => true);
-            HideBtnClick = new RelayCommand(o => ResetToNulls(), o => true);
-            
-            ReviewBtnClick = new RelayCommand(o =>
+
+            //If homeView opened first time then we will parse counties and municipalities boundaries
+      
+            Config.Country.Children ??= Config.Country.ParseCounties();
+
+            foreach (var x in Config.Country.Children)
             {
-                ReviewsWindow reviewsWindow = new ReviewsWindow(_selectedVendor, user);
-                reviewsWindow.ShowDialog();
-            },
-                o => true
-            );
+                x.Children ??= x.ParseMunicipalities();
+            }
 
-            JumpBackClick = new RelayCommand(o => SelectedArea = _selectedArea.Parent  , o => { 
-                //This line is needed only to hide BUG :))))
-                ZoomLevel +=0.0001f; ZoomLevel -= 0.0001f; 
-                return _selectedArea.Parent != null; } );
-
-            ShowVendorsClick = new RelayCommand(o => UpdateVendorsList(), o => true);
+            UpdateAreasVendors();
+            
+            
         }
-
 
         #endregion
 
         #region Methods
+
+        private void InitializeCommands()
+        {
+            FindRouteBtnClick = new RelayCommand(o => CalcRoute(), o => true);
+            HideBtnClick = new RelayCommand(o => ResetToNulls(), o => true);
+
+            ReviewBtnClick = new RelayCommand(
+                o =>{
+                    ReviewsWindow reviewsWindow = new ReviewsWindow(_selectedVendor, activeUser);
+                    reviewsWindow.ShowDialog();
+                },
+                o => true
+                );
+
+            JumpBackClick = new RelayCommand(
+                o => { SelectedArea = _selectedArea.Parent;},
+                o => {
+                    //This line is needed only to hide BUG :))))
+                    ZoomLevel += 0.0001f; ZoomLevel -= 0.0001f;
+                    return _selectedArea.Parent != null;
+                });
+
+            ShowVendorsClick = new RelayCommand(o => UpdateVendorsList(), o => true);
+        }
+
+        private void UpdateAreasVendors()
+        {
+            Config.Country.Vendors.Clear();
+            PutVendors(Config.Country);
+
+            foreach (var x in Config.Country.Children)
+            {
+                if (x.HasChildren)
+                {
+                    x.Vendors.Clear();
+                    foreach (var y in x.Children)
+                    {
+                        x.Vendors.AddRange(y.Vendors);
+                    }
+                }
+
+                Config.Country.Vendors.AddRange(x.Vendors);
+            }
+        }
 
         private async void UserDistanceFilterChange()
         {
@@ -254,31 +286,23 @@ namespace SuppLocals.ViewModels
             }
 
             UpdateVendorsList();
+            if (!_useDistanceFilter && _selectedArea.HasChildren) {
+                VendorsList = null;
+            }
+
         }
 
         private void UpdateVendorsList()
         {
-            //Updating by filter criterium
             if (VendorTypeSelected.ToString() == "ALL")
             {
-                VendorsList = allVendorsList.Where(x => !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(activeUser.Location, x.Location) <= CircleRadius).ToList();
+                VendorsList = SelectedArea.Vendors.Where(x =>  !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(activeUser.Location, x.Location) <= CircleRadius).ToList();
             }
             else
             {
-                VendorsList = allVendorsList.Where(x =>
+                VendorsList = SelectedArea.Vendors.Where(x =>
                         (x.VendorType == VendorTypeSelected.ToString()) && (!_useDistanceFilter || MapMethods.DistanceBetweenPlaces(activeUser.Location, x.Location) <= CircleRadius)).ToList();
             }
-            //Updating by selected area
-            if (_selectedArea.Level == 1)
-            {
-                VendorsList = _vendorList.Where(x => new string(x.County.Take(4).ToArray()) == new string(_selectedArea.Name.Take(4).ToArray())).ToList();
-            }
-            else if (_selectedArea.Level == 2)
-            {
-                VendorsList = _vendorList.Where(x => x.Municipality == _selectedArea.Name).ToList();
-            }
-
-
         }
 
         private async Task GetLiveLocation()
@@ -297,6 +321,28 @@ namespace SuppLocals.ViewModels
             SelectedVendorInfoGrid = Visibility.Collapsed;
             RouteLine = null;
             SelectedVendor = null;
+        }
+
+        private void PutVendors(Area area)
+        {
+            if (area.HasChildren)
+            {
+                foreach (var x in area.Children)
+                {
+                    PutVendors(x);
+                }
+            }
+            else
+            {
+                if (area.Level == 1)
+                {
+                    area.Vendors = allVendorsList.Where(x => new string(x.County.Take(4).ToArray()) == new string(area.Name.Take(4).ToArray())).ToList();
+                }
+                else if (area.Level == 2)
+                {
+                    area.Vendors = allVendorsList.Where(x => x.Municipality == area.Name).ToList();
+                }
+            }
         }
 
         #endregion

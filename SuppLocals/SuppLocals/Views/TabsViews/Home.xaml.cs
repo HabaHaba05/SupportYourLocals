@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xaml.Schema;
 using Microsoft.Maps.MapControl.WPF;
 using SuppLocals.ViewModels;
 
@@ -13,28 +15,32 @@ namespace SuppLocals.Views
     /// </summary>
     public partial class Home : UserControl
     {
-        private readonly Location _myMapCenter;
         private User activeUser;
 
         public Home()
         {
             //By default
             InitializeComponent();
-            _myMapCenter = MyMap.Center;
 
             MyMap.CredentialsProvider = Config.BING_API_KEY;
 
-            // Disable zooming and "moving" map
-            MyMap.MouseDoubleClick += (s, e) => e.Handled = true;
-            MyMap.MouseWheel += (s, e) => e.Handled = true;
-           /* MyMap.ViewChangeOnFrame += (s, e) =>
-            {             
-                if (!MyMap.Center.Equals(_myMapCenter))
-                {
-                    MyMap.Center = _myMapCenter;
-                }
-            };*/
+            // Disable zoom
+            MyMap.MouseDoubleClick += (s,e)=>e.Handled=true;
+            MyMap.MouseWheel += Map_MouseWheelOff;
 
+        }
+
+
+        private void Map_MouseWheelOff(object sender, MouseWheelEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void Map_MouseWheelOn(object sender, MouseWheelEventArgs e)
+        {
+            var dataContext = (HomeVM)this.DataContext;
+            MyMap.ZoomLevel = Math.Max(dataContext.SelectedArea.Zoom, MyMap.ZoomLevel+Math.Sign(e.Delta)*0.25 );
+            e.Handled = true;
         }
 
         private void Pushpin_MouseUp(object sender, MouseButtonEventArgs e)
@@ -65,26 +71,31 @@ namespace SuppLocals.Views
 
         }
 
-
         private void MapPolygon_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var selectedArea = (sender as FrameworkElement).DataContext as Area;
             var dataContext = (HomeVM)this.DataContext;
 
-            if (selectedArea.HasChildren && selectedArea.Children==null)
-            {
-                selectedArea.Children = selectedArea.ParseMunicipalities();
+            SelectedBoundary.Children.Clear();
 
-            }
-            else if (!selectedArea.HasChildren)
+            if (!selectedArea.HasChildren)
             {
-               //Show boundaries around selected area
+                MapPolyline boundary = new MapPolyline
+                {
+                    Stroke = new SolidColorBrush(Colors.Red),
+                    Opacity = 0.85,
+                    Locations = selectedArea.Locations
+                };
+                SelectedBoundary.Children.Add(boundary);
+                //Enable map zoom
+                MyMap.MouseWheel -= Map_MouseWheelOff;
+                MyMap.MouseWheel += Map_MouseWheelOn;
             }
 
             dataContext.SelectedArea = selectedArea;
 
             MyMap.Center = selectedArea.Center;
-         }
+        }
 
         private void MapPolygon_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -98,11 +109,27 @@ namespace SuppLocals.Views
             polygon.Fill = new SolidColorBrush(Colors.Yellow);
         }
 
-        private void MyMap_ViewChangeEnd(object sender, MapEventArgs e)
+        private void JumpBackBtn_Click(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine(MyMap.Center);
-            Debug.WriteLine(MyMap.ZoomLevel);
+            var dataContext = (HomeVM)this.DataContext;
+            MyMap.Center = dataContext.SelectedArea.Parent.Center;
+            SelectedBoundary.Children.Clear();
+
+            //Disable zoom
+            MyMap.MouseWheel += Map_MouseWheelOff;
+            MyMap.MouseWheel -= Map_MouseWheelOn;
         }
 
+        private void DistanceFilterCB_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(bool)DistanceFilterCB.IsChecked)
+            {
+                CircleLayer.Children.Clear();
+            }
+            else if(activeUser != null)
+            {
+                RadiusSlider_ValueChanged(null, null);
+            }
+        }
     }
 }

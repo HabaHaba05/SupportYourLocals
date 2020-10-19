@@ -19,6 +19,7 @@ namespace SuppLocals
         public Location Center { get; set; }
         public double Zoom { get; set; }
         public string Name { get; set; }
+        public List<Vendor> Vendors { get; set; } = new List<Vendor>();
 
         public bool HasChildren;
 
@@ -32,6 +33,7 @@ namespace SuppLocals
             Zoom = zoom;
             Parent = null;
             HasChildren = true;
+            Name = "Lietuva";
             Level = 0;
         }
 
@@ -105,6 +107,7 @@ namespace SuppLocals
 
             return municipalities;
         }
+
 
     }
 }
