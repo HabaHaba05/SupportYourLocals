@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using SuppLocals.ViewModels;
-using SuppLocals.Views.AccountViews;
+
 
 namespace SuppLocals.Views
 {

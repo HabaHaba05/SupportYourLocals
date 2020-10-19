@@ -10,7 +10,7 @@
     <Grid x:Name="grid">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -23,14 +23,11 @@
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
             <StackPanel Orientation="Horizontal">
 
-                <Button Width="25" Height="25"
-                    Command="{Binding BackButtonClick}"  >
-                    <Image Source="/Assets/backarrow.png"/>
-                </Button>
 
                 <TextBlock Text="Change your profile image" 
                            HorizontalAlignment="Center" 
-                       Margin="10 9 0 0" FontSize="17"/>
+                       Margin="10 9 0 0" FontSize="17"  FontFamily="Tahoma"
+                       Foreground="Black" FontWeight="Bold"/>
             </StackPanel>
 
             <Button Margin="40" Background="Transparent" >
@@ -47,12 +44,14 @@
 
         <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="3">
             <TextBlock Text="Change your password" HorizontalAlignment="Center" 
-                       Margin="0 10 0 20 " FontSize="17"/>
+                       Margin="0 10 0 20 " FontSize="17" FontFamily="Tahoma"
+                       Foreground="Black" FontWeight="Bold"/>
 
-            <TextBlock Text="Old password" HorizontalAlignment="Left" 
-                       FontSize="13" Margin="10"/>
+            <TextBlock Text="Old password:" HorizontalAlignment="Left" 
+                       FontSize="13" Margin="10" FontFamily="Tahoma"
+                       Foreground="Black" FontWeight="Bold"/>
 
-            <Border CornerRadius="4" Width="200" BorderThickness="1" Background="White">
+            <Border CornerRadius="4" Width="200" Height="20" BorderThickness="1" Background="White">
                 <PasswordBox local:PasswordHelper.Attach="True"
                         local:PasswordHelper.Password="{
                         Binding OldPassword,
@@ -64,10 +63,11 @@
                         Background="Transparent" BorderThickness="0"/>
             </Border>
 
-            <TextBlock Text="New password" HorizontalAlignment="Left" 
-                       FontSize="13" Margin="10"/>
+            <TextBlock Text="New password:" HorizontalAlignment="Left" 
+                       FontSize="13" Margin="10"  FontFamily="Tahoma"
+                       Foreground="Black" FontWeight="Bold"/>
 
-            <Border CornerRadius="4" Width="200" BorderThickness="1" Background="White">
+            <Border CornerRadius="4" Width="200" BorderThickness="1"  Height="20" Background="White">
                 <PasswordBox local:PasswordHelper.Attach="True"
                         local:PasswordHelper.Password="{
                         Binding NewPassword,
@@ -81,10 +81,11 @@
                         />
             </Border>
 
-            <TextBlock Text="Confirm new password" HorizontalAlignment="Left" 
-                       FontSize="13" Margin="10"/>
+            <TextBlock Text="Confirm new password:" HorizontalAlignment="Left" 
+                       FontSize="13" Margin="10"  FontFamily="Tahoma"
+                       Foreground="Black" FontWeight="Bold"/>
 
-            <Border CornerRadius="4" Width="200" BorderThickness="1" Background="White">
+            <Border CornerRadius="4" Width="200" BorderThickness="1"  Height="20" Background="White" >
                 <PasswordBox local:PasswordHelper.Attach="True"
                         local:PasswordHelper.Password="{
                         Binding ConfirmNewPassword,
@@ -108,4 +109,24 @@
 
 
     </Grid>
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type PasswordBox}">
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <DockPanel>
+                        <Grid DockPanel.Dock="Left" Width="16" Height="16" VerticalAlignment="Center" Margin="180 0 0 0">
+                            <Ellipse Width="16" Height="16" Fill="Red"/>
+                            <Ellipse Width="3" Height="8" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 2 0 0" Fill="White"/>
+                            <Ellipse Width="2" Height="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 2" Fill="White"/>
+                        </Grid>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    </UserControl.Resources>
+
 </UserControl>

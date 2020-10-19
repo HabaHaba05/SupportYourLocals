@@ -61,17 +61,10 @@ namespace SuppLocals.ViewModels
             },
                 o => true
             );
-
-            BackButtonClick = new RelayCommand(o =>
-            {
-                MessageBox.Show(_confirmpassword);
-            }
-                );
         
         }
 
         public RelayCommand SaveChangesClick { get; }
-        public RelayCommand BackButtonClick { get; }
 
 
         public string Error => null;
@@ -86,33 +79,68 @@ namespace SuppLocals.ViewModels
                 {
                     case "OldPassword":
                         if (string.IsNullOrWhiteSpace(OldPassword))
+                        {
                             result = "Field cannot be empty";
+                        }
+                        else if (OldPassword.Length < 8)
+                        {
+                            result = "Password has to be at least 8 symbols long!";
+                        }
                         break;
 
                     case "NewPassword":
                         if (string.IsNullOrWhiteSpace(OldPassword))
+                        {
                             result = "Field cannot be empty";
+                        }
+                        else if (NewPassword.Length < 8)
+                        {
+                            result = "New password has to be at least 8 symbols long!";
+                        }
                         break;
 
                     case "ConfirmNewPassword":
                         if (string.IsNullOrWhiteSpace(OldPassword))
+                        {
                             result = "Field cannot be empty";
+                        }
+                        else if (ConfirmNewPassword.Length < 8)
+                        {
+                            result = "Confirmation password has to be at least 8 symbols long!";
+
+                        }
                         break;
                 }
+                        if (ErrorCollection.ContainsKey(name))
+                            ErrorCollection[name] = result;
+                        else if (result != null)
+                            ErrorCollection.Add(name, result);
 
-                if (ErrorCollection.ContainsKey(name))
-                    ErrorCollection[name] = result;
-                else if (result != null)
-                    ErrorCollection.Add(name, result);
-
-                NotifyPropertyChanged("ErrorCollection");
-                return result;
+                        NotifyPropertyChanged("ErrorCollection");
+                        return result;
+                }
             }
-        }
+        
 
         private void SaveChanges()
         {
- 
+            if (OldPassword == NewPassword)
+            {
+                MessageBox.Show("Old and new password can not match!");
+                return;
+            }
+            else if (NewPassword != ConfirmNewPassword)
+            {
+                MessageBox.Show("New password do not match confirm password!");
+                return;
+            }
+            else if (!BC.Verify(OldPassword, ActiveUser.HashedPsw))
+            {
+                MessageBox.Show("Incorrect old password");
+                return;
+            }
+
+
             //changing the current password to new password
             using (var dbUser = new UsersDbTable())
             {

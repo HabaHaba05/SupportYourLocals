@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using SuppLocals.ViewModels;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -97,7 +98,7 @@ namespace SuppLocals.Views
         {
             var forgotPassword = new ForgotPassword();
             forgotPassword.Show();
-            Close();
+            this.Close();
         }
     }
 }
