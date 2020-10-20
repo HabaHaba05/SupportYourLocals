@@ -38,7 +38,7 @@ namespace SuppLocals.Views
 
         private void Map_MouseWheelOn(object sender, MouseWheelEventArgs e)
         {
-            var dataContext = (HomeVM)this.DataContext;
+            var dataContext = (HomeVM)DataContext;
             MyMap.ZoomLevel = Math.Max(dataContext.SelectedArea.Zoom, MyMap.ZoomLevel+Math.Sign(e.Delta)*0.25 );
             e.Handled = true;
         }
@@ -47,13 +47,13 @@ namespace SuppLocals.Views
         {
             var selectedVendor = (sender as FrameworkElement)?.DataContext as Vendor;
             SelectedServiceInfoGrid.Visibility = Visibility.Visible;
-            var x = (HomeVM)this.DataContext;
+            var x = (HomeVM)DataContext;
             x.SelectedVendor = selectedVendor;
         }
 
         private void RadiusSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _activeUser ??= ((HomeVM)this.DataContext).ActiveUser;
+            _activeUser ??= ((HomeVM)DataContext).ActiveUser;
 
             var circleVertices = MapMethods.GetCircleVertices(_activeUser.Location, RadiusSlider.Value);
 
@@ -73,7 +73,7 @@ namespace SuppLocals.Views
         private void MapPolygon_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var selectedArea = (sender as FrameworkElement).DataContext as Area;
-            var dataContext = (HomeVM)this.DataContext;
+            var dataContext = (HomeVM)DataContext;
 
             SelectedBoundary.Children.Clear();
 
@@ -110,7 +110,7 @@ namespace SuppLocals.Views
 
         private void JumpBackBtn_Click(object sender, RoutedEventArgs e)
         {
-            var dataContext = (HomeVM)this.DataContext;
+            var dataContext = (HomeVM)DataContext;
             MyMap.Center = dataContext.SelectedArea.Parent.Center;
             SelectedBoundary.Children.Clear();
 
