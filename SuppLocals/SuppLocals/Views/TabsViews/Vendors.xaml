@@ -8,7 +8,6 @@
    d:DesignHeight="340" d:DesignWidth="800">
     <Grid Background="#CCBA8B">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
@@ -18,24 +17,24 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="DISCOVER ALL VENDORS" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10 10 10 10"/>
-        <ListView Grid.Row="1"
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="DISCOVER ALL VENDORS" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Margin="10"/>
+        <ListView Grid.Row="1" Grid.Column="0" 
                   ItemsSource="{Binding UserList}"
                   Name ="ListView2"
                   Background="#CCBA8B"
                   HorizontalAlignment="Center"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  HorizontalContentAlignment="Center"  Width="700" Grid.Column="1" Foreground="Black" BorderBrush="Black" Margin="0,0,0,10" Grid.RowSpan="2" RenderTransformOrigin="0.439,0.411">
+                  HorizontalContentAlignment="Center"  Width="740" Foreground="Black" Margin="0 0 0 10" BorderBrush="Black" Grid.RowSpan="2" RenderTransformOrigin="0.439,0.411">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Vendor" DisplayMemberBinding="{Binding Username}"  Width="600">
+                    <GridViewColumn Header="Vendor" DisplayMemberBinding="{Binding Username}"  Width="620">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Header="Marketplaces" DisplayMemberBinding="{Binding VendorsCount}" Width="100">
+                    <GridViewColumn Header="Marketplaces" DisplayMemberBinding="{Binding VendorsCount}" Width="120">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>

@@ -28,8 +28,6 @@ namespace SuppLocals
         [Required]
         public string Date { get; set; }
 
-        public int Likes { get; set; }
-
-        public int Dislikes { get; set; }
+        public string Reply { get; set; }
     }
 }

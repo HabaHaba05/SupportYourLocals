@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Printing;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,6 +39,7 @@ namespace SuppLocals
             if (_vendor.UserID == _user.ID)
             {
                 CanComment = Visibility.Hidden;
+                Grid.SetRowSpan(RView, 3);
             }
             else
             {
@@ -47,13 +49,11 @@ namespace SuppLocals
             PopulateData();
         }
 
-        private class Comment
+        private class Item
         {
             public string Text { get; set; }
-            public int Likes { get; set; }
-            public int Dislikes { get; set; } 
+            public string Response { get; set; }
         }
-
 
         public Visibility CanComment { get; set; }
 
@@ -82,8 +82,7 @@ namespace SuppLocals
                     Text = comment,
                     Stars = Rating.RatingValue,
                     Date = DateTime.Now.ToString("yyyy-MM-dd"),
-                    Likes = 0,
-                    Dislikes = 0
+                    Reply = ""
                 };
 
                 db.Reviews.Add(r);
@@ -138,56 +137,67 @@ namespace SuppLocals
 
                 var Comment = review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" + review.Date;
 
-                RView.Items.Add(new Comment { Text = Comment, Likes = review.Likes, Dislikes = review.Dislikes});
+                RView.Items.Add(new Item { Text = Comment, Response = review.Reply});
             }
 
             UpdateRatingCounts();
         }
-       
 
-        private void LikeClicked(object sender, RoutedEventArgs e)
+        private void PostComment(object sender, RoutedEventArgs e)
         {
-            var button = sender as RadioButton;
+            var button = sender as Button;
+            var replyBox = ((Grid)button.Parent).FindName("ReplyTextBox") as TextBox;
 
-            var like = ((StackPanel)button.Parent).FindName("LikeCount") as TextBlock;
-            like.FontWeight = FontWeights.Bold;
-            //button.Content = new SolidColorBrush(Colors.Blue);
+            var comment = ((Grid)button.Parent).FindName("UserComment") as TextBlock;
 
-            LikesOrDislikes(button, like, "likes");   
-        }
+            var replyGrid = ((Grid)button.Parent).FindName("ReplyGrid") as Grid;
+            var commentGrid = ((Grid)button.Parent).FindName("CommentGrid") as Border;
 
-        private void DislikeClicked(object sender, RoutedEventArgs e)
-        {  
-            var button = sender as RadioButton;
-
-            var dislike = ((StackPanel)button.Parent).FindName("DislikeCount") as TextBlock;
-            dislike.FontWeight = FontWeights.Bold;
-
-            LikesOrDislikes(button, dislike, "dislikes");
-        }
+            replyGrid.Visibility = Visibility.Collapsed;
+            commentGrid.Visibility = Visibility.Visible;
 
 
-        private void LikesOrDislikes(RadioButton button, TextBlock t, string name)
-        {
-            var item = button.DataContext;
-            var index = RView.Items.IndexOf(item);
+            comment.Text = _vendor.Title + "\n" + "\n" + replyBox.Text + "\n" + DateTime.Now.ToString("yyyy-MM-dd");
 
+            // getting the index of the pressed POST button
+            var index = GetIndex(button);
+    
             using (var dbUser = new ReviewsDbTable())
             {
                 var user = dbUser.Reviews.SingleOrDefault(x => x.CommentID == index);
-
-                if(name == "dislikes")
-                {
-                    user.Dislikes++;
-                    t.Text = user.Dislikes.ToString();
-                }
-                else 
-                {
-                    user.Likes++;
-                    t.Text = user.Likes.ToString();
-                }
+                user.Reply = comment.Text;
                 dbUser.SaveChanges();
             }
+        }
+
+
+        private void ItemLoaded(object sender, RoutedEventArgs e)
+        {
+            var control = sender as Grid;
+
+            var commentGrid = control.FindName("CommentGrid") as Border;
+            var replyGrid = control.FindName("ReplyGrid") as Grid;
+
+            var index = GetIndex(control);
+
+            using var db = new ReviewsDbTable();
+            var review = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
+
+            if (_user.ID != _vendor.UserID)
+            {
+                replyGrid.Visibility = Visibility.Collapsed;
+            }
+
+            if (review.Reply != "")
+            {
+                commentGrid.Visibility = Visibility.Visible;
+                replyGrid.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private int GetIndex(FrameworkElement f)
+        {
+            return RView.Items.IndexOf(f.DataContext);
         }
     }
 }

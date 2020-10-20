@@ -87,6 +87,7 @@ namespace SuppLocals.Views.AccountViews
 
             PasswordsDontMatch.Visibility = Visibility.Hidden;
 
+
             if (!BC.Verify(oldPassword, ActiveUser.HashedPsw))
             {
                 IncorrectOldPass.Visibility = Visibility.Visible;
@@ -94,6 +95,16 @@ namespace SuppLocals.Views.AccountViews
             }
 
             IncorrectOldPass.Visibility = Visibility.Hidden;
+
+
+            if (newPassword.Length < 8)
+            {
+                IncorrectLen.Visibility = Visibility.Visible;
+                return;
+            }
+
+            IncorrectLen.Visibility = Visibility.Hidden;
+
 
             //changing the current password to new password
             using (var dbUser = new UsersDbTable())
