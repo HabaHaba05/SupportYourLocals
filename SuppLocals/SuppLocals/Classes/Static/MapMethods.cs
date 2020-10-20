@@ -136,7 +136,7 @@ namespace SuppLocals
 
             try
             {
-                var uri = Config.Host + "/maps/api/geocode/json?latlng=" + location.Latitude.ToString()+","+location.Longitude.ToString() + "language=lt&key=" +
+                var uri = Config.Host + "/maps/api/geocode/json?latlng=" + location.Latitude.ToString()+","+location.Longitude.ToString() + "&language=lt&key=" +
                           Config.Google_Api_Key;
 
                 var client = new HttpClient();

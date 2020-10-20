@@ -13,7 +13,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
         <!-- FOOD PUSH PIN-->
-        <ControlTemplate x:Key="FOOD" TargetType="m:Pushpin">
+        <ControlTemplate x:Key="Food" TargetType="m:Pushpin">
             <Grid>
                 <Rectangle Width="24" Height="24">
                     <Rectangle.Fill>
@@ -23,7 +23,7 @@
             </Grid>
         </ControlTemplate>
         <!-- CAR PUSH PIN-->
-        <ControlTemplate x:Key ="CAR_REPAIR" TargetType="m:Pushpin">
+        <ControlTemplate x:Key ="CarRepair" TargetType="m:Pushpin">
             <Grid>
                 <Rectangle Width="24" Height="24">
                     <Rectangle.Fill>
@@ -33,7 +33,7 @@
             </Grid>
         </ControlTemplate>
         <!-- OTHER PUSH PIN-->
-        <ControlTemplate x:Key="OTHER" TargetType="m:Pushpin">
+        <ControlTemplate x:Key="Other" TargetType="m:Pushpin">
             <Grid>
                 <Rectangle Width="24" Height="24">
                     <Rectangle.Fill>
@@ -158,16 +158,16 @@
                             <m:Pushpin MouseUp="Pushpin_MouseUp" Location="{Binding Location}" ToolTip="{Binding Title}" Cursor="Hand" m:MapLayer.Position="{Binding Location}" >
                                 <m:Pushpin.Style>
                                     <Style TargetType="m:Pushpin">
-                                        <Setter Property="Template" Value="{StaticResource FOOD}"/>
+                                        <Setter Property="Template" Value="{StaticResource Food}"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding VendorType}" Value="FOOD">
-                                                <Setter Property="Template" Value="{StaticResource FOOD}"/>
+                                            <DataTrigger Binding="{Binding VendorType}" Value="Food">
+                                                <Setter Property="Template" Value="{StaticResource Food}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding VendorType}" Value="CAR_REPAIR">
-                                                <Setter Property="Template" Value="{StaticResource CAR_REPAIR}"/>
+                                            <DataTrigger Binding="{Binding VendorType}" Value="CarRepair">
+                                                <Setter Property="Template" Value="{StaticResource CarRepair}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding VendorType}" Value="OTHER">
-                                                <Setter Property="Template" Value="{StaticResource OTHER}"/>
+                                            <DataTrigger Binding="{Binding VendorType}" Value="Other">
+                                                <Setter Property="Template" Value="{StaticResource Other}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
