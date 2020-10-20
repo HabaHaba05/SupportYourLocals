@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Net.Mail;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using SuppLocals.Classes;
 
 namespace SuppLocals
 {
@@ -49,7 +50,7 @@ namespace SuppLocals
                         {
                             result = "Email can not be empty!";
                         }
-                        else if (IsValidEmail(Email) == false)
+                        else if (Email.IsEmail() == false)
                         {
                             result = "Email is not valid!";
                         }
@@ -98,12 +99,6 @@ namespace SuppLocals
                 OnPropertyChanged("ErrorCollection");
                 return result;
             }
-        }
-
-        public bool IsValidEmail(string email)
-        {     
-                // Return true if strIn is in valid e-mail format.
-                return Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
         }
 
         public bool IsPasswordValid(string input) 

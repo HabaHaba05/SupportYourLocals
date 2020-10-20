@@ -164,7 +164,7 @@ namespace SuppLocals
     
             using (var dbUser = new ReviewsDbTable())
             {
-                var user = dbUser.Reviews.SingleOrDefault(x => x.CommentID == index);
+                var user = dbUser.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
                 user.Reply = comment.Text;
                 dbUser.SaveChanges();
             }
