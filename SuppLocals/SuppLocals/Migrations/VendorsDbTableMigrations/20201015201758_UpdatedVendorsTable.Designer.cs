@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuppLocals;
 
 namespace SuppLocals.Migrations.VendorsDbTableMigrations
 {
     [DbContext(typeof(VendorsDbTable))]
-    partial class VendorsDbTableModelSnapshot : ModelSnapshot
+    [Migration("20201015201758_UpdatedVendorsTable")]
+    partial class UpdatedVendorsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

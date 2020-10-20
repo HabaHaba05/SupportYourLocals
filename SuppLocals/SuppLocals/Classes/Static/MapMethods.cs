@@ -10,6 +10,7 @@ using Microsoft.Maps.MapControl.WPF;
 using Newtonsoft.Json.Linq;
 using SuppLocals.Views;
 using Location = Microsoft.Maps.MapControl.WPF.Location;
+using System.Linq;
 
 namespace SuppLocals
 {
@@ -128,13 +129,14 @@ namespace SuppLocals
             return locCollection;
         }
 
-        public static async Task<Location> ConvertAddressToLocation(string address)
+        public static async Task<string> ConvertLocationToAddress(Location location)
         {
-            var data = new Location();
+
+            string data ="";
 
             try
             {
-                var uri = Config.Host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" +
+                var uri = Config.Host + "/maps/api/geocode/json?latlng=" + location.Latitude.ToString()+","+location.Longitude.ToString() + "&language=lt&key=" +
                           Config.Google_Api_Key;
 
                 var client = new HttpClient();
@@ -144,11 +146,8 @@ namespace SuppLocals
 
                 var o = JObject.Parse(responseBody);
 
-                var lat = (double) o.SelectToken("results[0].geometry.location.lat");
-                var lng = (double) o.SelectToken("results[0].geometry.location.lng");
+                data = (string)o.SelectToken("results[0].formatted_address");
 
-
-                data = new Location(lat, lng);
 
                 return data;
             }
@@ -160,14 +159,13 @@ namespace SuppLocals
             return data;
         }
 
-        public static async Task<string> ConvertLocationToAddress(Location location)
+        public static async Task<List<string>> ConvertAddressToLocation(string address)
         {
-            var data = "";
+            var data = new List<string>();
 
             try
             {
-                var uri = Config.Host + "/maps/api/geocode/json?latlng=" + location.Latitude + "," +
-                          location.Longitude + "&language=lt&key=" + Config.Google_Api_Key;
+                var uri = Config.Host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" + Config.Google_Api_Key;
 
                 var client = new HttpClient();
                 var response = await client.GetAsync(uri);
@@ -176,7 +174,28 @@ namespace SuppLocals
 
                 var o = JObject.Parse(responseBody);
 
-                data = (string) o.SelectToken("results[0].formatted_address");
+                data.Add((string)o.SelectToken("results[0].geometry.location.lat"));
+                data.Add((string)o.SelectToken("results[0].geometry.location.lng"));
+
+                    JArray address_components = (JArray)o.SelectToken("results[0].address_components");
+
+                    for (int i = 0; i < address_components.Count(); i++)
+                    {
+                        JObject zero2 = (JObject)address_components[i];
+                        string long_name = (string)zero2.SelectToken("long_name");
+                        JArray mtypes = (JArray)zero2.SelectToken("types");
+                        string Type = (string)mtypes[0];
+
+                        if (Type  == "administrative_area_level_2")
+                        {
+                            data.Add(RemoveLithuanianChars(long_name));
+                        }
+                        else if (Type == "administrative_area_level_1")
+                        {
+                            data.Add(RemoveLithuanianChars(long_name));
+                        }
+
+                    }
 
                 return data;
             }
@@ -187,5 +206,37 @@ namespace SuppLocals
 
             return data;
         }
+
+        private static string RemoveLithuanianChars(string str)
+        {
+            string answ="";
+
+            Dictionary<char, char> dict = new Dictionary<char, char>()
+            {
+                { 'ą','a'},
+                { 'č','c'},
+                { 'ę','e'},
+                { 'ė','e'},
+                { 'į','i'},
+                { 'š','s'},
+                { 'ų','u'},
+                { 'ū','u'},
+                { 'ž','z'},
+            };
+
+            foreach(var x in str)
+            {
+                if (dict.ContainsKey(x))
+                {
+                    answ += dict[x];
+                }
+                else
+                {
+                    answ += x;
+                }
+            }
+            return answ;
+        }
+
     }
 }
