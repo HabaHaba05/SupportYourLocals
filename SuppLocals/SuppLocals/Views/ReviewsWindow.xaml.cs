@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Media;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
@@ -20,7 +22,7 @@ namespace SuppLocals
         private readonly User _user;
         private readonly Vendor _vendor;
 
-        private double _average;
+        private decimal _average;
 
         private List<Review> _reviews;
 
@@ -45,6 +47,13 @@ namespace SuppLocals
             PopulateData();
         }
 
+        private class Comment
+        {
+            public string Text { get; set; }
+            public int Likes { get; set; }
+            public int Dislikes { get; set; } 
+        }
+
 
         public Visibility CanComment { get; set; }
 
@@ -53,8 +62,7 @@ namespace SuppLocals
         {
             var comment = comments.Text;
             ConfirmError.Visibility = Visibility.Hidden;
-
-
+            
             // counter for comments to replies
             var i = RView.Items.Count;
 
@@ -74,7 +82,8 @@ namespace SuppLocals
                     Text = comment,
                     Stars = Rating.RatingValue,
                     Date = DateTime.Now.ToString("yyyy-MM-dd"),
-                    Reply = ""
+                    Likes = 0,
+                    Dislikes = 0
                 };
 
                 db.Reviews.Add(r);
@@ -120,78 +129,64 @@ namespace SuppLocals
 
                 if (sum != 0 || number != 0)
                 {
-                    _average = (double)sum / number;
+                    _average = (decimal) sum / number;
                 }
                 else
                 {
                     _average = 0;
                 }
 
-                RView.Items.Add(review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" + review.Date);
+                var Comment = review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" + review.Date;
+
+                RView.Items.Add(new Comment { Text = Comment, Likes = review.Likes, Dislikes = review.Dislikes});
             }
 
             UpdateRatingCounts();
         }
+       
 
-
-        private void PostComment(object sender, RoutedEventArgs e)
+        private void LikeClicked(object sender, RoutedEventArgs e)
         {
-            var btn = (Button)sender;
-            var replyBox = ((Grid)btn.Parent).FindName("ReplyTextBox") as TextBox;
+            var button = sender as RadioButton;
 
-            var comment = ((Grid)btn.Parent).FindName("UserComment") as TextBlock;
+            var like = ((StackPanel)button.Parent).FindName("LikeCount") as TextBlock;
+            like.FontWeight = FontWeights.Bold;
+            //button.Content = new SolidColorBrush(Colors.Blue);
 
-            var replyGrid = ((Grid)btn.Parent).FindName("ReplyGrid") as Grid;
-            var commentGrid = ((Grid)btn.Parent).FindName("CommentGrid") as Border;
+            LikesOrDislikes(button, like, "likes");   
+        }
+
+        private void DislikeClicked(object sender, RoutedEventArgs e)
+        {  
+            var button = sender as RadioButton;
+
+            var dislike = ((StackPanel)button.Parent).FindName("DislikeCount") as TextBlock;
+            dislike.FontWeight = FontWeights.Bold;
+
+            LikesOrDislikes(button, dislike, "dislikes");
+        }
 
 
-            var fullComment = _vendor.Title + "\n" + "\n" + replyBox.Text + "\n" + DateTime.Now.ToString("yyyy-MM-dd");
-
-            replyGrid.Visibility = Visibility.Collapsed;
-            commentGrid.Visibility = Visibility.Visible;
-
-
-            comment.Text = fullComment;
-
-            // Saving the reply for the comment
-            // only works if item IS SELECTED
-            var index = RView.Items.IndexOf(RView.SelectedItem);
+        private void LikesOrDislikes(RadioButton button, TextBlock t, string name)
+        {
+            var item = button.DataContext;
+            var index = RView.Items.IndexOf(item);
 
             using (var dbUser = new ReviewsDbTable())
             {
                 var user = dbUser.Reviews.SingleOrDefault(x => x.CommentID == index);
-                user.Reply = fullComment;
+
+                if(name == "dislikes")
+                {
+                    user.Dislikes++;
+                    t.Text = user.Dislikes.ToString();
+                }
+                else 
+                {
+                    user.Likes++;
+                    t.Text = user.Likes.ToString();
+                }
                 dbUser.SaveChanges();
-            }
-        }
-        public int m = 0;
-       
-        private void ItemLoaded(object sender, RoutedEventArgs e)
-        {
-            var control = sender as StackPanel;
-
-            var commentGrid = control.FindName("CommentGrid") as Border;
-            var replyGrid = control.FindName("ReplyGrid") as Grid;
-            var comment = control.FindName("UserComment") as TextBlock;
-
-            using var db = new ReviewsDbTable();
-            var review = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) &&(x.CommentID == m));
-
-            if (_user.ID != _vendor.UserID)
-            {
-                replyGrid.Visibility = Visibility.Collapsed;
-            }
-
-            if (review.Reply != "")
-            {
-                comment.Text = review.Reply;
-                commentGrid.Visibility = Visibility.Visible;
-                replyGrid.Visibility = Visibility.Collapsed;
-            }
-
-            if(m < RView.Items.Count - 1)
-            {
-                m++;
             }
         }
     }

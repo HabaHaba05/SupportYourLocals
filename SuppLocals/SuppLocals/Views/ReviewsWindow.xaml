@@ -71,71 +71,43 @@
         </Border>
 
         <!-- Display reviews -->
-        <ListView x:Name ="RView" Grid.Column="2" Grid.Row="1" Margin="10 0 5 0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListView x:Name ="RView" Grid.Column="2" Grid.Row="1" Margin="10 0 5 0" 
+                  HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ItemsSource="{Binding Comments}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <StackPanel HorizontalAlignment="Stretch" Loaded="ItemLoaded">
-                            <Image Source="/Assets/usericon.jpg" Stretch="None" Margin="0 0 0 0" HorizontalAlignment="Left"/>
-                            <TextBlock Margin="30 -20 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0">
+                            <Image  Source="/Assets/usericon.jpg" Stretch="None" Margin="0 0 0 0" HorizontalAlignment="Left"/>
+                            <TextBlock Margin="30 -20 0 0" TextAlignment="Justify" Text="{Binding Text}" TextWrapping="Wrap"/>
                             <Separator Margin="5" Width="auto" Height="3"/>
+                        </StackPanel>
 
-                           
-                            <!-- Reply itself -->
-                            <Border x:Name="CommentGrid" CornerRadius="4" Background="LightGray"
-                                    Visibility="Collapsed" Margin="30 5 0 0">
-                                <Grid>
-                                    <TextBlock Grid.Row="1" x:Name="UserComment" TextAlignment="Justify" TextWrapping="Wrap" Margin="10 5 0 5"/>
-                                </Grid>
-                            </Border>
 
-                            <!-- Writing a reply -->
-                            <Grid Margin="5" x:Name="ReplyGrid">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock x:Name="LikeCount" Text="{Binding Likes}"
+                                       FontSize="13" VerticalAlignment="Center"/>
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                                         Width="20" Height="20"  GroupName="1"
+                                         Background="Transparent" BorderThickness="0"
+                                         Margin="5 0 5 5" Click="LikeClicked">
+                                <Image Source="/Assets/Like.png"/>
+                            </RadioButton>
 
-                                <Button Grid.Column="1" Click="PostComment" Content="Post" Height="20"
-                                        HorizontalAlignment="Left" Width="40" Margin="5" VerticalAlignment="Top">
-                                    
-                                    <!-- If comment is empty button is disabled -->
-                                    <Button.Style>
-                                        <Style TargetType="{x:Type Button}">
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text, ElementName=ReplyTextBox}" Value="">
-                                                    <Setter Property="IsEnabled" Value="False"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
+                            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                                         Width="20" Height="20"  GroupName="1"
+                                         Background="Transparent" BorderThickness="0"
+                                         Margin="5 0 5 5" Click="DislikeClicked">
+                                <Image Source="/Assets/Like.png"/>
+                            </RadioButton>
 
-                                <Border Grid.Column="0"  CornerRadius="4" Background="LightGray">
-                                    <Grid Background="Transparent">
-
-                                        <TextBox x:Name="ReplyTextBox" Background="Transparent"
-                                             TextWrapping="Wrap" BorderThickness="0"/>
-
-                                        <TextBlock IsHitTestVisible="False" Text="Reply..." Margin="5,0,0,0" Foreground="Black" 
-                                               VerticalAlignment="Top" HorizontalAlignment="Left">
-                                            <TextBlock.Style>
-                                                <Style TargetType="{x:Type TextBlock}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=ReplyTextBox}" Value="">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </Grid>
-                                </Border>
-                            </Grid>
-                                
-
+                            <TextBlock x:Name="DislikeCount" Text="{Binding Dislikes}" Margin="0 0 10 0"
+                                       FontSize="13" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

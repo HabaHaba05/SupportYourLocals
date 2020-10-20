@@ -13,8 +13,8 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border Background="{TemplateBinding Background}"
                             CornerRadius="6"
-                            BorderThickness="2"
-                            BorderBrush="#CCBA8B">
+                            BorderThickness="0"
+                            BorderBrush="White">
 
                         <ContentPresenter  
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
