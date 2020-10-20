@@ -29,6 +29,7 @@ namespace SuppLocals
 
         public int VendorsCount { get; set; }
 
+
         public BitmapImage GetProfileImage()
         {
             if (Image == null)

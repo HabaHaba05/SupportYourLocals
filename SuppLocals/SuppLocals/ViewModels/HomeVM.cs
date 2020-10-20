@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,41 +15,37 @@ namespace SuppLocals.ViewModels
 
 
         #region Constructor
-
         public HomeVM(Window window, User user)
         {
-            _mainWindow = window;
-            ActiveUser = user;
+            this._mainWindow = window;
+            this.ActiveUser = user;
+            SelectedArea = Config.Country;
 
-            using (var db = new VendorsDbTable())
+            InitializeCommands();
+
+            //Reading all vendors
+            using (VendorsDbTable db = new VendorsDbTable())
             {
                 var data = db.Vendors.ToList();
                 _allVendorsList = new List<Vendor>(data);
                 _allVendorsList.ForEach(x => x.Location = new Location(x.Latitude, x.Longitude));
-                VendorsList = _allVendorsList;
             }
 
-            FindRouteBtnClick = new RelayCommand(o => CalcRoute(), o => true);
-            HideBtnClick = new RelayCommand(o => ResetToNulls(), o => true);
 
-            ReviewBtnClick = new RelayCommand(o =>
-                {
-                    var reviewsWindow = new ReviewsWindow(_selectedVendor, user);
-                    reviewsWindow.ShowDialog();
-                },
-                o => true
-            );
+            //If homeView opened first time then we will parse counties and municipalities boundaries
+
+            Config.Country.Children ??= Config.Country.ParseCounties();
+
+            foreach (var x in Config.Country.Children)
+            {
+                x.Children ??= x.ParseMunicipalities();
+            }
+
+            UpdateAreasVendors();
+
         }
 
         #endregion
-
-
-        public RelayCommand FindRouteBtnClick { get; }
-
-        public RelayCommand HideBtnClick { get; }
-
-        public RelayCommand ReviewBtnClick { get; }
-
 
         #region Private props
 
@@ -59,7 +55,7 @@ namespace SuppLocals.ViewModels
 
         private string _vendorTypeSelected;
 
-        private bool _useDistanceFilter;
+        private bool _useDistanceFilter = false;
 
         private double _circleRadius;
 
@@ -67,7 +63,9 @@ namespace SuppLocals.ViewModels
 
         private Visibility _selectedVendorInfoGrid = Visibility.Collapsed;
 
-        private double _zoomLevel = 12;
+        private double _zoomLevel;
+
+        private Area _selectedArea;
 
         #endregion
 
@@ -179,10 +177,85 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("ZoomLevel");
             }
         }
+        
+        public Area SelectedArea{ 
+            get { return _selectedArea; }
+            set 
+            {
+
+                _selectedArea = value;
+                VendorsList = null;
+                ZoomLevel = _selectedArea.Zoom;
+                if (!_selectedArea.HasChildren)
+                {
+                    VendorsList = SelectedArea.Vendors;
+                }
+                if (VendorTypesList != null && (!_selectedArea.HasChildren || _useDistanceFilter) )
+                {
+                    UpdateVendorsList();
+                }
+                NotifyPropertyChanged("SelectedArea");
+            }
+        }
+
+        #endregion
+
+        #region Commands
+
+        public RelayCommand FindRouteBtnClick {get; private set;}    
+        public RelayCommand HideBtnClick {get; private set;}
+        public RelayCommand ReviewBtnClick { get; private set; }
+        public RelayCommand JumpBackClick { get; private set; }
+        public RelayCommand ShowVendorsClick { get; private set; }
+
 
         #endregion
 
         #region Methods
+
+        private void InitializeCommands()
+        {
+            FindRouteBtnClick = new RelayCommand(o => CalcRoute(), o => true);
+            HideBtnClick = new RelayCommand(o => ResetToNulls(), o => true);
+
+            ReviewBtnClick = new RelayCommand(
+                o =>{
+                    ReviewsWindow reviewsWindow = new ReviewsWindow(_selectedVendor, ActiveUser);
+                    reviewsWindow.ShowDialog();
+                },
+                o => true
+                );
+
+            JumpBackClick = new RelayCommand(
+                o => { SelectedArea = _selectedArea.Parent;},
+                o => {
+                    //This line is needed only to hide BUG :))))
+                    ZoomLevel += 0.0001f; ZoomLevel -= 0.0001f;
+                    return _selectedArea.Parent != null;
+                });
+
+            ShowVendorsClick = new RelayCommand(o => UpdateVendorsList(), o => true);
+        }
+
+        private void UpdateAreasVendors()
+        {
+            Config.Country.Vendors.Clear();
+            PutVendors(Config.Country);
+
+            foreach (var x in Config.Country.Children)
+            {
+                if (x.HasChildren)
+                {
+                    x.Vendors.Clear();
+                    foreach (var y in x.Children)
+                    {
+                        x.Vendors.AddRange(y.Vendors);
+                    }
+                }
+
+                Config.Country.Vendors.AddRange(x.Vendors);
+            }
+        }
 
         private async void UserDistanceFilterChange()
         {
@@ -192,22 +265,22 @@ namespace SuppLocals.ViewModels
             }
 
             UpdateVendorsList();
+            if (!_useDistanceFilter && _selectedArea.HasChildren) {
+                VendorsList = null;
+            }
+
         }
 
         private void UpdateVendorsList()
         {
             if (VendorTypeSelected == "ALL")
             {
-                VendorsList = _allVendorsList.Where(x =>
-                    !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <=
-                    CircleRadius).ToList();
+                VendorsList = SelectedArea.Vendors.Where(x =>  !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <= CircleRadius).ToList();
             }
             else
             {
-                VendorsList = _allVendorsList.Where(x =>
-                    x.VendorType == VendorTypeSelected && (!_useDistanceFilter ||
-                                                           MapMethods.DistanceBetweenPlaces(ActiveUser.Location,
-                                                               x.Location) <= CircleRadius)).ToList();
+                VendorsList = SelectedArea.Vendors.Where(x =>
+                        (x.VendorType == VendorTypeSelected.ToString()) && (!_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <= CircleRadius)).ToList();
             }
         }
 
@@ -227,6 +300,28 @@ namespace SuppLocals.ViewModels
             SelectedVendorInfoGrid = Visibility.Collapsed;
             RouteLine = null;
             SelectedVendor = null;
+        }
+
+        private void PutVendors(Area area)
+        {
+            if (area.HasChildren)
+            {
+                foreach (var x in area.Children)
+                {
+                    PutVendors(x);
+                }
+            }
+            else
+            {
+                if (area.Level == 1)
+                {
+                    area.Vendors = _allVendorsList.Where(x => new string(x.County.Take(4).ToArray()) == new string(area.Name.Take(4).ToArray())).ToList();
+                }
+                else if (area.Level == 2)
+                {
+                    area.Vendors = _allVendorsList.Where(x => x.Municipality == area.Name).ToList();
+                }
+            }
         }
 
         #endregion

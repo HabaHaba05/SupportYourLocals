@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SuppLocals"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="ReviewsWindow" Height="450" Width="600" Background="#CCBA8B">
+        Height="450" Width="600" Background="#CCBA8B">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--0-->
@@ -18,11 +18,11 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <!--0-->
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="15"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="70"/>
+            <RowDefinition Height="20"/>
             <!--4-->
 
         </Grid.RowDefinitions>
@@ -72,30 +72,34 @@
         </Border>
 
         <!-- Display reviews -->
-        <ListView x:Name ="rView" Grid.Column="2" Grid.Row="1" Margin="10 0 5 0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListView x:Name ="RView" Grid.Column="2" Grid.Row="1" Margin="10 0 5 0"
+                  HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ItemsSource="{Binding Item}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <StackPanel HorizontalAlignment="Stretch">
-                            <Image Source="/Assets/usericon.jpg" Stretch="None" Margin="0 0 0 0" HorizontalAlignment="Left"/>
-                            <TextBlock Margin="30 -20 0 0" TextAlignment="Justify" Text="{Binding}" TextWrapping="Wrap"/>
-                            <Separator Margin="5" Width="auto" Height="3"/>
+                    <Grid HorizontalAlignment="Stretch" Loaded="ItemLoaded" Margin="0 5 0 5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
 
+                        <StackPanel Grid.Row="0">
+                            <Image  Source="/Assets/usericon.jpg" Stretch="None" Margin="0 0 0 0" HorizontalAlignment="Left"/>
+                            <TextBlock Margin="30 -20 0 0" TextAlignment="Justify" Text="{Binding Text}" TextWrapping="Wrap"/>
+                            <Separator Margin="5" Width="auto" Height="3"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1">
                             <!-- Reply itself -->
-                            <Border Grid.Column="0" x:Name="CommentGrid" CornerRadius="4" Background="LightGray"
-                                    Visibility="Collapsed" Margin="30 5 0 0">
-                                <Grid Height="auto">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    
-                                    <TextBlock Grid.Row="0" x:Name="Commenter" TextAlignment="Left" FontWeight="Bold" Margin="5 5 0 5"/>
-                                    <TextBlock Grid.Row="1" x:Name="UserComment" TextAlignment="Justify" TextWrapping="Wrap" Margin="10 5 0 5"/>
+                            <Border x:Name="CommentGrid" CornerRadius="4" Background="LightGray"
+                                    Margin="30 5 0 0" Visibility="Collapsed">
+                                <Grid>
+                                    <TextBlock Grid.Row="1" x:Name="UserComment" Text="{Binding Response}"
+                                               TextAlignment="Justify" TextWrapping="Wrap" Margin="10 5 0 5"/>
                                 </Grid>
                             </Border>
 
-                            <!-- Writting a reply -->
+                            <!-- Writing a reply -->
                             <Grid Margin="5" x:Name="ReplyGrid">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -104,7 +108,7 @@
 
                                 <Button Grid.Column="1" Click="PostComment" Content="Post" Height="20"
                                         HorizontalAlignment="Left" Width="40" Margin="5" VerticalAlignment="Top">
-                                    
+
                                     <!-- If comment is empty button is disabled -->
                                     <Button.Style>
                                         <Style TargetType="{x:Type Button}">
@@ -118,10 +122,10 @@
                                     </Button.Style>
                                 </Button>
 
-                                <Border CornerRadius="4" Background="LightGray">
-                                    <Grid Grid.Column="0" Background="Transparent">
-                                        
-                                        <TextBox x:Name="ReplyTextBox" Background="Transparent" 
+                                <Border Grid.Column="0"  CornerRadius="4" Background="LightGray">
+                                    <Grid Background="Transparent">
+
+                                        <TextBox x:Name="ReplyTextBox" Background="Transparent"
                                              TextWrapping="Wrap" BorderThickness="0"/>
 
                                         <TextBlock IsHitTestVisible="False" Text="Reply..." Margin="5,0,0,0" Foreground="Black" 
@@ -140,8 +144,8 @@
                                     </Grid>
                                 </Border>
                             </Grid>
-
                         </StackPanel>
+
                     </Grid>
                 </DataTemplate>
 
@@ -150,10 +154,10 @@
 
         <StackPanel Grid.Row="2" Grid.Column="2" Grid.RowSpan="3" Visibility="{Binding CanComment}">
             <!-- Add a review -->
-            <StackPanel  Orientation="Horizontal" Margin="10 5 5 5">
-                <TextBlock Text="Rating:" FontSize="13" Margin="0 0 10 0"/>
-                <local:Rating Height="17" Width="auto" VerticalAlignment="Center" Margin="0 0 0 3"/>
-            </StackPanel>
+            <Border BorderThickness="0.5" BorderBrush="Gray" Margin="10 5 5 5"/>
+            <TextBlock Text="Write a review" HorizontalAlignment="Center" 
+                       FontSize="16" FontWeight="Bold" Margin="5"/>
+            <local:Rating Height="17" Width="100" VerticalAlignment="Center" Margin="0 0 0 3"/>
 
             <Border BorderBrush="LightGray" BorderThickness="2"  Margin="10 0 5 0">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -167,7 +171,7 @@
                            Foreground="Red" Visibility="Hidden"/>
 
                 <!-- Button for confirming person's review -->
-                <Button Margin="10 5 0 5" HorizontalAlignment="Right" Height="25" Width="60" Click="ConfirmClicked">Confirm
+                <Button Margin="10 5 0 5" HorizontalAlignment="Right" Height="20" Width="60" Click="ConfirmClicked">Confirm
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="4"/>
