@@ -18,6 +18,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
+        <ContentControl Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Content="{Binding}"/>
 
         <Border CornerRadius="10" Grid.RowSpan="2">
             <Border.Background>
@@ -119,6 +120,8 @@
 
         </StackPanel>
 
+        
+        
     </Grid>
 
     <Window.Resources>
@@ -153,6 +156,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
     </Window.Resources>
+    
 
 </Window>
