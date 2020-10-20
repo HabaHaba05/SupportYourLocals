@@ -1,24 +1,76 @@
-﻿using System.Collections.Generic;
+﻿using Prism.Commands;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace SuppLocals.ViewModels
 {
-    public class VendorsVM : BaseViewModel
+    public class VendorsVM : BaseViewModel, INotifyPropertyChanged
     {
-        public VendorsVM()
-        {
-            UserList = new List<User>();
 
-            using (var db = new UsersDbTable())
+        ObservableCollection<User> userList;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<User> UserList
+        {
+            get { return userList; }
+            set
             {
-                var data = db.Users.ToList();
-                foreach (var user in data.Where(user => user.VendorsCount > 0))
+                userList = value;
+                if(PropertyChanged != null)
                 {
-                    UserList.Add(user);
+                    PropertyChanged(this, new PropertyChangedEventArgs("UserList"));
                 }
             }
         }
 
-        public List<User> UserList { get; }
+        public VendorsVM()
+        {
+            UserList = new ObservableCollection<User>();
+
+            using (var db = new UsersDbTable())
+            {
+                var data = db.Users.ToList();
+                foreach (var user in data.Where(i => i.VendorsCount>0))
+                {
+                    UserList.Add(user);
+                }
+            }
+            SelectedItemChangedCommand = new DelegateCommand<object>((selectedItem) =>
+            {
+                SortList(selectedItem);
+            });
+        }
+
+        public DelegateCommand<object> SelectedItemChangedCommand { get; set; }
+        
+        private void SortList(object selectedItem)
+        {
+            switch (selectedItem)
+            {
+                case "Vendor A to Z":
+                    UserList = new ObservableCollection<User>(UserList.OrderBy(i => i.Username));
+                    break;
+                case "Vendor Z to A":
+                    UserList = new ObservableCollection<User>(UserList.OrderByDescending(i => i.Username));
+                    break;
+                case "Marketplaces 1 - 9":
+                    UserList = new ObservableCollection<User>(UserList.OrderBy(i => i.VendorsCount));
+                    break;
+                case "Marketplaces 9 - 1":
+                    UserList = new ObservableCollection<User>(UserList.OrderByDescending(i => i.VendorsCount));
+                    break;
+                default:
+                    break;
+
+            }
+        }
     }
 }

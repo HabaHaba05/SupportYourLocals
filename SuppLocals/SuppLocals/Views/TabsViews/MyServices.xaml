@@ -57,7 +57,7 @@
                         </GridViewColumn.HeaderContainerStyle>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Edit" Name="editBtn"/>
+                                <Button Content="Edit" Name="editBtn" Command="{Binding ElementName=vendorListView, Path=DataContext.ButtonCommand}" CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
