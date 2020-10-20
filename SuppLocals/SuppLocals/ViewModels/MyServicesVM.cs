@@ -21,5 +21,6 @@ namespace SuppLocals.ViewModels
         }
 
         public List<Vendor> VendorList { get; }
+
     }
 }
