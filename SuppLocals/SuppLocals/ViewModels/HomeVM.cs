@@ -23,6 +23,19 @@ namespace SuppLocals.ViewModels
 
             InitializeCommands();
 
+
+            _vendorTypesList = new List<string>
+            {
+                "ALL"
+            };
+            
+            foreach (var type in Enum.GetValues(typeof(VendorType)))
+            {
+                _vendorTypesList.Add(type.ToString());
+            }
+            _vendorTypeSelected = _vendorTypesList[0];
+            
+
             //Reading all vendors
             using (VendorsDbTable db = new VendorsDbTable())
             {
@@ -66,6 +79,8 @@ namespace SuppLocals.ViewModels
         private double _zoomLevel;
 
         private Area _selectedArea;
+
+        private List<string> _vendorTypesList;
 
         #endregion
 
@@ -118,20 +133,7 @@ namespace SuppLocals.ViewModels
 
         public List<string> VendorTypesList
         {
-            get
-            {
-                var x = new List<string>
-                {
-                    "ALL"
-                };
-
-                foreach (var type in Enum.GetValues(typeof(VendorType)))
-                {
-                    x.Add(type.ToString());
-                }
-                _vendorTypeSelected = x[0];
-                return x;
-            }
+            get => _vendorTypesList;       
         }
 
         public string VendorTypeSelected
@@ -273,14 +275,14 @@ namespace SuppLocals.ViewModels
 
         private void UpdateVendorsList()
         {
-            if (VendorTypeSelected == "ALL")
+            if (_vendorTypeSelected == "ALL")
             {
                 VendorsList = SelectedArea.Vendors.Where(x =>  !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <= CircleRadius).ToList();
             }
             else
             {
                 VendorsList = SelectedArea.Vendors.Where(x =>
-                        (x.VendorType == VendorTypeSelected.ToString()) && (!_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <= CircleRadius)).ToList();
+                        (x.VendorType == _vendorTypeSelected.ToString()) && (!_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <= CircleRadius)).ToList();
             }
         }
 
