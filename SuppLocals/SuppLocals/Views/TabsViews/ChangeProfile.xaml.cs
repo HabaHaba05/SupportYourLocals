@@ -10,8 +10,10 @@ namespace SuppLocals.Views
         public ChangeProfile()
         {
             InitializeComponent();
+
         }
-        /*  private void InsertImageData()
+        /*
+        private void InsertImageData()
         {
             try
             {
@@ -45,8 +47,9 @@ namespace SuppLocals.Views
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }*/
-        /*
+            }
+        }
+
         private void ProfileImageClicked(object sender, RoutedEventArgs e)
         {
             try
@@ -60,18 +63,18 @@ namespace SuppLocals.Views
                 {
                     _imageName = fldlg.FileName;
                     var isc = new ImageSourceConverter();
-                    profileImage.SetValue(Image.SourceProperty, isc.ConvertFromString(_imageName));
+                    _image.SetValue(Image.SourceProperty, isc.ConvertFromString(_imageName));
                 }
                 fldlg = null;
 
                 InsertImageData();
-                profileImage.ImageSource = ActiveUser.GetProfileImage();
+                _image.ImageSource = ActiveUser.GetProfileImage();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-        } */
-
+        }
+        */
     }
 }

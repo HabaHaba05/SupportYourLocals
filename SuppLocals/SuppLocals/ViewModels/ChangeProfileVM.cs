@@ -1,11 +1,13 @@
-﻿using SuppLocals.Views;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
-using System.Security.RightsManagement;
-using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using Microsoft.Win32;
 using BC = BCrypt.Net.BCrypt;
 
 namespace SuppLocals.ViewModels
@@ -18,7 +20,6 @@ namespace SuppLocals.ViewModels
         private string _oldpassword;
         private string _newpassword;
         private string _confirmpassword;
-
         #region Public props
         public string OldPassword
         {
@@ -50,11 +51,11 @@ namespace SuppLocals.ViewModels
         }
         #endregion
 
+
+
         public ChangeProfileVM(User user)
         {
             ActiveUser = user;
-            
-
             SaveChangesClick = new RelayCommand(o =>
             {
                 SaveChanges();
@@ -74,6 +75,8 @@ namespace SuppLocals.ViewModels
             get
             {
                 string result = null;
+                var validate = new ValidateUsername();
+           
 
                 switch (name)
                 {
@@ -89,7 +92,7 @@ namespace SuppLocals.ViewModels
                         break;
 
                     case "NewPassword":
-                        if (string.IsNullOrWhiteSpace(OldPassword))
+                        if (string.IsNullOrWhiteSpace(NewPassword))
                         {
                             result = "Field cannot be empty";
                         }
@@ -97,20 +100,29 @@ namespace SuppLocals.ViewModels
                         {
                             result = "New password has to be at least 8 symbols long!";
                         }
+                        else if (validate.IsPasswordValid(NewPassword) is false)
+                        {
+                            result = validate.PasswordErrorMessage(NewPassword);
+                        }
                         break;
 
                     case "ConfirmNewPassword":
-                        if (string.IsNullOrWhiteSpace(OldPassword))
+                        if (string.IsNullOrWhiteSpace(ConfirmNewPassword))
                         {
                             result = "Field cannot be empty";
                         }
                         else if (ConfirmNewPassword.Length < 8)
                         {
                             result = "Confirmation password has to be at least 8 symbols long!";
-
                         }
+                        else if (validate.IsPasswordValid(ConfirmNewPassword) is false)
+                        {
+                            result = validate.PasswordErrorMessage(ConfirmNewPassword);
+                        }
+
                         break;
                 }
+
                         if (ErrorCollection.ContainsKey(name))
                             ErrorCollection[name] = result;
                         else if (result != null)
@@ -121,6 +133,7 @@ namespace SuppLocals.ViewModels
                 }
             }
         
+
 
         private void SaveChanges()
         {

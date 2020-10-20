@@ -26,14 +26,14 @@
 
                 <TextBlock Text="Change your profile image" 
                            HorizontalAlignment="Center" 
-                       Margin="10 9 0 0" FontSize="17"  FontFamily="Tahoma"
+                       Margin="30 9 0 0" FontSize="17"  FontFamily="Tahoma"
                        Foreground="Black" FontWeight="Bold"/>
             </StackPanel>
 
-            <Button Margin="40" Background="Transparent" >
-                <Ellipse Width="150" Height="150">
+            <Button Margin="40" Background="Black" Command="{Binding ChangeProfileClick}">
+                <Ellipse Width="150" Height="150" >
                     <Ellipse.Fill>
-                        <ImageBrush x:Name="profileImage"/>
+                        <ImageBrush  />
                     </Ellipse.Fill>
                 </Ellipse>
 
@@ -74,7 +74,7 @@
                         Mode=TwoWay,  
                         UpdateSourceTrigger=PropertyChanged,
                         ValidatesOnDataErrors=True}" 
-                       ToolTip="{Binding ErrorCollection[OldPassword]}"
+                       ToolTip="{Binding ErrorCollection[NewPassword]}"
                              
                         Background="Transparent" 
                         BorderThickness="0"
@@ -93,7 +93,7 @@
                         UpdateSourceTrigger=PropertyChanged,
                         ValidatesOnDataErrors=True}"
                              
-                        ToolTip="{Binding ErrorCollection[OldPassword]}" 
+                        ToolTip="{Binding ErrorCollection[ConfirmNewPassword]}" 
                              
                     x:Name="ConfirmNewPass" Background="Transparent" BorderThickness="0"/>
             </Border>
