@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="All user vendors" Height="450" Width="800">
     <Grid Background="#CCBA8B">
-        <ListView Margin="0,71,0,71"
+        <ListView Margin="0 20 0 20"
                   Name="listView"
                   ItemsSource="{Binding VendorList}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -17,7 +17,7 @@
                     <GridViewColumn Header="Title" Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding Path= title, Mode=TwoWay}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
+                                <TextBox Text="{Binding Path= Title, Mode=TwoWay}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                         <GridViewColumn.HeaderContainerStyle>
@@ -35,7 +35,7 @@
                     <GridViewColumn Header="About" Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding about}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
+                                <TextBox Text="{Binding About}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                         <GridViewColumn.HeaderContainerStyle>
@@ -53,7 +53,7 @@
                     <GridViewColumn Header="Address" Width="170">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding adress}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
+                                <TextBox Text="{Binding Address}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                         <GridViewColumn.HeaderContainerStyle>
@@ -68,7 +68,7 @@
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Header="Vendor type" DisplayMemberBinding="{Binding vendorType}" Width="130">
+                    <GridViewColumn Header="Vendor type" DisplayMemberBinding="{Binding VendorType}" Width="130">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>

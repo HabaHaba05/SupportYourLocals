@@ -207,6 +207,7 @@
 
             <TextBlock Grid.Column="1" Grid.Row="1"
                        TextAlignment="Center" TextWrapping="Wrap" 
+                       FontWeight="Black" FontSize="18"
                        Text="{Binding SelectedVendor.Title}"/>
             <ScrollViewer  Grid.Column="1" Grid.Row="2" 
                            HorizontalScrollBarVisibility="Disabled" 
@@ -217,19 +218,20 @@
 
             <ScrollViewer Grid.Row="3" Grid.Column="1" 
                           VerticalScrollBarVisibility="Auto" 
-                          HorizontalScrollBarVisibility="Disabled">
-                <TextBlock Text="{Binding SelectedVendor.Address}"
+                          HorizontalScrollBarVisibility="Disabled"
+                         >
+                <TextBlock Text="{Binding SelectedVendor.Address}" Margin="0 0 0 10"
                            TextAlignment="Center" TextWrapping="Wrap"/>
             </ScrollViewer>
 
             <UniformGrid Grid.Column="1" Grid.Row="4" Rows="1">
-                <Button Command="{Binding HideBtnClick}">
+                <Button Command="{Binding HideBtnClick}" Width="45">
                     <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
                 </Button>
-                <Button Command="{Binding FindRouteBtnClick}">
+                <Button Command="{Binding FindRouteBtnClick}" Width="45">
                     <Image Height="auto" Width="auto"  Source="/Assets/destination.png"/>
                 </Button>
-                <Button Command="{Binding ReviewBtnClick}">
+                <Button Command="{Binding ReviewBtnClick}" Width="45">
                     <Image Height="auto" Width="auto"  Source="/Assets/review.png"/>
                 </Button>
             </UniformGrid>
