@@ -16,11 +16,9 @@
   <ItemGroup>
     <None Remove="146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" />
     <None Remove="Assets\carRepairPin.png" />
-    <None Remove="Assets\Dislike.png" />
     <None Remove="Assets\foodpin.png" />
     <None Remove="Assets\hands.png" />
     <None Remove="Assets\home.png" />
-    <None Remove="Assets\Like.png" />
     <None Remove="Assets\otherPin.png" />
     <None Remove="Assets\profile.png" />
     <None Remove="Assets\questionmark.png" />
@@ -44,11 +42,9 @@
 
   <ItemGroup>
     <Resource Include="Assets\carRepairPin.png" />
-    <Resource Include="Assets\Dislike.png" />
     <Resource Include="Assets\foodpin.png" />
     <Resource Include="Assets\hands.png" />
     <Resource Include="Assets\home.png" />
-    <Resource Include="Assets\Like.png" />
     <Resource Include="Assets\otherPin.png" />
     <Resource Include="Assets\profile.png" />
   </ItemGroup>
