@@ -71,7 +71,7 @@ namespace SuppLocals.Views
 
         private void UsernameTextChangedEventHandler(object sender, TextChangedEventArgs args)
         {
-            if (string.IsNullOrWhiteSpace(Username.Text) || string.IsNullOrWhiteSpace(PasswordBox.Password))
+            if (string.IsNullOrWhiteSpace(Username.Text) || string.IsNullOrWhiteSpace(PasswordBox.Password) || PasswordBox.Password.Length < 8)
             {
                 loginBtn.IsEnabled = false;
             }
@@ -83,7 +83,7 @@ namespace SuppLocals.Views
 
         private void PasswordTextChangedEventHandler(object sender, RoutedEventArgs args)
         {
-            if (string.IsNullOrWhiteSpace(PasswordBox.Password) || string.IsNullOrWhiteSpace(Username.Text))
+            if (string.IsNullOrWhiteSpace(PasswordBox.Password) || string.IsNullOrWhiteSpace(Username.Text) || PasswordBox.Password.Length < 8)
             {
                 loginBtn.IsEnabled = false;
             }

@@ -98,15 +98,14 @@
                     x:Name="ConfirmNewPass" Background="Transparent" BorderThickness="0"/>
             </Border>
 
-  
 
-                <Button  Margin="100 20"
+
+            <Button  Margin="100 20"
                     Content="Save changes" 
                     Width="90" Height="25" 
                     Command="{Binding SaveChangesClick}"/>
 
-            </StackPanel>
-
+        </StackPanel>
 
     </Grid>
 

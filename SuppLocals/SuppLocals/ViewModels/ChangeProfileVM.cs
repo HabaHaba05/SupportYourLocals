@@ -51,18 +51,21 @@ namespace SuppLocals.ViewModels
         }
         #endregion
 
-
+        private string _test;
+        public string Test
+        {
+            get => _test;
+            set
+            {
+                _test = value;
+                NotifyPropertyChanged("OldPassword");
+            }
+        }
 
         public ChangeProfileVM(User user)
         {
             ActiveUser = user;
-            SaveChangesClick = new RelayCommand(o =>
-            {
-                SaveChanges();
-            },
-                o => true
-            );
-        
+            SaveChangesClick = new RelayCommand(o =>{SaveChanges();}, o => true);
         }
 
         public RelayCommand SaveChangesClick { get; }
@@ -144,7 +147,7 @@ namespace SuppLocals.ViewModels
             }
             else if (NewPassword != ConfirmNewPassword)
             {
-                MessageBox.Show("New password do not match confirm password!");
+                Test = "bybiene";
                 return;
             }
             else if (!BC.Verify(OldPassword, ActiveUser.HashedPsw))
