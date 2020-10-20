@@ -13,9 +13,9 @@ namespace SuppLocals
 
 
         //GOOGLE
-        public static readonly string Google_Api_Key = "AIzaSyBVs4wsiyCVvFbpPlX-NJyz_fj8db04R78";
-        public static readonly string Host = "https://maps.googleapis.com";
-        public static readonly string Path = "/maps/api/place/autocomplete/json";
+        public const string Google_Api_Key = "AIzaSyBVs4wsiyCVvFbpPlX-NJyz_fj8db04R78";
+        public const string Host = "https://maps.googleapis.com";
+        public const string Path = "/maps/api/place/autocomplete/json";
 
         public static Area Country = new Area(new Location(55.2278601, 23.9054659), 6.5);
 
