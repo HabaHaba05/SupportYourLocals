@@ -14,8 +14,7 @@ namespace SuppLocals.ViewModels
 {
     public class ChangeProfileVM : BaseViewModel , IDataErrorInfo
     {
-        public User ActiveUser;
-        
+        public static User ActiveUser { get; set; }
 
         private string _oldpassword;
         private string _newpassword;
