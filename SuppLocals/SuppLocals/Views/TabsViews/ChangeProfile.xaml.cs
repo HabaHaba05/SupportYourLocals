@@ -14,6 +14,7 @@ namespace SuppLocals.Views
         private string _imageName;
         public User ActiveUser;
 
+
         public ChangeProfile()
         {
             InitializeComponent();
