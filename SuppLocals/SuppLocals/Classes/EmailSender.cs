@@ -15,10 +15,10 @@ namespace SuppLocals
         public void SendEmail(string email, string code)
         {
             var fromAddress = new MailAddress(email, "From Person");
-            var toAddress = new MailAddress("a@gmail.com", "To Person");
+            var toAddress = new MailAddress("lukasstc223@gmail.com", "To Person");
 
 
-            const string fromPassword = "pass";
+            const string fromPassword = "Support1234";
             const string subject = "Locals to Locals";
             var body = "This is temporary code to login: " + code;
 

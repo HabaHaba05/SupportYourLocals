@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using SuppLocals.ViewModels;
-using SuppLocals.Views.AccountViews;
+
 
 namespace SuppLocals.Views
 {
@@ -110,10 +110,9 @@ namespace SuppLocals.Views
 
         private void ProfileSettingsClicked(object sender, RoutedEventArgs e)
         {
-            var profile = new ProfileSettings(ActiveUser);
+            DataContext = new ChangeProfileVM(ActiveUser);
             ProfilePan.Visibility = Visibility.Collapsed;
-            profileButton1.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
-            profile.ShowDialog();
+            profileButton1.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));         
             MyImage.ImageSource = ActiveUser.GetProfileImage();
         }
 
