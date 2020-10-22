@@ -30,13 +30,13 @@
                        Foreground="Black" FontWeight="Bold"/>
             </StackPanel>
 
-            <Button Margin="40" Background="Transparent" >
-                <Ellipse Width="150" Height="150">
+            <Button Margin="40" Background="Transparent"
+                    Click="ProfileImageClicked">
+                <Ellipse Width="200" Height="200">
                     <Ellipse.Fill>
                         <ImageBrush x:Name="profileImage"/>
                     </Ellipse.Fill>
                 </Ellipse>
-
 
             </Button>
 

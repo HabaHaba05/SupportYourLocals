@@ -1,4 +1,5 @@
-﻿using SuppLocals.Views;
+﻿using Microsoft.Win32;
+using SuppLocals.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,14 +7,14 @@ using System.Linq;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Windows;
+using System.Windows.Media;
 using BC = BCrypt.Net.BCrypt;
 
 namespace SuppLocals.ViewModels
 {
     public class ChangeProfileVM : BaseViewModel , IDataErrorInfo
     {
-        public User ActiveUser;
-        
+        public static User ActiveUser { get; set; }
 
         private string _oldpassword;
         private string _newpassword;
@@ -53,19 +54,11 @@ namespace SuppLocals.ViewModels
         public ChangeProfileVM(User user)
         {
             ActiveUser = user;
-            
 
-            SaveChangesClick = new RelayCommand(o =>
-            {
-                SaveChanges();
-            },
-                o => true
-            );
-        
+            SaveChangesClick = new RelayCommand(o => { SaveChanges(); }, o => true);
         }
 
         public RelayCommand SaveChangesClick { get; }
-
 
         public string Error => null;
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
@@ -153,8 +146,5 @@ namespace SuppLocals.ViewModels
             OldPassword = "";
             ConfirmNewPassword = "";
         }
-
-
-
     }
 }
