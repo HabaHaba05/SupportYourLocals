@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Geocoding;
+using Microsoft.Win32;
 using SuppLocals.ViewModels;
 using System;
 using System.IO;
@@ -17,13 +18,11 @@ namespace SuppLocals.Views
         public ChangeProfile()
         {
             InitializeComponent();
-
-            ActiveUser = ChangeProfileVM.ActiveUser;
-            profileImage.ImageSource = ActiveUser.GetProfileImage();
         }
 
         private void ProfileImageClicked(object sender, RoutedEventArgs e)
         {
+
             try
             {
                 FileDialog fldlg = new OpenFileDialog
@@ -41,13 +40,23 @@ namespace SuppLocals.Views
                 fldlg = null;
 
                 InsertImageData();
+
+                var parentWindow = FindParentWindow(this);
+                if (parentWindow != null)
+                {
+                    parentWindow.MyImage.ImageSource = ActiveUser.GetProfileImage();
+                }
+
                 profileImage.ImageSource = ActiveUser.GetProfileImage();
+
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+        
 
         private void InsertImageData()
         {
@@ -70,6 +79,8 @@ namespace SuppLocals.Views
                 //Close a file stream
                 fs.Close();
 
+                ActiveUser ??= ((ChangeProfileVM)DataContext).ActiveUser;
+
                 using (var db = new UsersDbTable())
                 {
                     var user = db.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
@@ -85,5 +96,26 @@ namespace SuppLocals.Views
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+        private static MainWindow FindParentWindow(DependencyObject child)
+        {
+            var parent = VisualTreeHelper.GetParent(child);
+
+            //CHeck if this is the end of the tree
+            if (parent == null) return null;
+
+            var parentWindow = parent as MainWindow;
+            if (parentWindow != null)
+            {
+                return parentWindow;
+            }
+            else
+            {
+                //use recursion until it reaches a Window
+                return FindParentWindow(parent);
+            }
+        }
+
     }
 }

@@ -34,7 +34,8 @@
                     Click="ProfileImageClicked">
                 <Ellipse Width="200" Height="200">
                     <Ellipse.Fill>
-                        <ImageBrush x:Name="profileImage"/>
+                        <ImageBrush x:Name="profileImage" 
+                                    ImageSource="{Binding ProfilePicture , Mode=TwoWay}"/>
                     </Ellipse.Fill>
                 </Ellipse>
 

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using BC = BCrypt.Net.BCrypt;
 
@@ -14,11 +15,13 @@ namespace SuppLocals.ViewModels
 {
     public class ChangeProfileVM : BaseViewModel , IDataErrorInfo
     {
-        public static User ActiveUser { get; set; }
+        public User ActiveUser;
 
         private string _oldpassword;
         private string _newpassword;
         private string _confirmpassword;
+        private BitmapImage _profileImage;
+       
         #region Public props
         public string OldPassword
         {
@@ -48,6 +51,17 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("ConfirmNewPassword");
             }
         }
+
+        public BitmapImage ProfilePicture
+        {
+            get => _profileImage;
+            set
+            {
+                _profileImage = value;
+                NotifyPropertyChanged("ProfilePicture");
+            }
+        }
+
         #endregion
 
         private string _test;
@@ -64,6 +78,7 @@ namespace SuppLocals.ViewModels
         public ChangeProfileVM(User user)
         {
             ActiveUser = user;
+            ProfilePicture = user.GetProfileImage();
             SaveChangesClick = new RelayCommand(o =>{SaveChanges();}, o => true);
         }
 
