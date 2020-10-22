@@ -4,9 +4,6 @@ using System.Runtime.CompilerServices;
 
 namespace SuppLocals
 {
-    /// <summary>
-    /// A base for objects using property notification.
-    /// </summary>
     public class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

@@ -168,8 +168,8 @@ namespace SuppLocals.ViewModels
                     About = _about,
                     Address = _address,
                     VendorType = SelectedVendorType,
-                    Latitude = Double.Parse(placeInfo[0]),
-                    Longitude = Double.Parse(placeInfo[1]),
+                    Latitude = double.Parse(placeInfo[0]),
+                    Longitude = double.Parse(placeInfo[1]),
                     Municipality = placeInfo[2],
                     County = placeInfo[3],
                     UserID = _user.ID
@@ -178,7 +178,7 @@ namespace SuppLocals.ViewModels
 
                 await using (UsersDbTable dbUser = new UsersDbTable())
                 {
-                    var user = dbUser.Users.SingleOrDefault(x => x.ID == this._user.ID);
+                    var user = dbUser.Users.SingleOrDefault(x => x.ID == _user.ID);
                     user.VendorsCount++;
                     await dbUser.SaveChangesAsync();
                 }
@@ -250,7 +250,7 @@ namespace SuppLocals.ViewModels
         private async Task ChangeMapCenter()
         {
             var data = await MapMethods.ConvertAddressToLocation(Address);
-            MyMapCenter = new Location(Double.Parse(data[0]), Double.Parse(data[1]));
+            MyMapCenter = new Location(double.Parse(data[0]), double.Parse(data[1]));
         }
 
         #endregion

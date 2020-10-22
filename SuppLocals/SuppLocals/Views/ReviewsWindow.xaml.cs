@@ -1,22 +1,11 @@
-﻿using GMap.NET.MapProviders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Printing;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
-using System.Windows.Media;
-using Windows.Foundation;
-using Windows.UI.ViewManagement;
 
 namespace SuppLocals
 {
-    /// <summary>
-    ///     Interaction logic for ReviewsWindow.xaml
-    /// </summary>
     public partial class ReviewsWindow : Window
     {
         private readonly List<string> _stars = new List<string> { "☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★" };
@@ -160,7 +149,7 @@ namespace SuppLocals
             comment.Text = _vendor.Title + "\n" + "\n" + replyBox.Text + "\n" + DateTime.Now.ToString("yyyy-MM-dd");
 
             // getting the index of the pressed POST button
-            var index = GetIndex(button);
+            var index = GetIndex(element: button);
     
             using (var dbUser = new ReviewsDbTable())
             {
@@ -178,7 +167,7 @@ namespace SuppLocals
             var commentGrid = control.FindName("CommentGrid") as Border;
             var replyGrid = control.FindName("ReplyGrid") as Grid;
 
-            var index = GetIndex(control);
+            var index = GetIndex(element: control);
 
             using var db = new ReviewsDbTable();
             var review = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
@@ -195,9 +184,9 @@ namespace SuppLocals
             }
         }
 
-        private int GetIndex(FrameworkElement f)
+        private int GetIndex(FrameworkElement element)
         {
-            return RView.Items.IndexOf(f.DataContext);
+            return RView.Items.IndexOf(element.DataContext);
         }
     }
 }
