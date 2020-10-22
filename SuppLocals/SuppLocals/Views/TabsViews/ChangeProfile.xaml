@@ -26,17 +26,17 @@
 
                 <TextBlock Text="Change your profile image" 
                            HorizontalAlignment="Center" 
-                       Margin="10 9 0 0" FontSize="17"  FontFamily="Tahoma"
+                       Margin="30 9 0 0" FontSize="17"  FontFamily="Tahoma"
                        Foreground="Black" FontWeight="Bold"/>
             </StackPanel>
 
-            <Button Margin="40" Background="Transparent"
-                    Click="ProfileImageClicked">
-                <Ellipse Width="200" Height="200">
+            <Button Margin="40" Background="Black" Command="{Binding ChangeProfileClick}">
+                <Ellipse Width="150" Height="150" >
                     <Ellipse.Fill>
-                        <ImageBrush x:Name="profileImage"/>
+                        <ImageBrush  />
                     </Ellipse.Fill>
                 </Ellipse>
+
 
             </Button>
 
@@ -74,7 +74,7 @@
                         Mode=TwoWay,  
                         UpdateSourceTrigger=PropertyChanged,
                         ValidatesOnDataErrors=True}" 
-                       ToolTip="{Binding ErrorCollection[OldPassword]}"
+                       ToolTip="{Binding ErrorCollection[NewPassword]}"
                              
                         Background="Transparent" 
                         BorderThickness="0"
@@ -93,20 +93,19 @@
                         UpdateSourceTrigger=PropertyChanged,
                         ValidatesOnDataErrors=True}"
                              
-                        ToolTip="{Binding ErrorCollection[OldPassword]}" 
+                        ToolTip="{Binding ErrorCollection[ConfirmNewPassword]}" 
                              
                     x:Name="ConfirmNewPass" Background="Transparent" BorderThickness="0"/>
             </Border>
 
-  
 
-                <Button  Margin="100 20"
+
+            <Button  Margin="100 20"
                     Content="Save changes" 
                     Width="90" Height="25" 
                     Command="{Binding SaveChangesClick}"/>
 
-            </StackPanel>
-
+        </StackPanel>
 
     </Grid>
 

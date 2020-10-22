@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Mail;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace SuppLocals
@@ -62,6 +63,11 @@ namespace SuppLocals
                         {
                             result = "Password has to be at least 8 symbols long!";
                         }
+                        else if(IsPasswordValid(Password) is false)
+                        {
+                            result = PasswordErrorMessage(Password);
+                        }
+
                         break;
                     case "ConfirmPassword":
                         if (string.IsNullOrWhiteSpace(ConfirmPassword))
@@ -72,6 +78,11 @@ namespace SuppLocals
                         {
                             result = "Password has to be at least 8 symbols long!";
                         }
+                        else if (IsPasswordValid(Password) is false)
+                        {
+                            result = PasswordErrorMessage(Password);
+                        }
+
                         break;
                 }
 
@@ -90,10 +101,58 @@ namespace SuppLocals
         }
 
         public bool IsValidEmail(string email)
-        {
-            
+        {     
                 // Return true if strIn is in valid e-mail format.
                 return Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
         }
+
+        public bool IsPasswordValid(string input) 
+        {
+            var hasLowerChar = new Regex(@"[a-z]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasNumber = new Regex(@"[0-9]+");
+
+            if (!hasLowerChar.IsMatch(input))
+            {
+                return false;
+            }
+            else if (!hasUpperChar.IsMatch(input))
+            {
+                return false;
+            }
+            else if (!hasNumber.IsMatch(input))
+            {
+                return false;
+            }
+
+            else { return true; }
+        }
+
+        public string PasswordErrorMessage(string input) 
+        {
+            var hasLowerChar = new Regex(@"[a-z]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasNumber = new Regex(@"[0-9]+");
+
+            if (!hasLowerChar.IsMatch(input))
+            {
+                return "Password has to contain 1 lowercase letter!";
+            }
+            else if (!hasUpperChar.IsMatch(input))
+            {
+                return "Password has to contain 1 uppercase letter!";
+            }
+            else if (!hasNumber.IsMatch(input))
+            {
+                return "Password has to contain 1 number!";
+            }
+            else
+            {
+                return "Upsy";
+            }
+
+        }
+
+
     }
 }
