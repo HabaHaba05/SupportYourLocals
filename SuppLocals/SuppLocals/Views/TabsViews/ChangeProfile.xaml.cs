@@ -1,18 +1,63 @@
-﻿
+﻿using Geocoding;
+using Microsoft.Win32;
+using SuppLocals.ViewModels;
+using System;
+using System.IO;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Media;
 
 namespace SuppLocals.Views
 {
     public partial class ChangeProfile : UserControl
     {
+        private string _imageName;
+        public User ActiveUser;
 
         public ChangeProfile()
         {
             InitializeComponent();
-
         }
-        /*
+
+        private void ProfileImageClicked(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                FileDialog fldlg = new OpenFileDialog
+                {
+                    InitialDirectory = Environment.SpecialFolder.MyPictures.ToString(),
+                    Filter = "Image File (*.jpg;*.png;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif"
+                };
+                fldlg.ShowDialog();
+                {
+                    _imageName = fldlg.FileName;
+                    var isc = new ImageSourceConverter();
+
+                    profileImage.SetValue(System.Windows.Controls.Image.SourceProperty, isc.ConvertFromString(_imageName));
+                }
+                fldlg = null;
+
+                InsertImageData();
+
+                var parentWindow = FindParentWindow(this);
+                if (parentWindow != null)
+                {
+                    parentWindow.MyImage.ImageSource = ActiveUser.GetProfileImage();
+                }
+
+                profileImage.ImageSource = ActiveUser.GetProfileImage();
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        
+
         private void InsertImageData()
         {
             try
@@ -34,6 +79,8 @@ namespace SuppLocals.Views
                 //Close a file stream
                 fs.Close();
 
+                ActiveUser ??= ((ChangeProfileVM)DataContext).ActiveUser;
+
                 using (var db = new UsersDbTable())
                 {
                     var user = db.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
@@ -50,31 +97,25 @@ namespace SuppLocals.Views
             }
         }
 
-        private void ProfileImageClicked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                FileDialog fldlg = new OpenFileDialog
-                {
-                    InitialDirectory = Environment.SpecialFolder.MyPictures.ToString(),
-                    Filter = "Image File (*.jpg;*.png;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif"
-                };
-                fldlg.ShowDialog();
-                {
-                    _imageName = fldlg.FileName;
-                    var isc = new ImageSourceConverter();
-                    _image.SetValue(Image.SourceProperty, isc.ConvertFromString(_imageName));
-                }
-                fldlg = null;
 
-                InsertImageData();
-                _image.ImageSource = ActiveUser.GetProfileImage();
-            }
-            catch (Exception ex)
+        private static MainWindow FindParentWindow(DependencyObject child)
+        {
+            var parent = VisualTreeHelper.GetParent(child);
+
+            //CHeck if this is the end of the tree
+            if (parent == null) return null;
+
+            var parentWindow = parent as MainWindow;
+            if (parentWindow != null)
             {
-                MessageBox.Show(ex.Message);
+                return parentWindow;
+            }
+            else
+            {
+                //use recursion until it reaches a Window
+                return FindParentWindow(parent);
             }
         }
-        */
+
     }
 }

@@ -30,10 +30,12 @@
                        Foreground="Black" FontWeight="Bold"/>
             </StackPanel>
 
-            <Button Margin="40" Background="Black" Command="{Binding ChangeProfileClick}">
-                <Ellipse Width="150" Height="150" >
+            <Button Margin="40" Background="Transparent" 
+                    Click="ProfileImageClicked">
+                <Ellipse Width="200" Height="200">
                     <Ellipse.Fill>
-                        <ImageBrush  />
+                        <ImageBrush x:Name="profileImage" 
+                                    ImageSource="{Binding ProfilePicture , Mode=TwoWay}"/>
                     </Ellipse.Fill>
                 </Ellipse>
 
