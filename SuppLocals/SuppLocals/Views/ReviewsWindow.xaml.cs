@@ -7,9 +7,6 @@ using System.Windows.Controls;
 
 namespace SuppLocals
 {
-    /// <summary>
-    ///     Interaction logic for ReviewsWindow.xaml
-    /// </summary>
     public partial class ReviewsWindow : Window
     {
         private readonly List<string> _stars = new List<string> {"☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
@@ -172,7 +169,7 @@ namespace SuppLocals
             var commentGrid = control.FindName("CommentGrid") as Border;
             var replyGrid = control.FindName("ReplyGrid") as Grid;
 
-            var index = GetIndex(control);
+            var index = GetIndex(element: control);
 
             using var db = new AppDbContext();
             var review = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
@@ -189,9 +186,9 @@ namespace SuppLocals
             }
         }
 
-        private int GetIndex(FrameworkElement f)
+        private int GetIndex(FrameworkElement element)
         {
-            return RView.Items.IndexOf(f.DataContext);
+            return RView.Items.IndexOf(element.DataContext);
         }
     }
 }

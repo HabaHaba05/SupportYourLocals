@@ -254,7 +254,7 @@ namespace SuppLocals.ViewModels
         private async Task ChangeMapCenter()
         {
             var data = await MapMethods.ConvertAddressToLocation(Address);
-            MyMapCenter = new Location(Double.Parse(data[0]), Double.Parse(data[1]));
+            MyMapCenter = new Location(double.Parse(data[0]), double.Parse(data[1]));
         }
 
         #endregion
