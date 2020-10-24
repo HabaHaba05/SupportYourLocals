@@ -5,7 +5,6 @@ namespace SuppLocals.ViewModels
 {
     public class MyServicesVM : ObservableObject
     {
-
         public MyServicesVM(User user)
         {
             VendorList = new List<Vendor>();
@@ -21,6 +20,5 @@ namespace SuppLocals.ViewModels
         }
 
         public List<Vendor> VendorList { get; }
-
     }
 }

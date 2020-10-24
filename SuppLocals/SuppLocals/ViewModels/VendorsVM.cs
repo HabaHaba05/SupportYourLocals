@@ -23,10 +23,7 @@ namespace SuppLocals.ViewModels
         public List<User> UserList 
         { 
             get => _userList;
-            set
-            {
-                NotifyPropertyChanged(ref _userList, value);
-            }
+            set => NotifyPropertyChanged(ref _userList, value);
         }
     }
 }

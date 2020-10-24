@@ -112,7 +112,7 @@ namespace SuppLocals.Views
         {
             DataContext = new ChangeProfileVM(ActiveUser);
             ProfilePan.Visibility = Visibility.Collapsed;
-            profileButton1.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));         
+            profileButton1.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
             MyImage.ImageSource = ActiveUser.GetProfileImage();
         }
 

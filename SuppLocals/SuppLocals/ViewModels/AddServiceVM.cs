@@ -26,7 +26,7 @@ namespace SuppLocals.ViewModels
 
 
         #region Public props
-      
+
         public string Title
         {
             get => _title;
@@ -36,6 +36,7 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("Title");
             }
         }
+
         public string About
         {
             get => _about;
@@ -45,22 +46,25 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("About");
             }
         }
+
         public string Address
         {
             get => _address;
             set
             {
-                if(_address == value)
+                if (_address == value)
                 {
                     SuggestStack = null;
                     return;
                 }
+
                 _address = value;
-                GetAddressSuggestions();
-                ChangeMapCenter();
+                _ = GetAddressSuggestions();
+                _ = ChangeMapCenter();
                 NotifyPropertyChanged("Address");
             }
         }
+
         public string SelectedVendorType { private get; set; }
 
         public ObservableCollection<TextBlock> SuggestStack
@@ -87,7 +91,7 @@ namespace SuppLocals.ViewModels
 
         #region Commands
 
-        public RelayCommand CreateVendorBtnClick{get; private set; }
+        public RelayCommand CreateVendorBtnClick { get; private set; }
         public RelayCommand LostFocusCommand { get; private set; }
 
         #endregion
@@ -96,6 +100,7 @@ namespace SuppLocals.ViewModels
 
         public string Error => null;
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
+
         public string this[string name]
         {
             get
@@ -138,7 +143,11 @@ namespace SuppLocals.ViewModels
 
             CreateVendorBtnClick = new RelayCommand(async (x) => await CreateVendor(), o => AllFieldsValid());
 
-            LostFocusCommand = new RelayCommand(o => { Thread.Sleep(250); SuggestStack = null; }, o => true);;
+            LostFocusCommand = new RelayCommand(o =>
+            {
+                Thread.Sleep(250);
+                SuggestStack = null;
+            }, o => true);
         }
 
         #endregion
@@ -187,7 +196,6 @@ namespace SuppLocals.ViewModels
             Title = "";
             About = "";
             Address = "";
-
         }
 
         private async Task GetAddressSuggestions()
@@ -195,14 +203,15 @@ namespace SuppLocals.ViewModels
             if (string.IsNullOrEmpty(Address))
             {
                 return;
-            };
+            }
 
             var data = await AutoComplete.GetData(Address);
 
             var list = new List<TextBlock>();
 
             foreach (var obj in data)
-            {   if (obj != Address)
+            {
+                if (obj != Address)
                 {
                     TextBlock block = new TextBlock
                     {
@@ -218,7 +227,7 @@ namespace SuppLocals.ViewModels
 
             SuggestStack = new ObservableCollection<TextBlock>(list);
         }
-        
+
         private void AddEvents(TextBlock block)
         {
             if (block == null) throw new ArgumentNullException(nameof(block));
@@ -249,7 +258,5 @@ namespace SuppLocals.ViewModels
         }
 
         #endregion
-
     }
-
 }

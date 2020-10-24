@@ -12,11 +12,10 @@ namespace SuppLocals.Views
     /// </summary>
     public partial class SignUp : Window
     {
-     
         public SignUp()
         {
             InitializeComponent();
-            var userList = getList();
+            GetList();
 
             DataContext = new ValidateUsername();
         }
@@ -36,7 +35,7 @@ namespace SuppLocals.Views
             var repeatPassword = ConfirmPasswordBox1.Password;
             var email = EmailAdressBox.Text;
 
-            if(password != repeatPassword)
+            if (password != repeatPassword)
             {
                 MessageBox.Show("Passwords do not match");
                 return;
@@ -71,7 +70,6 @@ namespace SuppLocals.Views
             Close();
         }
 
-        
 
         // Method which allow user drag window around their screen
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -96,19 +94,21 @@ namespace SuppLocals.Views
             }
         }*/
 
-        private IEnumerable<User> getList()
+        private IEnumerable<User> GetList()
         {
             var userList = new List<User>();
             using (var db = new AppDbContext())
             {
                 userList = db.Users.ToList();
             }
+
             return userList;
         }
 
         private void UsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password)
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password) ||
+                string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password)
                 || UsernameTextBox.Text.Length < 5 || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
             {
                 applyBtn.IsEnabled = false;
@@ -121,8 +121,10 @@ namespace SuppLocals.Views
 
         private void PasswordBox1_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password)
-                ||UsernameTextBox.Text.Length < 5 || PasswordBox1.Password.Length < 8  || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password) ||
+                string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password)
+                || UsernameTextBox.Text.Length < 5 || PasswordBox1.Password.Length < 8 ||
+                string.IsNullOrWhiteSpace(EmailAdressBox.Text))
             {
                 applyBtn.IsEnabled = false;
             }
@@ -132,9 +134,10 @@ namespace SuppLocals.Views
             }
         }
 
-        private void EmailAdressBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void EmailAddressBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password) || string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password)
+            if (string.IsNullOrWhiteSpace(UsernameTextBox.Text) || string.IsNullOrWhiteSpace(PasswordBox1.Password) ||
+                string.IsNullOrWhiteSpace(ConfirmPasswordBox1.Password)
                 || UsernameTextBox.Text.Length < 5 || string.IsNullOrWhiteSpace(EmailAdressBox.Text))
             {
                 applyBtn.IsEnabled = false;
@@ -145,5 +148,4 @@ namespace SuppLocals.Views
             }
         }
     }
-
-} 
+}

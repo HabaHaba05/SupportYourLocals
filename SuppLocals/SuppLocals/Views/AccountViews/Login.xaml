@@ -114,7 +114,7 @@
             <Label Height="25" Width="110" 
                    Margin="160,-90,0,0"
                    Name="forgotPassword" VerticalAlignment="Top">
-                <Hyperlink Click="Hyperlinky_Click">
+                <Hyperlink Click="Hyperlink_Click">
                     Forgot Password?</Hyperlink>
             </Label>
 

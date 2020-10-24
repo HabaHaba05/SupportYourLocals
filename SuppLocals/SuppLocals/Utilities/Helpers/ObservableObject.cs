@@ -28,7 +28,8 @@ namespace SuppLocals
         /// <param name="value">Value to give backing field</param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        protected virtual bool NotifyPropertyChanged<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        protected virtual bool NotifyPropertyChanged<T>(ref T backingField, T value,
+            [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
             {
@@ -41,4 +42,3 @@ namespace SuppLocals
         }
     }
 }
-

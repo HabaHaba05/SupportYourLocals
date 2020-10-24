@@ -9,7 +9,6 @@ namespace SuppLocals
     {
         public EmailSender()
         {
-
         }
 
         public void SendEmail(string email, string code)
@@ -49,6 +48,7 @@ namespace SuppLocals
             {
                 stringChars[i] = chars[random.Next(chars.Length)];
             }
+
             var finalString = new string(stringChars);
             return finalString;
         }

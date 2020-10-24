@@ -27,7 +27,7 @@ namespace SuppLocals.Views
         }
 
         public void GetData(string username)
-        { 
+        {
             using var db = new AppDbContext();
             _userList = db.Users.ToList();
             _vendorList = db.Vendors.ToList();
@@ -35,7 +35,10 @@ namespace SuppLocals.Views
             var user = _userList.SingleOrDefault(x => (x.Username == username));
             foreach (var vendor in _vendorList.Where(vendor => user.ID == vendor.UserID))
             {
-                listView.Items.Add(new Vendor { Title = vendor.Title, About = vendor.About, Address = vendor.Address, VendorType = vendor.VendorType });
+                listView.Items.Add(new Vendor
+                {
+                    Title = vendor.Title, About = vendor.About, Address = vendor.Address, VendorType = vendor.VendorType
+                });
             }
         }
     }

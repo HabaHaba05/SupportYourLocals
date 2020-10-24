@@ -1,14 +1,8 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using BC = BCrypt.Net.BCrypt;
 
 namespace SuppLocals.ViewModels
@@ -17,37 +11,39 @@ namespace SuppLocals.ViewModels
     {
         public User ActiveUser;
 
-        private string _oldpassword;
-        private string _newpassword;
-        private string _confirmpassword;
+        private string _oldPassword;
+        private string _newPassword;
+        private string _confirmPassword;
         private BitmapImage _profileImage;
-       
+
         #region Public props
+
         public string OldPassword
         {
-            get => _oldpassword;
+            get => _oldPassword;
             set
             {
-                _oldpassword = value;
+                _oldPassword = value;
                 NotifyPropertyChanged("OldPassword");
             }
         }
+
         public string NewPassword
         {
-            get => _newpassword;
+            get => _newPassword;
             set
             {
-                _newpassword = value;
+                _newPassword = value;
                 NotifyPropertyChanged("NewPassword");
             }
         }
 
         public string ConfirmNewPassword
         {
-            get => _confirmpassword;
+            get => _confirmPassword;
             set
             {
-                _confirmpassword = value;
+                _confirmPassword = value;
                 NotifyPropertyChanged("ConfirmNewPassword");
             }
         }
@@ -65,6 +61,7 @@ namespace SuppLocals.ViewModels
         #endregion
 
         private string _test;
+
         public string Test
         {
             get => _test;
@@ -79,7 +76,7 @@ namespace SuppLocals.ViewModels
         {
             ActiveUser = user;
             ProfilePicture = user.GetProfileImage();
-            SaveChangesClick = new RelayCommand(o =>{SaveChanges();}, o => true);
+            SaveChangesClick = new RelayCommand(o => { SaveChanges(); }, o => true);
         }
 
         public RelayCommand SaveChangesClick { get; }
@@ -87,13 +84,14 @@ namespace SuppLocals.ViewModels
 
         public string Error => null;
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
+
         public string this[string name]
         {
             get
             {
                 string result = null;
                 var validate = new ValidateUsername();
-           
+
 
                 switch (name)
                 {
@@ -106,6 +104,7 @@ namespace SuppLocals.ViewModels
                         {
                             result = "Password has to be at least 8 symbols long!";
                         }
+
                         break;
 
                     case "NewPassword":
@@ -121,6 +120,7 @@ namespace SuppLocals.ViewModels
                         {
                             result = validate.PasswordErrorMessage(NewPassword);
                         }
+
                         break;
 
                     case "ConfirmNewPassword":
@@ -140,16 +140,15 @@ namespace SuppLocals.ViewModels
                         break;
                 }
 
-                        if (ErrorCollection.ContainsKey(name))
-                            ErrorCollection[name] = result;
-                        else if (result != null)
-                            ErrorCollection.Add(name, result);
+                if (ErrorCollection.ContainsKey(name))
+                    ErrorCollection[name] = result;
+                else if (result != null)
+                    ErrorCollection.Add(name, result);
 
-                        NotifyPropertyChanged("ErrorCollection");
-                        return result;
-                }
+                NotifyPropertyChanged("ErrorCollection");
+                return result;
             }
-        
+        }
 
 
         private void SaveChanges()
@@ -183,8 +182,5 @@ namespace SuppLocals.ViewModels
             OldPassword = "";
             ConfirmNewPassword = "";
         }
-
-
-
     }
 }

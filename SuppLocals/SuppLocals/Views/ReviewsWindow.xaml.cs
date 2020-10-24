@@ -1,16 +1,9 @@
-﻿using GMap.NET.MapProviders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Printing;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
-using System.Windows.Media;
-using Windows.Foundation;
-using Windows.UI.ViewManagement;
+
 
 namespace SuppLocals
 {
@@ -19,7 +12,7 @@ namespace SuppLocals
     /// </summary>
     public partial class ReviewsWindow : Window
     {
-        private readonly List<string> _stars = new List<string> { "☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★" };
+        private readonly List<string> _stars = new List<string> {"☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
         private readonly User _user;
         private readonly Vendor _vendor;
 
@@ -62,7 +55,7 @@ namespace SuppLocals
         {
             var comment = comments.Text;
             ConfirmError.Visibility = Visibility.Hidden;
-            
+
             // counter for comments to replies
             var i = RView.Items.Count;
 
@@ -86,7 +79,7 @@ namespace SuppLocals
             using (var db = new AppDbContext())
             {
                 db.Reviews.Add(r);
-                db.SaveChanges();  
+                db.SaveChanges();
             }
 
             PopulateData();
@@ -135,9 +128,10 @@ namespace SuppLocals
                     _average = 0;
                 }
 
-                var Comment = review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" + review.Date;
+                var comment = review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" +
+                              review.Date;
 
-                RView.Items.Add(new Item { Text = Comment, Response = review.Reply});
+                RView.Items.Add(new Item {Text = comment, Response = review.Reply});
             }
 
             UpdateRatingCounts();
@@ -146,12 +140,12 @@ namespace SuppLocals
         private void PostComment(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var replyBox = ((Grid)button.Parent).FindName("ReplyTextBox") as TextBox;
+            var replyBox = ((Grid) button.Parent).FindName("ReplyTextBox") as TextBox;
 
-            var comment = ((Grid)button.Parent).FindName("UserComment") as TextBlock;
+            var comment = ((Grid) button.Parent).FindName("UserComment") as TextBlock;
 
-            var replyGrid = ((Grid)button.Parent).FindName("ReplyGrid") as Grid;
-            var commentGrid = ((Grid)button.Parent).FindName("CommentGrid") as Border;
+            var replyGrid = ((Grid) button.Parent).FindName("ReplyGrid") as Grid;
+            var commentGrid = ((Grid) button.Parent).FindName("CommentGrid") as Border;
 
             replyGrid.Visibility = Visibility.Collapsed;
             commentGrid.Visibility = Visibility.Visible;
@@ -161,7 +155,7 @@ namespace SuppLocals
 
             // getting the index of the pressed POST button
             var index = GetIndex(button);
-    
+
             using (var db = new AppDbContext())
             {
                 var user = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
