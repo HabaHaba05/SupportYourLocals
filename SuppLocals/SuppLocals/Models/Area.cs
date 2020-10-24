@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using SuppLocals.Classes.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Windows.Media;
 
 namespace SuppLocals
 {
-    public class Area
+    public class Area : IEquatable<Area>
     {
         public Area Parent;
         public List<Area> Children { get; set; }
@@ -48,7 +49,6 @@ namespace SuppLocals
             HasChildren = hasChildren;
             Level = parent.Level + 1;
         }
-
 
         public List<Area> ParseCounties()
         {
@@ -108,6 +108,9 @@ namespace SuppLocals
             return municipalities;
         }
 
-
+        public bool Equals([AllowNull] Area other)
+        {
+            return (Name == other.Name);
+        }
     }
 }

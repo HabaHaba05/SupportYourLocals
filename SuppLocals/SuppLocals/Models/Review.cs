@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuppLocals
 {
-    public class Review
+    public class Review:IEquatable<Review>
     { 
  
         [Key]
@@ -29,5 +31,10 @@ namespace SuppLocals
         public string Date { get; set; }
 
         public string Reply { get; set; }
+
+        public bool Equals([AllowNull] Review other)
+        {
+            return (VendorID == other.VendorID && SenderUsername == other.SenderUsername && Text == other.Text);
+        }
     }
 }

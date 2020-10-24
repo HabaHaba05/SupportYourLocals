@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Microsoft.Maps.MapControl.WPF;
 
 namespace SuppLocals
 {
-    public class User  
+    public class User  : IEquatable<User>
     {
         public Location Location;
 
@@ -29,6 +30,10 @@ namespace SuppLocals
 
         public int VendorsCount { get; set; }
 
+        public bool Equals([AllowNull] User other)
+        {
+            return (Username == other.Username);
+        }
 
         public BitmapImage GetProfileImage()
         {

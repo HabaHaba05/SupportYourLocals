@@ -1,12 +1,13 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuppLocals
 {
-    public class Vendor
+    public class Vendor : IEquatable<Vendor>
     {
         public List<Review> Reviews = new List<Review>();
 
@@ -45,5 +46,10 @@ namespace SuppLocals
 
         [Required]
         public string VendorType { get; set; }
+
+        public bool Equals([AllowNull] Vendor other)
+        {
+            return (Title == other.Title);
+        }
     }
 }
