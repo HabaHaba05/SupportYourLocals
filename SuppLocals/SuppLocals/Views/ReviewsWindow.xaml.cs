@@ -72,19 +72,19 @@ namespace SuppLocals
                 return;
             }
 
-            using (var db = new ReviewsDbTable())
+            var r = new Review
             {
-                var r = new Review
-                {
-                    VendorID = _vendor.ID,
-                    CommentID = i,
-                    SenderUsername = _user.Username,
-                    Text = comment,
-                    Stars = Rating.RatingValue,
-                    Date = DateTime.Now.ToString("yyyy-MM-dd"),
-                    Reply = ""
-                };
+                VendorID = _vendor.ID,
+                CommentID = i,
+                SenderUsername = _user.Username,
+                Text = comment,
+                Stars = Rating.RatingValue,
+                Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                Reply = ""
+            };
 
+            using (var db = new AppDbContext())
+            {
                 db.Reviews.Add(r);
                 db.SaveChanges();  
             }
@@ -112,7 +112,7 @@ namespace SuppLocals
             var sum = 0;
             var number = 0;
 
-            using var db = new ReviewsDbTable();
+            using var db = new AppDbContext();
             _reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
 
             for (var i = 0; i < 6; i++)
@@ -162,11 +162,11 @@ namespace SuppLocals
             // getting the index of the pressed POST button
             var index = GetIndex(button);
     
-            using (var dbUser = new ReviewsDbTable())
+            using (var db = new AppDbContext())
             {
-                var user = dbUser.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
+                var user = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
                 user.Reply = comment.Text;
-                dbUser.SaveChanges();
+                db.SaveChanges();
             }
         }
 
@@ -180,7 +180,7 @@ namespace SuppLocals
 
             var index = GetIndex(control);
 
-            using var db = new ReviewsDbTable();
+            using var db = new AppDbContext();
             var review = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
 
             if (_user.ID != _vendor.UserID)

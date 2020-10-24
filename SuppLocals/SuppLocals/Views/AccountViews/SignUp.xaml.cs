@@ -42,7 +42,7 @@ namespace SuppLocals.Views
                 return;
             }
 
-            using var db = new UsersDbTable();
+            using var db = new AppDbContext();
 
             var usersList = db.Users.ToList();
             if (usersList.FirstOrDefault(x => x.Username == username) != null || username == "Anonimas")
@@ -99,7 +99,7 @@ namespace SuppLocals.Views
         private IEnumerable<User> getList()
         {
             var userList = new List<User>();
-            using (var db = new UsersDbTable())
+            using (var db = new AppDbContext())
             {
                 userList = db.Users.ToList();
             }

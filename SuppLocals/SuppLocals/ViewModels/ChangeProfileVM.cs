@@ -172,11 +172,11 @@ namespace SuppLocals.ViewModels
 
 
             //changing the current password to new password
-            using (var dbUser = new UsersDbTable())
+            using (var db = new AppDbContext())
             {
-                var user = dbUser.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
+                var user = db.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
                 user.HashedPsw = BC.HashPassword(NewPassword);
-                dbUser.SaveChanges();
+                db.SaveChanges();
             }
 
             NewPassword = "";

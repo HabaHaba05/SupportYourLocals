@@ -10,7 +10,7 @@ namespace SuppLocals.ViewModels
         {
             VendorList = new List<Vendor>();
 
-            using (var db = new VendorsDbTable())
+            using (var db = new AppDbContext())
             {
                 var data = db.Vendors.ToList();
                 foreach (var vendor in data.Where(vendor => vendor.UserID == user.ID))

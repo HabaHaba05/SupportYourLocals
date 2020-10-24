@@ -28,11 +28,9 @@ namespace SuppLocals.Views
 
         public void GetData(string username)
         { 
-            using var db = new UsersDbTable();
+            using var db = new AppDbContext();
             _userList = db.Users.ToList();
-
-            using var db1 = new VendorsDbTable();
-            _vendorList = db1.Vendors.ToList();
+            _vendorList = db.Vendors.ToList();
 
             var user = _userList.SingleOrDefault(x => (x.Username == username));
             foreach (var vendor in _vendorList.Where(vendor => user.ID == vendor.UserID))

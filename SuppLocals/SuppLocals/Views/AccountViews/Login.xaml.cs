@@ -21,7 +21,7 @@ namespace SuppLocals.Views
 
         public void LogInBtnClick(object sender, RoutedEventArgs e)
         {
-            using var db = new UsersDbTable();
+            using var db = new AppDbContext();
             var username = Username.Text;
             var password = PasswordBox.Password;
 

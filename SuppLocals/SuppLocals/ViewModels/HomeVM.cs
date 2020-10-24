@@ -37,7 +37,7 @@ namespace SuppLocals.ViewModels
             
 
             //Reading all vendors
-            using (VendorsDbTable db = new VendorsDbTable())
+            using (var db = new AppDbContext())
             {
                 var data = db.Vendors.ToList();
                 _allVendorsList = new List<Vendor>(data);

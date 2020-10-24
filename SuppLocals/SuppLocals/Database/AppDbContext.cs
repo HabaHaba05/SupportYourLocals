@@ -4,6 +4,12 @@ namespace SuppLocals
 {
     public class AppDbContext : DbContext
     {
+
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Connection string

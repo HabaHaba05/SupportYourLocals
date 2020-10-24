@@ -81,7 +81,7 @@ namespace SuppLocals.Views
 
                 ActiveUser ??= ((ChangeProfileVM)DataContext).ActiveUser;
 
-                using (var db = new UsersDbTable())
+                using (var db = new AppDbContext())
                 {
                     var user = db.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
 

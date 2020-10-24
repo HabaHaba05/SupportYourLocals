@@ -160,28 +160,23 @@ namespace SuppLocals.ViewModels
                 return;
             }
 
-            await using (VendorsDbTable db = new VendorsDbTable())
+            var vendor = new Vendor()
             {
-                var vendor = new Vendor()
-                {
-                    Title = _title,
-                    About = _about,
-                    Address = _address,
-                    VendorType = SelectedVendorType,
-                    Latitude = Double.Parse(placeInfo[0]),
-                    Longitude = Double.Parse(placeInfo[1]),
-                    Municipality = placeInfo[2],
-                    County = placeInfo[3],
-                    UserID = _user.ID
+                Title = _title,
+                About = _about,
+                Address = _address,
+                VendorType = SelectedVendorType,
+                Latitude = Double.Parse(placeInfo[0]),
+                Longitude = Double.Parse(placeInfo[1]),
+                Municipality = placeInfo[2],
+                County = placeInfo[3],
+                UserID = _user.ID
+            };
 
-                };
-
-                await using (UsersDbTable dbUser = new UsersDbTable())
-                {
-                    var user = dbUser.Users.SingleOrDefault(x => x.ID == this._user.ID);
-                    user.VendorsCount++;
-                    await dbUser.SaveChangesAsync();
-                }
+            await using (AppDbContext db = new AppDbContext())
+            {
+                var user = db.Users.SingleOrDefault(x => x.ID == this._user.ID);
+                user.VendorsCount++;
 
                 await db.Vendors.AddAsync(vendor);
 

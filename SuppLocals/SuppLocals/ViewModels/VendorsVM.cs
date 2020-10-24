@@ -9,7 +9,7 @@ namespace SuppLocals.ViewModels
         {
             _userList = new List<User>();
 
-            using (var db = new UsersDbTable())
+            using (var db = new AppDbContext())
             {
                 var data = db.Users.ToList();
                 foreach (var user in data.Where(user => user.VendorsCount > 0))
