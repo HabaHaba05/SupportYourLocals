@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace SuppLocals.ViewModels
 {
-    public class AllVendorsVM: BaseViewModel
+    public class AllVendorsVM: ObservableObject
     {
         public AllVendorsVM(string username)
         {

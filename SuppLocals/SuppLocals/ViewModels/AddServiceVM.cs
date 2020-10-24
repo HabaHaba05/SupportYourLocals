@@ -13,7 +13,7 @@ using Location = Microsoft.Maps.MapControl.WPF.Location;
 
 namespace SuppLocals.ViewModels
 {
-    public class AddServiceVM : BaseViewModel, IDataErrorInfo
+    public class AddServiceVM : ObservableObject, IDataErrorInfo
     {
         private readonly User _user;
 

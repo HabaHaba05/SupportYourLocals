@@ -7,7 +7,7 @@ using Microsoft.Maps.MapControl.WPF;
 
 namespace SuppLocals.ViewModels
 {
-    public class HomeVM : BaseViewModel
+    public class HomeVM : ObservableObject
     {
         public readonly User ActiveUser;
         private readonly List<Vendor> _allVendorsList;

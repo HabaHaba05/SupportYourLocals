@@ -96,7 +96,7 @@ namespace SuppLocals
                     ErrorCollection.Add(columnName, result);
                 }
 
-                OnPropertyChanged("ErrorCollection");
+                NotifyPropertyChanged("ErrorCollection");
                 return result;
             }
         }

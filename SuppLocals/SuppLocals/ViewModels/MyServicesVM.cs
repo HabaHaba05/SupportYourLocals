@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SuppLocals.ViewModels
 {
-    public class MyServicesVM : BaseViewModel
+    public class MyServicesVM : ObservableObject
     {
 
         public MyServicesVM(User user)

@@ -13,7 +13,7 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace SuppLocals.ViewModels
 {
-    public class ChangeProfileVM : BaseViewModel , IDataErrorInfo
+    public class ChangeProfileVM : ObservableObject, IDataErrorInfo
     {
         public User ActiveUser;
 
