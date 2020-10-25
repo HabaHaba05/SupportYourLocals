@@ -13,6 +13,7 @@ namespace SuppLocals.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VendorID = table.Column<int>(type: "int", nullable: false),
+                    CommentID = table.Column<int>(type: "int", nullable: false),
                     SenderUsername = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Stars = table.Column<int>(type: "int", nullable: false),

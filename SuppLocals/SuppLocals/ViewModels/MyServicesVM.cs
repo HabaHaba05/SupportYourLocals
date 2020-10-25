@@ -84,5 +84,6 @@ namespace SuppLocals.ViewModels
             }
             VendorList = temp;
         }
+
     }
 }

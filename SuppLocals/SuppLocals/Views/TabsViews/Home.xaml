@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
-             
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:SuppLocals"
              mc:Ignorable="d" 
             d:DesignHeight="355" d:DesignWidth="775">
@@ -13,7 +13,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
         <!-- FOOD PUSH PIN-->
-        <ControlTemplate x:Key="FOOD" TargetType="m:Pushpin">
+        <ControlTemplate x:Key="Food" TargetType="m:Pushpin">
             <Grid>
                 <Rectangle Width="24" Height="24">
                     <Rectangle.Fill>
@@ -23,7 +23,7 @@
             </Grid>
         </ControlTemplate>
         <!-- CAR PUSH PIN-->
-        <ControlTemplate x:Key ="CAR_REPAIR" TargetType="m:Pushpin">
+        <ControlTemplate x:Key ="CarRepair" TargetType="m:Pushpin">
             <Grid>
                 <Rectangle Width="24" Height="24">
                     <Rectangle.Fill>
@@ -33,7 +33,7 @@
             </Grid>
         </ControlTemplate>
         <!-- OTHER PUSH PIN-->
-        <ControlTemplate x:Key="OTHER" TargetType="m:Pushpin">
+        <ControlTemplate x:Key="Other" TargetType="m:Pushpin">
             <Grid>
                 <Rectangle Width="24" Height="24">
                     <Rectangle.Fill>
@@ -43,7 +43,7 @@
             </Grid>
         </ControlTemplate>
 
-        <Style x:Key="MyToolTipStyle" TargetType="ToolTip">
+        <Style x:Key="VendorToolTip" TargetType="ToolTip">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
@@ -62,9 +62,25 @@
             </Setter>
         </Style>
 
+        <Style x:Key="AreaToolTip" TargetType="ToolTip">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border CornerRadius="5" BorderBrush="Black" BorderThickness="2" Background="#5c87b2">
+                            <ContentPresenter Margin="5">
+                                <ContentPresenter.Content>
+                                    <StackPanel Margin="5" MaxWidth="400">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" Foreground="White" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Vendors.Count}" FontWeight="Bold" FontSize="16" Foreground="White" TextWrapping="Wrap"/>
 
-
-
+                                    </StackPanel>
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </UserControl.Resources>
     
@@ -81,9 +97,55 @@
 
         <!--Map-->
         <m:Map x:Name="MyMap" Grid.Column="0"
-               Mode="Road" Center="54.68,25.27" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}">
+               Mode="Road" Center="55.2278601,23.9054659" ZoomLevel="{Binding ZoomLevel ,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 
+           
             <m:MapLayer x:Name="CircleLayer"/>
+            
+            <m:MapLayer>
+                <m:MapItemsControl ItemsSource="{Binding SelectedArea.Children ,UpdateSourceTrigger=PropertyChanged}">
+                    <m:MapItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <m:MapPolygon Fill="DarkCyan" Stroke="Red" Opacity="0.5" StrokeThickness="1" 
+                                          Locations="{Binding Locations}" MouseUp="MapPolygon_MouseUp"
+                                          MouseEnter="MapPolygon_MouseEnter" MouseLeave="MapPolygon_MouseLeave">
+                                <ToolTipService.ToolTip>
+                                    <ToolTip Style="{StaticResource AreaToolTip}"/>
+                                </ToolTipService.ToolTip>
+                            </m:MapPolygon>
+                        </DataTemplate>
+                    </m:MapItemsControl.ItemTemplate>
+                </m:MapItemsControl>
+            </m:MapLayer>
+
+            <m:MapLayer x:Name="SelectedBoundary"/>
+
+            <Grid HorizontalAlignment="Right">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+
+
+                <Border CornerRadius="5" BorderBrush="#CCBA8B" BorderThickness="2" Background="Wheat">
+                    <TextBlock Grid.Row="0" Text="{Binding SelectedArea.Name}" TextWrapping="Wrap"
+                           FontWeight="Bold" FontSize="14" Foreground="White" HorizontalAlignment="Center"/>
+                </Border>
+                
+                
+
+                <UniformGrid Grid.Row="1" Columns="2">
+                    <Button Height="40" Command="{Binding JumpBackClick}" Click="JumpBackBtn_Click" Margin="1">
+                        <Image Source="/Assets/JumpBack.png"/>
+                    </Button>
+                    <Button Height="40" Command="{Binding ShowVendorsClick}" Margin="1">
+                        <Image Source="/Assets/ShowVendors.png"/>
+                    </Button>
+                </UniformGrid>
+            </Grid>
 
             <m:MapLayer>
                 <m:MapPolyline Locations="{Binding RouteLine, UpdateSourceTrigger=PropertyChanged}" Stroke="Green" Opacity="0.85" StrokeThickness="5" />
@@ -96,31 +158,32 @@
                             <m:Pushpin MouseUp="Pushpin_MouseUp" Location="{Binding Location}" ToolTip="{Binding Title}" Cursor="Hand" m:MapLayer.Position="{Binding Location}" >
                                 <m:Pushpin.Style>
                                     <Style TargetType="m:Pushpin">
-                                        <Setter Property="Template" Value="{StaticResource FOOD}"/>
+                                        <Setter Property="Template" Value="{StaticResource Food}"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding VendorType}" Value="FOOD">
-                                                <Setter Property="Template" Value="{StaticResource FOOD}"/>
+                                            <DataTrigger Binding="{Binding VendorType}" Value="Food">
+                                                <Setter Property="Template" Value="{StaticResource Food}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding VendorType}" Value="CAR_REPAIR">
-                                                <Setter Property="Template" Value="{StaticResource CAR_REPAIR}"/>
+                                            <DataTrigger Binding="{Binding VendorType}" Value="CarRepair">
+                                                <Setter Property="Template" Value="{StaticResource CarRepair}"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding VendorType}" Value="OTHER">
-                                                <Setter Property="Template" Value="{StaticResource OTHER}"/>
+                                            <DataTrigger Binding="{Binding VendorType}" Value="Other">
+                                                <Setter Property="Template" Value="{StaticResource Other}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </m:Pushpin.Style>
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Style="{StaticResource MyToolTipStyle}" />
+                                    <ToolTip Style="{StaticResource VendorToolTip}" />
                                 </ToolTipService.ToolTip>
                             </m:Pushpin>
-                           
+
                         </DataTemplate>
                     </m:MapItemsControl.ItemTemplate>
                 </m:MapItemsControl>
             </m:MapLayer>
+
             
-            
+
         </m:Map>
 
 
@@ -144,6 +207,7 @@
 
             <TextBlock Grid.Column="1" Grid.Row="1"
                        TextAlignment="Center" TextWrapping="Wrap" 
+                       FontWeight="Black" FontSize="18"
                        Text="{Binding SelectedVendor.Title}"/>
             <ScrollViewer  Grid.Column="1" Grid.Row="2" 
                            HorizontalScrollBarVisibility="Disabled" 
@@ -154,19 +218,20 @@
 
             <ScrollViewer Grid.Row="3" Grid.Column="1" 
                           VerticalScrollBarVisibility="Auto" 
-                          HorizontalScrollBarVisibility="Disabled">
-                <TextBlock Text="{Binding SelectedVendor.Address}"
+                          HorizontalScrollBarVisibility="Disabled"
+                         >
+                <TextBlock Text="{Binding SelectedVendor.Address}" Margin="0 0 0 10"
                            TextAlignment="Center" TextWrapping="Wrap"/>
             </ScrollViewer>
 
             <UniformGrid Grid.Column="1" Grid.Row="4" Rows="1">
-                <Button Command="{Binding HideBtnClick}">
+                <Button Command="{Binding HideBtnClick}" Width="45">
                     <Image Height="auto" Width="auto"  Source="/Assets/backArrow.png"/>
                 </Button>
-                <Button Command="{Binding FindRouteBtnClick}">
+                <Button Command="{Binding FindRouteBtnClick}" Width="45">
                     <Image Height="auto" Width="auto"  Source="/Assets/destination.png"/>
                 </Button>
-                <Button Command="{Binding ReviewBtnClick}">
+                <Button Command="{Binding ReviewBtnClick}" Width="45">
                     <Image Height="auto" Width="auto"  Source="/Assets/review.png"/>
                 </Button>
             </UniformGrid>
@@ -182,8 +247,8 @@
                 <ComboBox ItemsSource="{Binding Path=VendorTypesList}"
                           SelectedValue="{Binding Path=VendorTypeSelected, Mode=TwoWay}" />      
                 
-                <CheckBox IsChecked="{Binding Path=UseDistanceFilter, Mode=TwoWay}"
-                          Margin="0 5 0 5" Content="Filter by distance"/>
+                <CheckBox x:Name="DistanceFilterCB"  IsChecked="{Binding Path=UseDistanceFilter, Mode=TwoWay}"
+                          Margin="0 5 0 5" Content="Filter by distance" Click="DistanceFilterCB_Click"/>
                 <StackPanel Margin="5 5 5 0" Visibility="{Binding Path=UseDistanceFilter, Converter={StaticResource BoolToVis}}">
                     <TextBox TextAlignment="Center" Text="{Binding CircleRadius , StringFormat=N2 }"/>
                     <Slider x:Name="RadiusSlider" Minimum="0" Maximum="200" Value="{Binding CircleRadius}"

@@ -14,6 +14,9 @@ namespace SuppLocals
         public int VendorID { get; set; }
 
         [Required]
+        public int CommentID { get; set; }
+
+        [Required]
         public string SenderUsername { get; set; }
 
         [Required]
