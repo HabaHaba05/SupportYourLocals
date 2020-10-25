@@ -30,6 +30,20 @@ namespace SuppLocals.ViewModels
                 }
             }
             ButtonCommand = new RelayCommand(new Action<object>(MainButtonClick));
+            DeleteButtonCommand = new RelayCommand(new Action<object>(DeleteButtonClick));
+        }
+
+        private void DeleteButtonClick(object sender)
+        {
+            Vendor vendor = sender as Vendor;
+            using (VendorsDbTable db = new VendorsDbTable())
+            {
+                var vendorFromDB = db.Vendors.SingleOrDefault(x => x.ID == vendor.ID);
+                db.Remove(vendorFromDB);
+                db.SaveChanges();
+            }
+            var itemToRemove = VendorList.Single(d => d.ID == vendor.ID);
+            VendorList.Remove(itemToRemove);
         }
 
         public ObservableCollection<Vendor> VendorList
@@ -40,10 +54,12 @@ namespace SuppLocals.ViewModels
             }
             set
             {
+                vendorList = value;
                 NotifyPropertyChanged("VendorList");
             }
         }
         public ICommand ButtonCommand { get; private set; }
+        public ICommand DeleteButtonCommand { get; private set; }
 
         private void MainButtonClick(object sender)
         {
