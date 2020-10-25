@@ -12,11 +12,10 @@ using System.Windows.Navigation;
 
 namespace SuppLocals.ViewModels
 {
-    public class VendorsVM : BaseViewModel, INotifyPropertyChanged
+    public class VendorsVM : BaseViewModel
     {
 
         ObservableCollection<User> userList;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<User> UserList
         {
@@ -24,10 +23,7 @@ namespace SuppLocals.ViewModels
             set
             {
                 userList = value;
-                if(PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("UserList"));
-                }
+                NotifyPropertyChanged("UserList");
             }
         }
 

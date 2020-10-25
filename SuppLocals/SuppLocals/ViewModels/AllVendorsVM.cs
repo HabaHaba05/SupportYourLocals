@@ -7,12 +7,11 @@ using Windows.UI.Xaml;
 
 namespace SuppLocals.ViewModels
 {
-    public class AllVendorsVM: BaseViewModel, INotifyPropertyChanged
+    public class AllVendorsVM: BaseViewModel
 
     {
         ObservableCollection<Vendor> _vendorList;
         private List<User> _userList;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public AllVendorsVM(string username)
         {
@@ -44,10 +43,7 @@ namespace SuppLocals.ViewModels
             set
             {
                 _vendorList = value;
-                if(PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("VendorsList"));
-                }
+                NotifyPropertyChanged("VendorsList");
             }
         }
     }

@@ -9,10 +9,9 @@ using System.Windows.Input;
 
 namespace SuppLocals.ViewModels
 {
-    public class MyServicesVM : BaseViewModel, INotifyPropertyChanged
+    public class MyServicesVM : BaseViewModel
     {
         ObservableCollection<Vendor> vendorList;
-        public event PropertyChangedEventHandler PropertyChanged;
         public string about;
         public string title;
         private EditVendor editVendor;
@@ -41,11 +40,7 @@ namespace SuppLocals.ViewModels
             }
             set
             {
-                vendorList = value;
-                if(PropertyChanged != null)
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs("VendorList"));
-                }
+                NotifyPropertyChanged("VendorList");
             }
         }
         public ICommand ButtonCommand { get; private set; }
