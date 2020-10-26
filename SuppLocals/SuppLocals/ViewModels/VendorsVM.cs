@@ -55,7 +55,7 @@ namespace SuppLocals.ViewModels
 
         private void GetData()
         {
-            using (var db = new UsersDbTable())
+            using (var db = new AppDbContext())
             {
                 var data = db.Users.ToList();
                 foreach (var user in data.Where(i => i.VendorsCount > 0))

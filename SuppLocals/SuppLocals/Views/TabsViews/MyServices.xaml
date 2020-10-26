@@ -25,7 +25,7 @@
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Header="About" Width="335">
+                    <GridViewColumn Header="About" Width="330">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding Path= About, Mode=TwoWay}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>

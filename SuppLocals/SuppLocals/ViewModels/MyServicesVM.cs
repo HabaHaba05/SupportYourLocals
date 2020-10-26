@@ -14,6 +14,7 @@ namespace SuppLocals.ViewModels
         ObservableCollection<Vendor> vendorList;
         private EditVendor editVendor;
         public Vendor tempVendor;
+        private User _user;
 
         #region Public props
 
@@ -44,6 +45,7 @@ namespace SuppLocals.ViewModels
 
         public MyServicesVM(User user)
         {
+            _user = user;
             VendorList = new ObservableCollection<Vendor>();
             GetData(user.ID);
             ButtonCommand = new RelayCommand(new Action<object>(EditButtonClick));
@@ -56,7 +58,7 @@ namespace SuppLocals.ViewModels
 
         private void GetData(int userID)
         {
-            using (var db = new VendorsDbTable())
+            using (var db = new AppDbContext())
             {
                 var data = db.Vendors.ToList();
                 foreach (var vendor in data.Where(vendor => vendor.UserID == userID))
@@ -69,17 +71,13 @@ namespace SuppLocals.ViewModels
         private void DeleteButtonClick(object sender)
         {
             Vendor vendor = sender as Vendor;
-            using (VendorsDbTable db = new VendorsDbTable())
+            using (var db = new AppDbContext())
             {
                 var vendorFromDB = db.Vendors.SingleOrDefault(x => x.ID == vendor.ID);
                 db.Remove(vendorFromDB);
-                db.SaveChanges();
-            }
-            using (UsersDbTable dbUser = new UsersDbTable())
-            {
-                var user = dbUser.Users.SingleOrDefault(x => x.ID == vendor.ID);
+                var user = db.Users.SingleOrDefault(x => x.ID == _user.ID);
                 user.VendorsCount--;
-                dbUser.SaveChanges();
+                db.SaveChanges();
             }
             var itemToRemove = VendorList.Single(d => d.ID == vendor.ID);
             VendorList.Remove(itemToRemove);
@@ -120,7 +118,7 @@ namespace SuppLocals.ViewModels
                 }
             }
 
-            using (VendorsDbTable db = new VendorsDbTable())
+            using (var db = new AppDbContext())
             {
                 var vendor = db.Vendors.SingleOrDefault(x => x.ID == tempVendor.ID);
                 vendor.Title = editVendor.titleBox.Text;

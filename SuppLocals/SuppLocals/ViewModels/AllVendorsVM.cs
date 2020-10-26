@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 
 namespace SuppLocals.ViewModels
 {
+
     public class AllVendorsVM : ObservableObject
     {
         ObservableCollection<Vendor> _vendorList;
@@ -40,19 +41,17 @@ namespace SuppLocals.ViewModels
         private void GetData(string username)
         {
             User user;
-            using(var usersDB = new UsersDbTable())
+            using (var db = new AppDbContext())
             {
-                var userList = usersDB.Users.ToList();
+                var userList = db.Users.ToList();
                 user = userList.FirstOrDefault(x => x.Username == username);
-                using (var vendorsDB = new VendorsDbTable())
+                var vendorList = db.Vendors.ToList();
+                foreach (var vendor in vendorList.Where(x => x.UserID == user.ID))
                 {
-                    var vendorList = vendorsDB.Vendors.ToList();
-                    foreach (var vendor in vendorList.Where(x => x.UserID == user.ID))
-                    {
-                        VendorsList.Add(vendor);
-                    }
+                    VendorsList.Add(vendor);
                 }
             }
+
         }
 
         #endregion
