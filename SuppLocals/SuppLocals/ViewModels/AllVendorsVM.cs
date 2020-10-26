@@ -11,31 +11,8 @@ namespace SuppLocals.ViewModels
 
     {
         ObservableCollection<Vendor> _vendorList;
-        private List<User> _userList;
 
-        public AllVendorsVM(string username)
-        {
-            VendorsList = new ObservableCollection<Vendor>();
-            int ID = -1;
-            using var db = new UsersDbTable();
-            var userList = db.Users.ToList();
-
-            using var db1 = new VendorsDbTable();
-            var vendorList = db1.Vendors.ToList();
-
-            foreach(var v in userList.Where(x => x.Username == username))
-            {
-                ID = v.ID;
-            }
-            foreach(var v in vendorList.Where(x => x.UserID == ID))
-            {
-                VendorsList.Add(v);
-            }
-
-
-
-
-        }
+        #region Public props
 
         public ObservableCollection<Vendor> VendorsList
         {
@@ -46,5 +23,39 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("VendorsList");
             }
         }
+
+        #endregion
+
+        #region Constructor
+
+        public AllVendorsVM(string username)
+        {
+            VendorsList = new ObservableCollection<Vendor>();
+            GetData(username);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void GetData(string username)
+        {
+            User user;
+            using(var usersDB = new UsersDbTable())
+            {
+                var userList = usersDB.Users.ToList();
+                user = userList.FirstOrDefault(x => x.Username == username);
+                using (var vendorsDB = new VendorsDbTable())
+                {
+                    var vendorList = vendorsDB.Vendors.ToList();
+                    foreach (var vendor in vendorList.Where(x => x.UserID == user.ID))
+                    {
+                        VendorsList.Add(vendor);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

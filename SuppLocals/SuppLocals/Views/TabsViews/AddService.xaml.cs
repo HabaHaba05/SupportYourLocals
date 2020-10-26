@@ -21,6 +21,7 @@ namespace SuppLocals.Views
 
         private async void ConfirmLoc_Click(object sender, RoutedEventArgs e)
         {
+            
             var address = await MapMethods.ConvertLocationToAddress(SelectLocMap.Center);
             if (string.IsNullOrEmpty(address))
             {

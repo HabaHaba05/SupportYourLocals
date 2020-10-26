@@ -17,6 +17,8 @@ namespace SuppLocals.ViewModels
 
         ObservableCollection<User> userList;
 
+        #region Public props
+
         public ObservableCollection<User> UserList
         {
             get { return userList; }
@@ -27,26 +29,42 @@ namespace SuppLocals.ViewModels
             }
         }
 
+        #endregion
+
+        #region Commands
+
+        public DelegateCommand<object> SelectedItemChangedCommand { get; set; }
+
+        #endregion
+
+        #region Constructor
+
         public VendorsVM()
         {
             UserList = new ObservableCollection<User>();
-
-            using (var db = new UsersDbTable())
-            {
-                var data = db.Users.ToList();
-                foreach (var user in data.Where(i => i.VendorsCount>0))
-                {
-                    UserList.Add(user);
-                }
-            }
+            GetData();
             SelectedItemChangedCommand = new DelegateCommand<object>((selectedItem) =>
             {
                 SortList(selectedItem);
             });
         }
 
-        public DelegateCommand<object> SelectedItemChangedCommand { get; set; }
-        
+        #endregion
+
+        #region Methods
+
+        private void GetData()
+        {
+            using (var db = new UsersDbTable())
+            {
+                var data = db.Users.ToList();
+                foreach (var user in data.Where(i => i.VendorsCount > 0))
+                {
+                    UserList.Add(user);
+                }
+            }
+        }
+
         private void SortList(object selectedItem)
         {
             switch (selectedItem)
@@ -68,5 +86,7 @@ namespace SuppLocals.ViewModels
 
             }
         }
+
+        #endregion
     }
 }
