@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using BC = BCrypt.Net.BCrypt;
+using System;
 
 namespace SuppLocals.Views
 {
@@ -14,10 +15,11 @@ namespace SuppLocals.Views
         public Login()
         {
             InitializeComponent();
-
-            DataContext = new ValidateUsername();
+            
         }
-
+    }
+}
+        /*
         public void LogInBtnClick(object sender, RoutedEventArgs e)
         {
             using var db = new AppDbContext();
@@ -101,5 +103,4 @@ namespace SuppLocals.Views
             forgotPassword.Show();
             this.Close();
         }
-    }
-}
+        */
