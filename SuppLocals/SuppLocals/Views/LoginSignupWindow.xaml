@@ -60,6 +60,16 @@
                     Click="SignupClick"/>
         </StackPanel>
 
+        <StackPanel Grid.Row="3" Grid.Column="1">
+            <Button Width="130"
+                    Content="Back" Height="50" 
+                    HorizontalAlignment="Center"
+                    Margin="10 25"
+                    Background="{x:Null}"
+                    FontSize="35" BorderBrush="{x:Null}"
+                    Click="BackClick"/>
+        </StackPanel>
+
         <ContentControl Grid.Row="1" Grid.Column="1" 
                         Grid.ColumnSpan="1" 
                         Content="{Binding}"/>

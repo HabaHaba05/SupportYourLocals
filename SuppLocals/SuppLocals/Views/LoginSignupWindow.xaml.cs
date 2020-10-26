@@ -12,6 +12,7 @@ namespace SuppLocals.Views
         {
             InitializeComponent();
             DataContext = new LoginVM();
+
         }
 
         private void LoginClick(object sender, RoutedEventArgs e)
@@ -22,6 +23,14 @@ namespace SuppLocals.Views
         private void SignupClick(object sender, RoutedEventArgs e)
         {
             DataContext = new SignupVM();
+            
+        }
+
+        private void BackClick(object sender, RoutedEventArgs e)
+        {
+            var start = new StartWindow();
+            start.Show();
+            this.Close();
         }
     }
 }

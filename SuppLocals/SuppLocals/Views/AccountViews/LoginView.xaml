@@ -47,8 +47,12 @@
                         Width="160"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Text="{Binding Username, ValidatesOnDataErrors=True, 
-                        UpdateSourceTrigger=PropertyChanged}"
+                        
+                        
+                        Text="{Binding Username, 
+                        UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Username]}"
 
                         Margin="-110 25 0 0 "
                         MaxLength="12"
@@ -69,12 +73,16 @@
                         FontWeight="Bold"
                         Margin="90 0 0 0 "/>
 
-                <PasswordBox  local:PasswordHelper.Attach="True"
+                <PasswordBox 
+                        local:PasswordHelper.Attach="True"
+                    
                         local:PasswordHelper.Password="{
                         Binding Password,
                         Mode=TwoWay,  
                         UpdateSourceTrigger=PropertyChanged,
                         ValidatesOnDataErrors=True}" 
+                        ToolTip="{Binding ErrorCollection[Password]}"
+                    
                         Name="PasswordBox"
                         MaxLength="12"
                         FontFamily="Tahoma"
@@ -113,6 +121,41 @@
     </StackPanel>
 
 
-
     </Grid>
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type PasswordBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Left" Width="16" Height="16" VerticalAlignment="Center" Margin="164 0 0 0">
+                                <Ellipse Width="16" Height="16" Fill="Red"/>
+                                <Ellipse Width="3" Height="8" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 2 0 0" Fill="White"/>
+                                <Ellipse Width="2" Height="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 2" Fill="White"/>
+                            </Grid>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Left" Width="16" Height="16" VerticalAlignment="Center" Margin="160 0 0 0">
+                                <Ellipse Width="16" Height="16" Fill="Red"/>
+                                <Ellipse Width="3" Height="8" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 2 0 0" Fill="White"/>
+                                <Ellipse Width="2" Height="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 2" Fill="White"/>
+                            </Grid>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
 </UserControl>

@@ -46,15 +46,18 @@
                 <TextBox  Name="EmailAdressBox"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
-                        FontSize="20"
+                        FontSize="18"
                         Foreground="Black"
                         Background="Transparent"
                         BorderThickness="0"
-                        Width="235"
+                        Width="125"
                         HorizontalContentAlignment="Left"
-                      
+                        Text="{Binding Email, 
+                        UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Email]}" 
                         Opacity="1"
-                        Margin="-170 40 0 0 "
+                        Margin="-230 40 0 0 "
                         MaxLength="30"
                           />
             </StackPanel>
@@ -75,20 +78,21 @@
                         FontFamily="Tahoma"
                         FontSize="20"
                         FontWeight="Bold"
-                        Margin="60 0 0 0 "/>
+                        Margin="40 0 0 0 "/>
 
                 <TextBox  Name="UsernameTextBox"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
-                        FontSize="20"
+                        FontSize="18"
                         Foreground="Black"
-                       
+                        Text="{Binding Username, ValidatesOnDataErrors=True, 
+                        UpdateSourceTrigger=PropertyChanged}"
                         Background="Transparent"
                         BorderThickness="0"
-                        Width="235"
+                        Width="160"
                         HorizontalContentAlignment="Left"
                         Opacity="1"
-                        Margin="-215 40 0 0 "
+                        Margin="-245 40 0 0 "
                         MaxLength="12"
                         />
 
@@ -108,9 +112,13 @@
                         FontFamily="Tahoma"
                         FontSize="20"
                         FontWeight="Bold"
-                        Margin="60 0 0 0 "/>
+                        Margin="40 0 0 0 "/>
 
-                <PasswordBox 
+                <PasswordBox local:PasswordHelper.Attach="True"
+                        local:PasswordHelper.Password="{Binding Password,
+                        Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[Password]}"
                         Name="PasswordBox1"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
@@ -118,11 +126,11 @@
                         Foreground="Black"
                         Background="Transparent"
                         BorderThickness="0"
-                        Width="235"
+                        Width="160"
                         HorizontalContentAlignment="Left"
                        
                         Opacity="1"
-                        Margin="-215 40 0 0 "
+                        Margin="-240 40 0 0 "
                         MaxLength="12"
                         />
             </StackPanel>
@@ -143,7 +151,11 @@
                         FontWeight="Bold"
                         Margin="60 0 0 0 "/>
 
-                <PasswordBox 
+                <PasswordBox local:PasswordHelper.Attach="True"
+                        local:PasswordHelper.Password="{Binding ConfirmPassword,
+                        Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, 
+                        ValidatesOnDataErrors=True}"
+                        ToolTip="{Binding ErrorCollection[ConfirmPassword]}"
                         Name="ConfirmPasswordBox1"
                         FontFamily="Tahoma"
                         FontWeight="Bold"
@@ -151,11 +163,11 @@
                         Foreground="Black"
                         Background="Transparent"
                         BorderThickness="0"
-                        Width="235"
+                        Width="160"
                         HorizontalContentAlignment="Left"
                        
                         Opacity="1"
-                        Margin="-195 40 0 0 "
+                        Margin="-230 40 0 0 "
                         MaxLength="12"/>
             </StackPanel>
             <Border Width="250"
@@ -176,11 +188,48 @@
                 Height="30" 
                 Content="Apply" 
                 HorizontalAlignment="Center" 
-                VerticalAlignment="Center"  
+                VerticalAlignment="Center"
+                Command="{Binding SignupClick}"
                 />
         </StackPanel>
 
 
 
     </Grid>
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type PasswordBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Left" Width="16" Height="16" VerticalAlignment="Center" Margin="180 0 0 0">
+                                <Ellipse Width="16" Height="16" Fill="Red"/>
+                                <Ellipse Width="3" Height="8" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 2 0 0" Fill="White"/>
+                                <Ellipse Width="2" Height="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 2" Fill="White"/>
+                            </Grid>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Left" Width="16" Height="16" VerticalAlignment="Center" Margin="180 0 0 0">
+                                <Ellipse Width="16" Height="16" Fill="Red"/>
+                                <Ellipse Width="3" Height="8" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0 2 0 0" Fill="White"/>
+                                <Ellipse Width="2" Height="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 2" Fill="White"/>
+                            </Grid>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
 </UserControl>
