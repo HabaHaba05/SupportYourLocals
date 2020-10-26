@@ -99,19 +99,19 @@ namespace SuppLocals.ViewModels
             var point = await MapMethods.ConvertAddressToLocation(editVendor.addressBox.Text);
             var temp = new ObservableCollection<Vendor>();
 
-            for(int i = 0; i<VendorList.Count; i++)
+            foreach(var vendor in VendorList)
             {
-                if(VendorList[i].ID != tempVendor.ID)
+                if(vendor.ID != tempVendor.ID)
                 {
-                    temp.Add(VendorList[i]);
+                    temp.Add(vendor);
                 }
                 else
                 {
                     tempVendor.Title = editVendor.titleBox.Text;
                     tempVendor.About = editVendor.aboutBox.Text;
                     tempVendor.Address = editVendor.addressBox.Text;
-                    tempVendor.Latitude = Double.Parse(point[0]);
-                    tempVendor.Longitude = Double.Parse(point[1]);
+                    tempVendor.Latitude = double.Parse(point[0]);
+                    tempVendor.Longitude = double.Parse(point[1]);
                     tempVendor.Municipality = point[2];
                     tempVendor.County = point[3];
                     temp.Add(tempVendor);

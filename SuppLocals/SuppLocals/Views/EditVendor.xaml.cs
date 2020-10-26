@@ -34,7 +34,7 @@ namespace SuppLocals.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private async void ConfirmLoc_Click(object sender, RoutedEventArgs e)
