@@ -20,9 +20,6 @@ namespace SuppLocals.Views
 
         public void Apply_Button_Click(object sender, RoutedEventArgs e)
         {
-            var emailSender = new EmailSender();
-
-
             if (Code == CodeTextBox.Text)
             {
                 var map = new MainWindow(ActiveUser);

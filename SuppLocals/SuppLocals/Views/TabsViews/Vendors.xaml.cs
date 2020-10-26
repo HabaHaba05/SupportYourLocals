@@ -10,7 +10,6 @@ namespace SuppLocals.Views
     /// </summary>
     public partial class Vendors : UserControl
     {
-
         public Vendors()
         {
             InitializeComponent();
@@ -22,7 +21,7 @@ namespace SuppLocals.Views
             var username = selectedItem.Username;
             
             var vendors = new AllVendors(username);
-            vendors.Show();     
+            vendors.Show();
         }
     }
 }

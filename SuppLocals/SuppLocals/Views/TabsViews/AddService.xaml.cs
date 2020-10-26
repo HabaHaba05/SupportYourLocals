@@ -28,6 +28,7 @@ namespace SuppLocals.Views
                 MessageBox.Show("Sorry, we cant get an address of this place");
                 return;
             }
+
             AddressTB.Text = address;
         }
     }

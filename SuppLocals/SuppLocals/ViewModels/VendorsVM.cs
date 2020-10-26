@@ -12,7 +12,7 @@ using System.Windows.Navigation;
 
 namespace SuppLocals.ViewModels
 {
-    public class VendorsVM : BaseViewModel
+    public class VendorsVM : ObservableObject
     {
 
         ObservableCollection<User> userList;

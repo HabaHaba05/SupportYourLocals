@@ -1,57 +1,67 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Microsoft.Win32;
+using System.Windows.Media.Imaging;
 using BC = BCrypt.Net.BCrypt;
 
 namespace SuppLocals.ViewModels
 {
-    public class ChangeProfileVM : BaseViewModel , IDataErrorInfo
+    public class ChangeProfileVM : ObservableObject, IDataErrorInfo
     {
         public User ActiveUser;
-        
 
-        private string _oldpassword;
-        private string _newpassword;
-        private string _confirmpassword;
+        private string _oldPassword;
+        private string _newPassword;
+        private string _confirmPassword;
+        private BitmapImage _profileImage;
+
         #region Public props
+
         public string OldPassword
         {
-            get => _oldpassword;
+            get => _oldPassword;
             set
             {
-                _oldpassword = value;
+                _oldPassword = value;
                 NotifyPropertyChanged("OldPassword");
             }
         }
+
         public string NewPassword
         {
-            get => _newpassword;
+            get => _newPassword;
             set
             {
-                _newpassword = value;
+                _newPassword = value;
                 NotifyPropertyChanged("NewPassword");
             }
         }
 
         public string ConfirmNewPassword
         {
-            get => _confirmpassword;
+            get => _confirmPassword;
             set
             {
-                _confirmpassword = value;
+                _confirmPassword = value;
                 NotifyPropertyChanged("ConfirmNewPassword");
             }
         }
+
+        public BitmapImage ProfilePicture
+        {
+            get => _profileImage;
+            set
+            {
+                _profileImage = value;
+                NotifyPropertyChanged("ProfilePicture");
+            }
+        }
+
         #endregion
 
         private string _test;
+
         public string Test
         {
             get => _test;
@@ -65,7 +75,8 @@ namespace SuppLocals.ViewModels
         public ChangeProfileVM(User user)
         {
             ActiveUser = user;
-            SaveChangesClick = new RelayCommand(o =>{SaveChanges();}, o => true);
+            ProfilePicture = user.GetProfileImage();
+            SaveChangesClick = new RelayCommand(o => { SaveChanges(); }, o => true);
         }
 
         public RelayCommand SaveChangesClick { get; }
@@ -73,13 +84,14 @@ namespace SuppLocals.ViewModels
 
         public string Error => null;
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
+
         public string this[string name]
         {
             get
             {
                 string result = null;
                 var validate = new ValidateUsername();
-           
+
 
                 switch (name)
                 {
@@ -92,6 +104,7 @@ namespace SuppLocals.ViewModels
                         {
                             result = "Password has to be at least 8 symbols long!";
                         }
+
                         break;
 
                     case "NewPassword":
@@ -107,6 +120,7 @@ namespace SuppLocals.ViewModels
                         {
                             result = validate.PasswordErrorMessage(NewPassword);
                         }
+
                         break;
 
                     case "ConfirmNewPassword":
@@ -126,16 +140,15 @@ namespace SuppLocals.ViewModels
                         break;
                 }
 
-                        if (ErrorCollection.ContainsKey(name))
-                            ErrorCollection[name] = result;
-                        else if (result != null)
-                            ErrorCollection.Add(name, result);
+                if (ErrorCollection.ContainsKey(name))
+                    ErrorCollection[name] = result;
+                else if (result != null)
+                    ErrorCollection.Add(name, result);
 
-                        NotifyPropertyChanged("ErrorCollection");
-                        return result;
-                }
+                NotifyPropertyChanged("ErrorCollection");
+                return result;
             }
-        
+        }
 
 
         private void SaveChanges()
@@ -147,7 +160,7 @@ namespace SuppLocals.ViewModels
             }
             else if (NewPassword != ConfirmNewPassword)
             {
-                Test = "bybiene";
+                MessageBox.Show(Test);
                 return;
             }
             else if (!BC.Verify(OldPassword, ActiveUser.HashedPsw))
@@ -158,19 +171,16 @@ namespace SuppLocals.ViewModels
 
 
             //changing the current password to new password
-            using (var dbUser = new UsersDbTable())
+            using (var db = new AppDbContext())
             {
-                var user = dbUser.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
+                var user = db.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
                 user.HashedPsw = BC.HashPassword(NewPassword);
-                dbUser.SaveChanges();
+                db.SaveChanges();
             }
 
             NewPassword = "";
             OldPassword = "";
             ConfirmNewPassword = "";
         }
-
-
-
     }
 }

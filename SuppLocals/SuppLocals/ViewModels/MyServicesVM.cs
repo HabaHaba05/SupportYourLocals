@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace SuppLocals.ViewModels
 {
-    public class MyServicesVM : BaseViewModel
+    public class MyServicesVM : ObservableObject
     {
         ObservableCollection<Vendor> vendorList;
         private EditVendor editVendor;

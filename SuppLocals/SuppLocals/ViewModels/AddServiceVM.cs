@@ -13,7 +13,7 @@ using Location = Microsoft.Maps.MapControl.WPF.Location;
 
 namespace SuppLocals.ViewModels
 {
-    public class AddServiceVM : BaseViewModel, IDataErrorInfo
+    public class AddServiceVM : ObservableObject, IDataErrorInfo
     {
         private readonly User _user;
 
@@ -26,7 +26,7 @@ namespace SuppLocals.ViewModels
 
 
         #region Public props
-      
+
         public string Title
         {
             get => _title;
@@ -36,6 +36,7 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("Title");
             }
         }
+
         public string About
         {
             get => _about;
@@ -45,22 +46,25 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("About");
             }
         }
+
         public string Address
         {
             get => _address;
             set
             {
-                if(_address == value)
+                if (_address == value)
                 {
                     SuggestStack = null;
                     return;
                 }
+
                 _address = value;
-                GetAddressSuggestions();
-                ChangeMapCenter();
+                _ = GetAddressSuggestions();
+                _ = ChangeMapCenter();
                 NotifyPropertyChanged("Address");
             }
         }
+
         public string SelectedVendorType { private get; set; }
 
         public ObservableCollection<TextBlock> SuggestStack
@@ -87,7 +91,7 @@ namespace SuppLocals.ViewModels
 
         #region Commands
 
-        public RelayCommand CreateVendorBtnClick{get; private set; }
+        public RelayCommand CreateVendorBtnClick { get; private set; }
         public RelayCommand LostFocusCommand { get; private set; }
 
         #endregion
@@ -96,6 +100,7 @@ namespace SuppLocals.ViewModels
 
         public string Error => null;
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
+
         public string this[string name]
         {
             get
@@ -138,7 +143,11 @@ namespace SuppLocals.ViewModels
 
             CreateVendorBtnClick = new RelayCommand(async (x) => await CreateVendor(), o => AllFieldsValid());
 
-            LostFocusCommand = new RelayCommand(o => { Thread.Sleep(250); SuggestStack = null; }, o => true);;
+            LostFocusCommand = new RelayCommand(o =>
+            {
+                Thread.Sleep(250);
+                SuggestStack = null;
+            }, o => true);
         }
 
         #endregion
@@ -160,28 +169,23 @@ namespace SuppLocals.ViewModels
                 return;
             }
 
-            await using (VendorsDbTable db = new VendorsDbTable())
+            var vendor = new Vendor()
             {
-                var vendor = new Vendor()
-                {
-                    Title = _title,
-                    About = _about,
-                    Address = _address,
-                    VendorType = SelectedVendorType,
-                    Latitude = Double.Parse(placeInfo[0]),
-                    Longitude = Double.Parse(placeInfo[1]),
-                    Municipality = placeInfo[2],
-                    County = placeInfo[3],
-                    UserID = _user.ID
+                Title = _title,
+                About = _about,
+                Address = _address,
+                VendorType = SelectedVendorType,
+                Latitude = Double.Parse(placeInfo[0]),
+                Longitude = Double.Parse(placeInfo[1]),
+                Municipality = placeInfo[2],
+                County = placeInfo[3],
+                UserID = _user.ID
+            };
 
-                };
-
-                await using (UsersDbTable dbUser = new UsersDbTable())
-                {
-                    var user = dbUser.Users.SingleOrDefault(x => x.ID == this._user.ID);
-                    user.VendorsCount++;
-                    await dbUser.SaveChangesAsync();
-                }
+            await using (AppDbContext db = new AppDbContext())
+            {
+                var user = db.Users.SingleOrDefault(x => x.ID == this._user.ID);
+                user.VendorsCount++;
 
                 await db.Vendors.AddAsync(vendor);
 
@@ -192,7 +196,6 @@ namespace SuppLocals.ViewModels
             Title = "";
             About = "";
             Address = "";
-
         }
 
         private async Task GetAddressSuggestions()
@@ -200,14 +203,15 @@ namespace SuppLocals.ViewModels
             if (string.IsNullOrEmpty(Address))
             {
                 return;
-            };
+            }
 
             var data = await AutoComplete.GetData(Address);
 
             var list = new List<TextBlock>();
 
             foreach (var obj in data)
-            {   if (obj != Address)
+            {
+                if (obj != Address)
                 {
                     TextBlock block = new TextBlock
                     {
@@ -223,7 +227,7 @@ namespace SuppLocals.ViewModels
 
             SuggestStack = new ObservableCollection<TextBlock>(list);
         }
-        
+
         private void AddEvents(TextBlock block)
         {
             if (block == null) throw new ArgumentNullException(nameof(block));
@@ -250,11 +254,9 @@ namespace SuppLocals.ViewModels
         private async Task ChangeMapCenter()
         {
             var data = await MapMethods.ConvertAddressToLocation(Address);
-            MyMapCenter = new Location(Double.Parse(data[0]), Double.Parse(data[1]));
+            MyMapCenter = new Location(double.Parse(data[0]), double.Parse(data[1]));
         }
 
         #endregion
-
     }
-
 }

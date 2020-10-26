@@ -1,5 +1,4 @@
-﻿using SuppLocals.ViewModels;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,7 +20,7 @@ namespace SuppLocals.Views
 
         public void LogInBtnClick(object sender, RoutedEventArgs e)
         {
-            using var db = new UsersDbTable();
+            using var db = new AppDbContext();
             var username = Username.Text;
             var password = PasswordBox.Password;
 
@@ -71,7 +70,8 @@ namespace SuppLocals.Views
 
         private void UsernameTextChangedEventHandler(object sender, TextChangedEventArgs args)
         {
-            if (string.IsNullOrWhiteSpace(Username.Text) || string.IsNullOrWhiteSpace(PasswordBox.Password) || PasswordBox.Password.Length < 8)
+            if (string.IsNullOrWhiteSpace(Username.Text) || string.IsNullOrWhiteSpace(PasswordBox.Password) ||
+                PasswordBox.Password.Length < 8)
             {
                 loginBtn.IsEnabled = false;
             }
@@ -83,7 +83,8 @@ namespace SuppLocals.Views
 
         private void PasswordTextChangedEventHandler(object sender, RoutedEventArgs args)
         {
-            if (string.IsNullOrWhiteSpace(PasswordBox.Password) || string.IsNullOrWhiteSpace(Username.Text) || PasswordBox.Password.Length < 8)
+            if (string.IsNullOrWhiteSpace(PasswordBox.Password) || string.IsNullOrWhiteSpace(Username.Text) ||
+                PasswordBox.Password.Length < 8)
             {
                 loginBtn.IsEnabled = false;
             }
@@ -94,7 +95,7 @@ namespace SuppLocals.Views
         }
 
 
-        private void Hyperlinky_Click(object sender, RoutedEventArgs e)
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
             var forgotPassword = new ForgotPassword();
             forgotPassword.Show();

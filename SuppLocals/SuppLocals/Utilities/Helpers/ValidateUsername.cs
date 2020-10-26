@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Net.Mail;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using SuppLocals.Classes;
 
 namespace SuppLocals
 {
@@ -43,16 +44,18 @@ namespace SuppLocals
                         {
                             result = "Username has to contain from 5 to 12 symbols!";
                         }
+
                         break;
                     case "Email":
                         if (string.IsNullOrWhiteSpace(Email))
                         {
                             result = "Email can not be empty!";
                         }
-                        else if (IsValidEmail(Email) == false)
+                        else if (Email.IsEmail() == false)
                         {
                             result = "Email is not valid!";
                         }
+
                         break;
                     case "Password":
                         if (string.IsNullOrWhiteSpace(Password))
@@ -63,7 +66,7 @@ namespace SuppLocals
                         {
                             result = "Password has to be at least 8 symbols long!";
                         }
-                        else if(IsPasswordValid(Password) is false)
+                        else if (IsPasswordValid(Password) is false)
                         {
                             result = PasswordErrorMessage(Password);
                         }
@@ -95,18 +98,12 @@ namespace SuppLocals
                     ErrorCollection.Add(columnName, result);
                 }
 
-                OnPropertyChanged("ErrorCollection");
+                NotifyPropertyChanged("ErrorCollection");
                 return result;
             }
         }
 
-        public bool IsValidEmail(string email)
-        {     
-                // Return true if strIn is in valid e-mail format.
-                return Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
-        }
-
-        public bool IsPasswordValid(string input) 
+        public bool IsPasswordValid(string input)
         {
             var hasLowerChar = new Regex(@"[a-z]+");
             var hasUpperChar = new Regex(@"[A-Z]+");
@@ -125,10 +122,13 @@ namespace SuppLocals
                 return false;
             }
 
-            else { return true; }
+            else
+            {
+                return true;
+            }
         }
 
-        public string PasswordErrorMessage(string input) 
+        public string PasswordErrorMessage(string input)
         {
             var hasLowerChar = new Regex(@"[a-z]+");
             var hasUpperChar = new Regex(@"[A-Z]+");
@@ -150,9 +150,6 @@ namespace SuppLocals
             {
                 return "Upsy";
             }
-
         }
-
-
     }
 }

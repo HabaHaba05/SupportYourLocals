@@ -7,8 +7,7 @@ using Windows.UI.Xaml;
 
 namespace SuppLocals.ViewModels
 {
-    public class AllVendorsVM: BaseViewModel
-
+    public class AllVendorsVM : ObservableObject
     {
         ObservableCollection<Vendor> _vendorList;
 
