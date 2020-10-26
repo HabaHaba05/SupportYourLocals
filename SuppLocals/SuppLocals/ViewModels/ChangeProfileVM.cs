@@ -160,7 +160,7 @@ namespace SuppLocals.ViewModels
             }
             else if (NewPassword != ConfirmNewPassword)
             {
-                Test = "bybiene";
+                MessageBox.Show(Test);
                 return;
             }
             else if (!BC.Verify(OldPassword, ActiveUser.HashedPsw))
