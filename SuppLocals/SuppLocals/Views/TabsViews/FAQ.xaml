@@ -47,9 +47,9 @@
                     </Grid>
                 </Expander>
 
-                <Expander Grid.Row="4" Grid.ColumnSpan="3" Header="Q: " FontSize="16" FontWeight="Bold" Margin="20 5 20 5">
+                <Expander Grid.Row="4" Grid.ColumnSpan="3" Header="Q: Do I need to register in order to review a service?" FontSize="16" FontWeight="Bold" Margin="20 5 20 5">
                     <Grid>
-                        <TextBlock FontWeight="Normal" Text="A: " TextWrapping="Wrap"/>
+                        <TextBlock FontWeight="Normal" Text="A: No, you don't. Anyone can review a certain service, but only the owner can reply to those reviews." TextWrapping="Wrap"/>
                     </Grid>
                 </Expander>
             </Grid>
