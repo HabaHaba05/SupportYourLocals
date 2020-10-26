@@ -143,7 +143,7 @@ namespace SuppLocals.Views
 
         private void SignInClicked(object sender, RoutedEventArgs e)
         {
-            var lWindow = new Login();
+            var lWindow = new LoginSignupWindow();
             lWindow.Show();
             Close();
         }

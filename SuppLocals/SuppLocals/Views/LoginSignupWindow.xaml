@@ -8,7 +8,11 @@
         xmlns:local="clr-namespace:SuppLocals.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize" Height="600" Width="400" Background="Transparent">
+        ResizeMode="NoResize" Height="600" Width="400"
+        AllowsTransparency="true" Background="Transparent"
+        WindowStyle="none" 
+        MouseDown="Window_MouseDown"
+        >
 
 
     <Window.Resources>
@@ -24,10 +28,10 @@
     </Window.Resources>
     
     
+    
     <Grid Background="#CCBA8B">
 
-    
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="300"/>
@@ -38,6 +42,8 @@
             <RowDefinition Height="400"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+
+      
 
         <StackPanel Grid.Row="0" Grid.Column="1">
             <Button Width="130"
@@ -68,6 +74,15 @@
                     Background="{x:Null}"
                     FontSize="35" BorderBrush="{x:Null}"
                     Click="BackClick"/>
+
+            <Label Name="Labeliukas"
+                   Height="25" Width="110" 
+                   Margin="0,-100,0,0"
+                   VerticalAlignment="Top">
+                <Hyperlink Click="Hyperlink_Click" >
+                    Forgot Password?</Hyperlink>
+            </Label>
+            
         </StackPanel>
 
         <ContentControl Grid.Row="1" Grid.Column="1" 

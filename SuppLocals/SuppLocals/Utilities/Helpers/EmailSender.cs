@@ -5,7 +5,7 @@ using System.Net.Mail;
 
 namespace SuppLocals
 {
-    public class EmailSender : SignUp
+    public class EmailSender : LoginSignupWindow
     {
         public EmailSender()
         {

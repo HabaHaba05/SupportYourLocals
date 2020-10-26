@@ -1,4 +1,8 @@
-﻿using SuppLocals.Views;
+﻿using Microsoft.VisualStudio.PlatformUI;
+using SuppLocals.Utilities.Helpers;
+using SuppLocals.Views;
+using SuppLocals.Views.AccountViews;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,6 +15,8 @@ namespace SuppLocals.ViewModels
     {
         private string _username;
         private string _password;
+
+      
 
         public string Error => null;
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
@@ -111,8 +117,13 @@ namespace SuppLocals.ViewModels
 
             var map = new MainWindow(user);
             map.Show();
-           
+
+            if (CloseWindow.WinObject != null)
+                CloseWindow.CloseParent();
+
         }
 
     }
+
+
 }

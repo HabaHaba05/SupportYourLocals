@@ -1,4 +1,5 @@
 ﻿using SuppLocals.Classes;
+using SuppLocals.Utilities.Helpers;
 using SuppLocals.Views;
 using System;
 using System.Collections.Generic;
@@ -181,9 +182,11 @@ namespace SuppLocals.ViewModels
 
             var mainWindow = new MainWindow(newUser);
             mainWindow.Show();
-            
-            
+
+            if (CloseWindow.WinObject != null)
+                CloseWindow.CloseParent();
         }
+
 
     }
 }
