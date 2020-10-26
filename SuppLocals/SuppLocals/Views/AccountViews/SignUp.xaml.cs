@@ -62,9 +62,6 @@ namespace SuppLocals.Views
             db.SaveChanges();
 
 
-            //EmailSender esender = new EmailSender();
-            //esender.SendEmail(email);
-
             var mainWindow = new MainWindow(newUser);
             mainWindow.Show();
             Close();

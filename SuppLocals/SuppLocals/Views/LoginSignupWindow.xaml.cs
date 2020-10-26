@@ -11,11 +11,17 @@ namespace SuppLocals.Views
         public LoginSignupWindow()
         {
             InitializeComponent();
+            DataContext = new LoginVM();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LoginClick(object sender, RoutedEventArgs e)
         {
             DataContext = new LoginVM();
+        }
+
+        private void SignupClick(object sender, RoutedEventArgs e)
+        {
+            DataContext = new SignupVM();
         }
     }
 }

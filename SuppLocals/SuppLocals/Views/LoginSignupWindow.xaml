@@ -16,6 +16,11 @@
                       DataType="{x:Type viewModels:LoginVM}">
             <views:LoginView DataContext="{Binding}"/>
         </DataTemplate>
+        
+        <DataTemplate x:Name="Signup"
+                      DataType="{x:Type viewModels:SignupVM}">
+            <views:SignupView DataContext="{Binding}"/>
+        </DataTemplate>
     </Window.Resources>
     
     
@@ -41,6 +46,7 @@
                     Margin="0 25"
                     Background="{x:Null}"
                     FontSize="35" BorderBrush="{x:Null}"
+                    Click="LoginClick"
                     />
         </StackPanel>
 
@@ -51,7 +57,7 @@
                     Margin="10 25"
                     Background="{x:Null}"
                     FontSize="35" BorderBrush="{x:Null}"
-                    Click="Button_Click"/>
+                    Click="SignupClick"/>
         </StackPanel>
 
         <ContentControl Grid.Row="1" Grid.Column="1" 

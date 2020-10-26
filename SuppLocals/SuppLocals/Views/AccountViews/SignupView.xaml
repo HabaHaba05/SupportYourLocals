@@ -1,0 +1,186 @@
+﻿<UserControl x:Class="SuppLocals.Views.AccountViews.SignupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuppLocals"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="300">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border CornerRadius="10" Grid.RowSpan="6">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#CCBA8B" Offset="0.0"/>
+                    <GradientStop Color="#CCBA8B" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+        </Border>
+
+        <StackPanel VerticalAlignment="Center">
+
+            <Image Source="/Assets/title2.png" Width="130" Visibility="Visible"/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="Black" 
+                        Content="Write your email:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <TextBox  Name="EmailAdressBox"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                      
+                        Opacity="1"
+                        Margin="-170 40 0 0 "
+                        MaxLength="30"
+                          />
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="Black"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+
+
+        <StackPanel Grid.Row="2">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="Black" 
+                        Content="Write your username:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <TextBox  Name="UsernameTextBox"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="Black"
+                       
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                        Opacity="1"
+                        Margin="-215 40 0 0 "
+                        MaxLength="12"
+                        />
+
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="Black"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="3">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="Black" 
+                        Content="Write your password:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <PasswordBox 
+                        Name="PasswordBox1"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                       
+                        Opacity="1"
+                        Margin="-215 40 0 0 "
+                        MaxLength="12"
+                        />
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="Black"
+                    Opacity="1"
+                    Margin="-10 0 0 0 "/>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="4">
+            <StackPanel Orientation="Horizontal">
+                <Label  Foreground="Black" 
+                        Content="Confirm password:"
+                        FontFamily="Tahoma"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Margin="60 0 0 0 "/>
+
+                <PasswordBox 
+                        Name="ConfirmPasswordBox1"
+                        FontFamily="Tahoma"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="Black"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Width="235"
+                        HorizontalContentAlignment="Left"
+                       
+                        Opacity="1"
+                        Margin="-195 40 0 0 "
+                        MaxLength="12"/>
+            </StackPanel>
+            <Border Width="250"
+                    Height="2"
+                    Background="Black"
+                    Opacity="1"
+                    Margin="-20 0 0 0 "/>
+
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="5">
+            <Button x:Name="applyBtn" 
+                Margin="0 10 0 0"
+                Width="120"
+                
+                FontSize="20"
+                Height="30" 
+                Content="Apply" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"  
+                />
+        </StackPanel>
+
+
+
+    </Grid>
+</UserControl>
