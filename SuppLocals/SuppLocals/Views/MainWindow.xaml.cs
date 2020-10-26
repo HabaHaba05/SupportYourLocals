@@ -49,7 +49,8 @@ namespace SuppLocals.Views
             var index = int.Parse(((Button) e.Source).Uid);
 
             ProfilePan.Visibility = Visibility.Collapsed;
-            profileButton.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
+            RemoveWhiteBackground(button: profileButton);
+            RemoveWhiteBackground(button: profileButton1);
 
             var ta = new ThicknessAnimation
             {
@@ -70,6 +71,16 @@ namespace SuppLocals.Views
             };
         }
 
+        private void RemoveWhiteBackground(Button button)
+        {
+            button.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
+        }
+
+        private void SetWhiteBackground(Button button)
+        {
+            button.Background = new SolidColorBrush(Color.FromRgb(250, 250, 249));
+        }
+
         private void ProfileClicked(object sender, RoutedEventArgs e)
         {
             if (ProfilePan.Visibility == Visibility.Collapsed)
@@ -78,14 +89,14 @@ namespace SuppLocals.Views
 
                 if (ActiveUser.Username == "Anonimas")
                 {
-                    profileButton.Background = new SolidColorBrush(Color.FromRgb(250, 250, 249));
+                    SetWhiteBackground(button: profileButton);
                     LogOutPanel.Visibility = Visibility.Hidden;
                     SignInPanel.Visibility = Visibility.Visible;
                 }
 
                 else
                 {
-                    profileButton1.Background = new SolidColorBrush(Color.FromRgb(250, 250, 249));
+                    SetWhiteBackground(button: profileButton1);
                     SignInPanel.Visibility = Visibility.Hidden;
                     LogOutPanel.Visibility = Visibility.Visible;
                 }
@@ -93,8 +104,8 @@ namespace SuppLocals.Views
             else
             {
                 ProfilePan.Visibility = Visibility.Collapsed;
-                profileButton.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
-                profileButton1.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));
+                RemoveWhiteBackground(button: profileButton);
+                RemoveWhiteBackground(button: profileButton1);
             }
         }
 
@@ -112,7 +123,7 @@ namespace SuppLocals.Views
         {
             DataContext = new ChangeProfileVM(ActiveUser);
             ProfilePan.Visibility = Visibility.Collapsed;
-            profileButton1.Background = new SolidColorBrush(Color.FromRgb(204, 186, 139));         
+            RemoveWhiteBackground(button: profileButton1);
             MyImage.ImageSource = ActiveUser.GetProfileImage();
         }
 

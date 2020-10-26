@@ -3,14 +3,13 @@ using System.Linq;
 
 namespace SuppLocals.ViewModels
 {
-    public class MyServicesVM : BaseViewModel
+    public class MyServicesVM : ObservableObject
     {
-
         public MyServicesVM(User user)
         {
             VendorList = new List<Vendor>();
 
-            using (var db = new VendorsDbTable())
+            using (var db = new AppDbContext())
             {
                 var data = db.Vendors.ToList();
                 foreach (var vendor in data.Where(vendor => vendor.UserID == user.ID))
@@ -21,6 +20,5 @@ namespace SuppLocals.ViewModels
         }
 
         public List<Vendor> VendorList { get; }
-
     }
 }

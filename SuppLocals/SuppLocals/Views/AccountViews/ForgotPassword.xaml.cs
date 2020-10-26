@@ -19,7 +19,7 @@ namespace SuppLocals.Views
             var email = emailForForgotPassword.Text;
             var code = GenerateRandomString();
 
-            using var db = new UsersDbTable();
+            using var db = new AppDbContext();
             var usersList = db.Users.ToList();
             var user = usersList.SingleOrDefault(x => x.Email == email);
 

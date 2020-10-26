@@ -7,7 +7,7 @@ using Microsoft.Maps.MapControl.WPF;
 
 namespace SuppLocals.ViewModels
 {
-    public class HomeVM : BaseViewModel
+    public class HomeVM : ObservableObject
     {
         public readonly User ActiveUser;
         private readonly List<Vendor> _allVendorsList;
@@ -15,6 +15,7 @@ namespace SuppLocals.ViewModels
 
 
         #region Constructor
+
         public HomeVM(Window window, User user)
         {
             this._mainWindow = window;
@@ -28,16 +29,17 @@ namespace SuppLocals.ViewModels
             {
                 "ALL"
             };
-            
+
             foreach (var type in Enum.GetValues(typeof(VendorType)))
             {
                 _vendorTypesList.Add(type.ToString());
             }
+
             _vendorTypeSelected = _vendorTypesList[0];
-            
+
 
             //Reading all vendors
-            using (VendorsDbTable db = new VendorsDbTable())
+            using (var db = new AppDbContext())
             {
                 var data = db.Vendors.ToList();
                 _allVendorsList = new List<Vendor>(data);
@@ -55,7 +57,6 @@ namespace SuppLocals.ViewModels
             }
 
             UpdateAreasVendors();
-
         }
 
         #endregion
@@ -68,7 +69,7 @@ namespace SuppLocals.ViewModels
 
         private string _vendorTypeSelected;
 
-        private bool _useDistanceFilter = false;
+        private bool _useDistanceFilter;
 
         private double _circleRadius;
 
@@ -80,7 +81,7 @@ namespace SuppLocals.ViewModels
 
         private Area _selectedArea;
 
-        private List<string> _vendorTypesList;
+        private readonly List<string> _vendorTypesList;
 
         #endregion
 
@@ -133,7 +134,7 @@ namespace SuppLocals.ViewModels
 
         public List<string> VendorTypesList
         {
-            get => _vendorTypesList;       
+            get => _vendorTypesList;
         }
 
         public string VendorTypeSelected
@@ -179,12 +180,12 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("ZoomLevel");
             }
         }
-        
-        public Area SelectedArea{ 
-            get { return _selectedArea; }
-            set 
-            {
 
+        public Area SelectedArea
+        {
+            get => _selectedArea;
+            set
+            {
                 _selectedArea = value;
                 VendorsList = null;
                 ZoomLevel = _selectedArea.Zoom;
@@ -192,10 +193,12 @@ namespace SuppLocals.ViewModels
                 {
                     VendorsList = SelectedArea.Vendors;
                 }
-                if (VendorTypesList != null && (!_selectedArea.HasChildren || _useDistanceFilter) )
+
+                if (VendorTypesList != null && (!_selectedArea.HasChildren || _useDistanceFilter))
                 {
                     UpdateVendorsList();
                 }
+
                 NotifyPropertyChanged("SelectedArea");
             }
         }
@@ -204,12 +207,11 @@ namespace SuppLocals.ViewModels
 
         #region Commands
 
-        public RelayCommand FindRouteBtnClick {get; private set;}    
-        public RelayCommand HideBtnClick {get; private set;}
+        public RelayCommand FindRouteBtnClick { get; private set; }
+        public RelayCommand HideBtnClick { get; private set; }
         public RelayCommand ReviewBtnClick { get; private set; }
         public RelayCommand JumpBackClick { get; private set; }
         public RelayCommand ShowVendorsClick { get; private set; }
-
 
         #endregion
 
@@ -221,18 +223,21 @@ namespace SuppLocals.ViewModels
             HideBtnClick = new RelayCommand(o => ResetToNulls(), o => true);
 
             ReviewBtnClick = new RelayCommand(
-                o =>{
+                o =>
+                {
                     ReviewsWindow reviewsWindow = new ReviewsWindow(_selectedVendor, ActiveUser);
                     reviewsWindow.ShowDialog();
                 },
                 o => true
-                );
+            );
 
             JumpBackClick = new RelayCommand(
-                o => { SelectedArea = _selectedArea.Parent;},
-                o => {
+                o => { SelectedArea = _selectedArea.Parent; },
+                o =>
+                {
                     //This line is needed only to hide BUG :))))
-                    ZoomLevel += 0.0001f; ZoomLevel -= 0.0001f;
+                    ZoomLevel += 0.0001f;
+                    ZoomLevel -= 0.0001f;
                     return _selectedArea.Parent != null;
                 });
 
@@ -267,22 +272,27 @@ namespace SuppLocals.ViewModels
             }
 
             UpdateVendorsList();
-            if (!_useDistanceFilter && _selectedArea.HasChildren) {
+            if (!_useDistanceFilter && _selectedArea.HasChildren)
+            {
                 VendorsList = null;
             }
-
         }
 
         private void UpdateVendorsList()
         {
             if (_vendorTypeSelected == "ALL")
             {
-                VendorsList = SelectedArea.Vendors.Where(x =>  !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <= CircleRadius).ToList();
+                VendorsList = SelectedArea.Vendors.Where(x =>
+                    !_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <=
+                    CircleRadius).ToList();
             }
             else
             {
                 VendorsList = SelectedArea.Vendors.Where(x =>
-                        (x.VendorType == _vendorTypeSelected.ToString()) && (!_useDistanceFilter || MapMethods.DistanceBetweenPlaces(ActiveUser.Location, x.Location) <= CircleRadius)).ToList();
+                    (x.VendorType == _vendorTypeSelected) && (!_useDistanceFilter ||
+                                                              MapMethods.DistanceBetweenPlaces(
+                                                                  ActiveUser.Location, x.Location) <=
+                                                              CircleRadius)).ToList();
             }
         }
 
@@ -317,7 +327,8 @@ namespace SuppLocals.ViewModels
             {
                 if (area.Level == 1)
                 {
-                    area.Vendors = _allVendorsList.Where(x => new string(x.County.Take(4).ToArray()) == new string(area.Name.Take(4).ToArray())).ToList();
+                    area.Vendors = _allVendorsList.Where(x =>
+                        new string(x.County.Take(4).ToArray()) == new string(area.Name.Take(4).ToArray())).ToList();
                 }
                 else if (area.Level == 2)
                 {

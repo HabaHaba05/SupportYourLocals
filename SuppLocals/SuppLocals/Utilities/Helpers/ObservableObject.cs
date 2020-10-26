@@ -4,9 +4,6 @@ using System.Runtime.CompilerServices;
 
 namespace SuppLocals
 {
-    /// <summary>
-    /// A base for objects using property notification.
-    /// </summary>
     public class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -15,7 +12,7 @@ namespace SuppLocals
         /// Notify a property change
         /// </summary>
         /// <param name="propertyName">Name of property to update</param>
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -28,7 +25,8 @@ namespace SuppLocals
         /// <param name="value">Value to give backing field</param>
         /// <param name="propertyName"></param>
         /// <returns></returns>
-        protected virtual bool OnPropertyChanged<T>(ref T backingField, T value, [CallerMemberName] string propertyName = "")
+        protected virtual bool NotifyPropertyChanged<T>(ref T backingField, T value,
+            [CallerMemberName] string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingField, value))
             {
@@ -36,9 +34,8 @@ namespace SuppLocals
             }
 
             backingField = value;
-            OnPropertyChanged(propertyName);
+            NotifyPropertyChanged(propertyName);
             return true;
         }
     }
 }
-

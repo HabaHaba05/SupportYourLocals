@@ -56,7 +56,7 @@
                         BorderThickness="0"
                         Width="235"
                         HorizontalContentAlignment="Left"
-                        TextChanged="EmailAdressBox_TextChanged"
+                        TextChanged="EmailAddressBox_TextChanged"
                         Opacity="1"
                         Margin="-170 40 0 0 "
                         MaxLength="30"

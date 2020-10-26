@@ -1,25 +1,15 @@
-﻿using GMap.NET.MapProviders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Printing;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
-using System.Windows.Media;
-using Windows.Foundation;
-using Windows.UI.ViewManagement;
+
 
 namespace SuppLocals
 {
-    /// <summary>
-    ///     Interaction logic for ReviewsWindow.xaml
-    /// </summary>
     public partial class ReviewsWindow : Window
     {
-        private readonly List<string> _stars = new List<string> { "☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★" };
+        private readonly List<string> _stars = new List<string> {"☆☆☆☆☆", "★☆☆☆☆", "★★☆☆☆", "★★★☆☆", "★★★★☆", "★★★★★"};
         private readonly User _user;
         private readonly Vendor _vendor;
 
@@ -62,7 +52,7 @@ namespace SuppLocals
         {
             var comment = comments.Text;
             ConfirmError.Visibility = Visibility.Hidden;
-            
+
             // counter for comments to replies
             var i = RView.Items.Count;
 
@@ -72,21 +62,21 @@ namespace SuppLocals
                 return;
             }
 
-            using (var db = new ReviewsDbTable())
+            var r = new Review
             {
-                var r = new Review
-                {
-                    VendorID = _vendor.ID,
-                    CommentID = i,
-                    SenderUsername = _user.Username,
-                    Text = comment,
-                    Stars = Rating.RatingValue,
-                    Date = DateTime.Now.ToString("yyyy-MM-dd"),
-                    Reply = ""
-                };
+                VendorID = _vendor.ID,
+                CommentID = i,
+                SenderUsername = _user.Username,
+                Text = comment,
+                Stars = Rating.RatingValue,
+                Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                Reply = ""
+            };
 
+            using (var db = new AppDbContext())
+            {
                 db.Reviews.Add(r);
-                db.SaveChanges();  
+                db.SaveChanges();
             }
 
             PopulateData();
@@ -112,7 +102,7 @@ namespace SuppLocals
             var sum = 0;
             var number = 0;
 
-            using var db = new ReviewsDbTable();
+            using var db = new AppDbContext();
             _reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
 
             for (var i = 0; i < 6; i++)
@@ -135,9 +125,10 @@ namespace SuppLocals
                     _average = 0;
                 }
 
-                var Comment = review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" + review.Date;
+                var comment = review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" +
+                              review.Date;
 
-                RView.Items.Add(new Item { Text = Comment, Response = review.Reply});
+                RView.Items.Add(new Item {Text = comment, Response = review.Reply});
             }
 
             UpdateRatingCounts();
@@ -146,12 +137,12 @@ namespace SuppLocals
         private void PostComment(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var replyBox = ((Grid)button.Parent).FindName("ReplyTextBox") as TextBox;
+            var replyBox = ((Grid) button.Parent).FindName("ReplyTextBox") as TextBox;
 
-            var comment = ((Grid)button.Parent).FindName("UserComment") as TextBlock;
+            var comment = ((Grid) button.Parent).FindName("UserComment") as TextBlock;
 
-            var replyGrid = ((Grid)button.Parent).FindName("ReplyGrid") as Grid;
-            var commentGrid = ((Grid)button.Parent).FindName("CommentGrid") as Border;
+            var replyGrid = ((Grid) button.Parent).FindName("ReplyGrid") as Grid;
+            var commentGrid = ((Grid) button.Parent).FindName("CommentGrid") as Border;
 
             replyGrid.Visibility = Visibility.Collapsed;
             commentGrid.Visibility = Visibility.Visible;
@@ -161,12 +152,12 @@ namespace SuppLocals
 
             // getting the index of the pressed POST button
             var index = GetIndex(button);
-    
-            using (var dbUser = new ReviewsDbTable())
+
+            using (var db = new AppDbContext())
             {
-                var user = dbUser.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
+                var user = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
                 user.Reply = comment.Text;
-                dbUser.SaveChanges();
+                db.SaveChanges();
             }
         }
 
@@ -178,9 +169,9 @@ namespace SuppLocals
             var commentGrid = control.FindName("CommentGrid") as Border;
             var replyGrid = control.FindName("ReplyGrid") as Grid;
 
-            var index = GetIndex(control);
+            var index = GetIndex(element: control);
 
-            using var db = new ReviewsDbTable();
+            using var db = new AppDbContext();
             var review = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
 
             if (_user.ID != _vendor.UserID)
@@ -195,9 +186,9 @@ namespace SuppLocals
             }
         }
 
-        private int GetIndex(FrameworkElement f)
+        private int GetIndex(FrameworkElement element)
         {
-            return RView.Items.IndexOf(f.DataContext);
+            return RView.Items.IndexOf(element.DataContext);
         }
     }
 }

@@ -4,17 +4,15 @@ using System.Windows;
 
 namespace SuppLocals.ViewModels
 {
-    public class AllVendorsVM: BaseViewModel
+    public class AllVendorsVM : ObservableObject
     {
         public AllVendorsVM(string username)
         {
             MessageBox.Show(username);
 
-            using var db = new UsersDbTable();
+            using var db = new AppDbContext();
             var userList = db.Users.ToList();
-
-            using var db1 = new VendorsDbTable();
-            var vendorList = db1.Vendors.ToList();
+            var vendorList = db.Vendors.ToList();
 
             var user = userList.SingleOrDefault(x => (x.Username == username));
 

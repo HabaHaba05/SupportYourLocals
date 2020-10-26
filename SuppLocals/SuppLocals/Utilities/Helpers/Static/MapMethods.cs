@@ -100,14 +100,14 @@ namespace SuppLocals
             return dist;
         }
 
-        public static LocationCollection GetCircleVertices(Location Loc, double dRadius)
+        public static LocationCollection GetCircleVertices(Location location, double dRadius)
         {
             var locCollection = new LocationCollection();
             const int earthRadius = 6367; // Earth Radius in Kilometers
 
             //Convert location to radians based on
-            var latitude = Math.PI / 180 * Loc.Latitude;
-            var longitude = Math.PI / 180 * Loc.Longitude;
+            var latitude = Math.PI / 180 * location.Latitude;
+            var longitude = Math.PI / 180 * location.Longitude;
 
             var d = dRadius / earthRadius;
 
@@ -131,12 +131,12 @@ namespace SuppLocals
 
         public static async Task<string> ConvertLocationToAddress(Location location)
         {
-
-            string data ="";
+            string data = "";
 
             try
             {
-                var uri = Config.Host + "/maps/api/geocode/json?latlng=" + location.Latitude.ToString()+","+location.Longitude.ToString() + "&language=lt&key=" +
+                var uri = Config.Host + "/maps/api/geocode/json?latlng=" + location.Latitude.ToString() + "," +
+                          location.Longitude.ToString() + "&language=lt&key=" +
                           Config.Google_Api_Key;
 
                 var client = new HttpClient();
@@ -146,7 +146,7 @@ namespace SuppLocals
 
                 var o = JObject.Parse(responseBody);
 
-                data = (string)o.SelectToken("results[0].formatted_address");
+                data = (string) o.SelectToken("results[0].formatted_address");
 
 
                 return data;
@@ -165,7 +165,8 @@ namespace SuppLocals
 
             try
             {
-                var uri = Config.Host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" + Config.Google_Api_Key;
+                var uri = Config.Host + "/maps/api/geocode/json?address=" + address + "language=lt&key=" +
+                          Config.Google_Api_Key;
 
                 var client = new HttpClient();
                 var response = await client.GetAsync(uri);
@@ -174,28 +175,27 @@ namespace SuppLocals
 
                 var o = JObject.Parse(responseBody);
 
-                data.Add((string)o.SelectToken("results[0].geometry.location.lat"));
-                data.Add((string)o.SelectToken("results[0].geometry.location.lng"));
+                data.Add((string) o.SelectToken("results[0].geometry.location.lat"));
+                data.Add((string) o.SelectToken("results[0].geometry.location.lng"));
 
-                    JArray address_components = (JArray)o.SelectToken("results[0].address_components");
+                var address_components = (JArray) o.SelectToken("results[0].address_components");
 
-                    for (int i = 0; i < address_components.Count(); i++)
+                for (int i = 0; i < address_components.Count(); i++)
+                {
+                    var zero2 = (JObject) address_components[i];
+                    var long_name = (string) zero2.SelectToken("long_name");
+                    var mtypes = (JArray) zero2.SelectToken("types");
+                    var type = (string) mtypes[0];
+
+                    if (type == "administrative_area_level_2")
                     {
-                        JObject zero2 = (JObject)address_components[i];
-                        string long_name = (string)zero2.SelectToken("long_name");
-                        JArray mtypes = (JArray)zero2.SelectToken("types");
-                        string Type = (string)mtypes[0];
-
-                        if (Type  == "administrative_area_level_2")
-                        {
-                            data.Add(RemoveLithuanianChars(long_name));
-                        }
-                        else if (Type == "administrative_area_level_1")
-                        {
-                            data.Add(RemoveLithuanianChars(long_name));
-                        }
-
+                        data.Add(RemoveLithuanianChars(long_name));
                     }
+                    else if (type == "administrative_area_level_1")
+                    {
+                        data.Add(RemoveLithuanianChars(long_name));
+                    }
+                }
 
                 return data;
             }
@@ -209,22 +209,22 @@ namespace SuppLocals
 
         private static string RemoveLithuanianChars(string str)
         {
-            string answ="";
+            var answ = "";
 
             Dictionary<char, char> dict = new Dictionary<char, char>()
             {
-                { 'ą','a'},
-                { 'č','c'},
-                { 'ę','e'},
-                { 'ė','e'},
-                { 'į','i'},
-                { 'š','s'},
-                { 'ų','u'},
-                { 'ū','u'},
-                { 'ž','z'},
+                {'ą', 'a'},
+                {'č', 'c'},
+                {'ę', 'e'},
+                {'ė', 'e'},
+                {'į', 'i'},
+                {'š', 's'},
+                {'ų', 'u'},
+                {'ū', 'u'},
+                {'ž', 'z'},
             };
 
-            foreach(var x in str)
+            foreach (var x in str)
             {
                 if (dict.ContainsKey(x))
                 {
@@ -235,8 +235,8 @@ namespace SuppLocals
                     answ += x;
                 }
             }
+
             return answ;
         }
-
     }
 }

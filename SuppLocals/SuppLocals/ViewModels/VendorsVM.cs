@@ -3,22 +3,27 @@ using System.Linq;
 
 namespace SuppLocals.ViewModels
 {
-    public class VendorsVM : BaseViewModel
+    public class VendorsVM : ObservableObject
     {
         public VendorsVM()
         {
-            UserList = new List<User>();
+            _userList = new List<User>();
 
-            using (var db = new UsersDbTable())
+            using (var db = new AppDbContext())
             {
                 var data = db.Users.ToList();
                 foreach (var user in data.Where(user => user.VendorsCount > 0))
                 {
-                    UserList.Add(user);
+                    _userList.Add(user);
                 }
             }
         }
 
-        public List<User> UserList { get; }
+        private List<User> _userList;
+        public List<User> UserList 
+        { 
+            get => _userList;
+            set => NotifyPropertyChanged(ref _userList, value);
+        }
     }
 }

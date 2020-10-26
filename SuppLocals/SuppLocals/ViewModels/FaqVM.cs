@@ -1,7 +1,7 @@
 ﻿
 namespace SuppLocals.ViewModels
 {
-    public class FaqVM : BaseViewModel
+    public class FaqVM : ObservableObject
     {
     }
 }

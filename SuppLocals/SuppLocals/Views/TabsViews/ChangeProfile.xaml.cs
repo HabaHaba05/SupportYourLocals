@@ -22,7 +22,6 @@ namespace SuppLocals.Views
 
         private void ProfileImageClicked(object sender, RoutedEventArgs e)
         {
-
             try
             {
                 FileDialog fldlg = new OpenFileDialog
@@ -35,7 +34,8 @@ namespace SuppLocals.Views
                     _imageName = fldlg.FileName;
                     var isc = new ImageSourceConverter();
 
-                    profileImage.SetValue(System.Windows.Controls.Image.SourceProperty, isc.ConvertFromString(_imageName));
+                    profileImage.SetValue(System.Windows.Controls.Image.SourceProperty,
+                        isc.ConvertFromString(_imageName));
                 }
                 fldlg = null;
 
@@ -48,15 +48,13 @@ namespace SuppLocals.Views
                 }
 
                 profileImage.ImageSource = ActiveUser.GetProfileImage();
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-        
+
 
         private void InsertImageData()
         {
@@ -79,9 +77,9 @@ namespace SuppLocals.Views
                 //Close a file stream
                 fs.Close();
 
-                ActiveUser ??= ((ChangeProfileVM)DataContext).ActiveUser;
+                ActiveUser ??= ((ChangeProfileVM) DataContext).ActiveUser;
 
-                using (var db = new UsersDbTable())
+                using (var db = new AppDbContext())
                 {
                     var user = db.Users.SingleOrDefault(x => x.ID == ActiveUser.ID);
 
@@ -105,8 +103,7 @@ namespace SuppLocals.Views
             //CHeck if this is the end of the tree
             if (parent == null) return null;
 
-            var parentWindow = parent as MainWindow;
-            if (parentWindow != null)
+            if (parent is MainWindow parentWindow)
             {
                 return parentWindow;
             }
@@ -116,6 +113,5 @@ namespace SuppLocals.Views
                 return FindParentWindow(parent);
             }
         }
-
     }
 }
