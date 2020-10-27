@@ -12,7 +12,7 @@
                   Background="#CCBA8B" Foreground="Black" BorderBrush="Black">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Title" Width="250" DisplayMemberBinding ="{Binding Title}">
+                    <GridViewColumn Header="Title" Width="255" DisplayMemberBinding ="{Binding Title}">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>
@@ -25,7 +25,7 @@
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Header="About" Width="380">
+                    <GridViewColumn Header="About" Width="330">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding Path= About, Mode=TwoWay}" TextWrapping="Wrap" Background="Transparent" BorderThickness="0" IsReadOnly="True" Cursor="Arrow"/>
@@ -43,7 +43,7 @@
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>
-                    <GridViewColumn Width="70">
+                    <GridViewColumn Width="35">
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                 <Setter Property="Background" Value="#B59A56"/>
@@ -57,7 +57,25 @@
                         </GridViewColumn.HeaderContainerStyle>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Edit" Name="editBtn"/>
+                                <Button Content="Edit" Name="editBtn" Command="{Binding ElementName=vendorListView, Path=DataContext.ButtonCommand}" CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="55">
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Background" Value="#B59A56"/>
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="TextElement.Foreground" Value="Black"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Delete" Name="deleteBtn" Command="{Binding ElementName=vendorListView, Path=DataContext.DeleteButtonCommand}" CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

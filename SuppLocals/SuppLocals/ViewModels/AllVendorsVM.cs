@@ -1,25 +1,58 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using Windows.UI.Xaml;
 
 namespace SuppLocals.ViewModels
 {
+
     public class AllVendorsVM : ObservableObject
     {
-        public AllVendorsVM(string username)
+        ObservableCollection<Vendor> _vendorList;
+
+        #region Public props
+
+        public ObservableCollection<Vendor> VendorsList
         {
-            MessageBox.Show(username);
-
-            using var db = new AppDbContext();
-            var userList = db.Users.ToList();
-            var vendorList = db.Vendors.ToList();
-
-            var user = userList.SingleOrDefault(x => (x.Username == username));
-
-            foreach (var vendor in vendorList.Where(vendor => user.ID == vendor.UserID))
+            get { return _vendorList; }
+            set
             {
-                vendorList.Add(vendor);
+                _vendorList = value;
+                NotifyPropertyChanged("VendorsList");
             }
         }
+
+        #endregion
+
+        #region Constructor
+
+        public AllVendorsVM(string username)
+        {
+            VendorsList = new ObservableCollection<Vendor>();
+            GetData(username);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void GetData(string username)
+        {
+            using (var db = new AppDbContext())
+            {
+                var userList = db.Users.ToList();
+                var user = userList.FirstOrDefault(x => x.Username == username);
+                var vendorList = db.Vendors.ToList();
+                foreach (var vendor in vendorList.Where(x => x.UserID == user.ID))
+                {
+                    VendorsList.Add(vendor);
+                }
+            }
+
+        }
+
+        #endregion
     }
 }

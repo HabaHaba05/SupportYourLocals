@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuppLocals.Views"
+        xmlns:vm="clr-namespace:SuppLocals.ViewModels"
         mc:Ignorable="d"
+        
         Title="All user vendors" Height="450" Width="800">
     <Grid Background="#CCBA8B">
         <ListView Margin="0 20 0 20"
                   Name="listView"
-                  ItemsSource="{Binding VendorList}"
+                  ItemsSource="{Binding VendorsList}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="Transparent" HorizontalAlignment="Center" Width="700" Foreground="Black" BorderBrush="Black">
             <ListView.View>
@@ -84,6 +86,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="567,-77,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

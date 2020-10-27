@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using SuppLocals.ViewModels;
+using System.Windows;
+using System.Windows.Controls;
 
 
 namespace SuppLocals.Views
@@ -17,7 +19,7 @@ namespace SuppLocals.Views
         {
             dynamic selectedItem = ListView2.SelectedItem;
             var username = selectedItem.Username;
-
+            
             var vendors = new AllVendors(username);
             vendors.Show();
         }
