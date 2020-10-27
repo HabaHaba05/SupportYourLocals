@@ -43,10 +43,7 @@ namespace SuppLocals.ViewModels
         {
             UserList = new ObservableCollection<User>();
             GetData();
-            SelectedItemChangedCommand = new DelegateCommand<object>((selectedItem) =>
-            {
-                SortList(selectedItem);
-            });
+            SelectedItemChangedCommand = new DelegateCommand<object>((selectedItem) => SortList(selectedItem));
         }
 
         #endregion

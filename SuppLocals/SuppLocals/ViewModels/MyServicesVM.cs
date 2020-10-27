@@ -11,10 +11,10 @@ namespace SuppLocals.ViewModels
 {
     public class MyServicesVM : ObservableObject
     {
-        ObservableCollection<Vendor> vendorList;
         private EditVendor editVendor;
-        public Vendor tempVendor;
         private User _user;
+        public Vendor tempVendor;
+        ObservableCollection<Vendor> vendorList;
 
         #region Public props
 
@@ -70,13 +70,18 @@ namespace SuppLocals.ViewModels
 
         private void DeleteButtonClick(object sender)
         {
-            Vendor vendor = sender as Vendor;
+            var vendor = sender as Vendor;
             using (var db = new AppDbContext())
             {
                 var vendorFromDB = db.Vendors.SingleOrDefault(x => x.ID == vendor.ID);
                 db.Remove(vendorFromDB);
                 var user = db.Users.SingleOrDefault(x => x.ID == _user.ID);
                 user.VendorsCount--;
+                var reviewList = db.Reviews.ToList();
+                foreach(var review in reviewList.Where(x => x.VendorID == vendor.ID))
+                {
+                    db.Remove(review);
+                }
                 db.SaveChanges();
             }
             var itemToRemove = VendorList.Single(d => d.ID == vendor.ID);
@@ -86,15 +91,15 @@ namespace SuppLocals.ViewModels
         private void EditButtonClick(object sender)
         {
             
-            Vendor vendor = sender as Vendor;
+            var vendor = sender as Vendor;
             tempVendor = vendor;
             editVendor = new EditVendor(vendor);
             editVendor.Show();
-            editVendor.SaveBtn.Click += new RoutedEventHandler(writeToDatabase);
+            editVendor.SaveBtn.Click += new RoutedEventHandler(WriteToDatabase);
 
         }
 
-        private async void writeToDatabase(object sender,EventArgs e)
+        private async void WriteToDatabase(object sender,EventArgs e)
         {
             var point = await MapMethods.ConvertAddressToLocation(editVendor.addressBox.Text);
             var temp = new ObservableCollection<Vendor>();

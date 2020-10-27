@@ -14,7 +14,7 @@ namespace SuppLocals.Views
         public AllVendors(string username)
         {
             InitializeComponent();
-            this.DataContext = new AllVendorsVM(username);
+            DataContext = new AllVendorsVM(username);
         }
 
 

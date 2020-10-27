@@ -40,11 +40,10 @@ namespace SuppLocals.ViewModels
 
         private void GetData(string username)
         {
-            User user;
             using (var db = new AppDbContext())
             {
                 var userList = db.Users.ToList();
-                user = userList.FirstOrDefault(x => x.Username == username);
+                var user = userList.FirstOrDefault(x => x.Username == username);
                 var vendorList = db.Vendors.ToList();
                 foreach (var vendor in vendorList.Where(x => x.UserID == user.ID))
                 {

@@ -14,7 +14,7 @@
         <TextBox Background="#B59A56" HorizontalAlignment="Left" Margin="236,36,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="156" Name="titleBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="52"/>
         <TextBox Background="#B59A56" HorizontalAlignment="Left" Margin="236,114,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" Name="aboutBox" Height="52" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         <TextBox IsReadOnly="True" Background="#B59A56" Name="addressBox"  HorizontalAlignment="Left" Margin="236,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="156" Height="52" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-        <Button Background="#B59A56" Content="Save" HorizontalAlignment="Left" Margin="292,355,0,0" VerticalAlignment="Top" Height="48" Width="135" Click="Button_Click" Name="SaveBtn"/>
+        <Button Background="#B59A56" Content="Save" HorizontalAlignment="Left" Margin="292,355,0,0" VerticalAlignment="Top" Height="48" Width="135" Click="SaveBtn_Click" Name="SaveBtn"/>
         <Label Content="Title:" HorizontalAlignment="Left" Margin="41,44,0,0" VerticalAlignment="Top" FontSize="20" Height="36" Width="61" RenderTransformOrigin="0.446,0.69"/>
         <Label Content="About:" HorizontalAlignment="Left" Margin="34,122,0,0" VerticalAlignment="Top" FontSize="20" Height="36" Width="75"/>
         <Label Content="Current address:" HorizontalAlignment="Left" Margin="34,0,0,0" VerticalAlignment="Center" Name="addressLbl" FontSize="20" Width="164"/>

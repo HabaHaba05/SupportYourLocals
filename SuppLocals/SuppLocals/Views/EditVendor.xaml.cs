@@ -32,7 +32,7 @@ namespace SuppLocals.Views
             SelectLocMap.Center = new Location(vendor.Latitude, vendor.Longitude);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
