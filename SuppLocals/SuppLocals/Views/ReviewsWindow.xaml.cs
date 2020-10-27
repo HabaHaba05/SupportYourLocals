@@ -39,12 +39,6 @@ namespace SuppLocals
             PopulateData();
         }
 
-        private class Item
-        {
-            public string Text { get; set; }
-            public string Response { get; set; }
-        }
-
         public Visibility CanComment { get; set; }
 
         // Adding user comment when button pressed
@@ -193,4 +187,11 @@ namespace SuppLocals
             return RView.Items.IndexOf(element.DataContext);
         }
     }
+
+    internal struct Item
+    {
+        public string Text { get; set; }
+        public string Response { get; set; }
+    }
+
 }
