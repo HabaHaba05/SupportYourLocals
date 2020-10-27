@@ -4,11 +4,8 @@ using SuppLocals.Classes.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows.Media;
 
 namespace SuppLocals
 {
@@ -65,7 +62,7 @@ namespace SuppLocals
                 var zoom = o1.SelectToken("zoom");
                 LocationCollection locColl = new LocationCollection();
 
-                for (int i = 0; i < locations.Count(); i++)
+                for (var i = 0; i < locations.Count(); i++)
                 {
                     locColl.Add(new Location((double) locations[i][1], (double) locations[i][0]));
                 }
@@ -85,8 +82,8 @@ namespace SuppLocals
         public List<Area> ParseMunicipalities()
         {
             JObject o1 = JObject.Parse(File.ReadAllText(
-                (string) (Directory.GetParent(Environment.CurrentDirectory).Parent.Parent +
-                          $"/Assets/CountiesJsons/{Name}County.json")));
+                 Directory.GetParent(Environment.CurrentDirectory).Parent.Parent +
+                          $"/Assets/CountiesJsons/{Name}County.json"));
             var municipality = o1.SelectToken("municipality");
             if (municipality.Count() == 0)
             {
@@ -95,7 +92,7 @@ namespace SuppLocals
 
             List<Area> municipalities = new List<Area>();
 
-            for (int i = 0; i < municipality.Count(); i++)
+            for (var i = 0; i < municipality.Count(); i++)
             {
                 var name = o1.SelectToken($"municipality[{i}].name");
                 var locations = o1.SelectToken($"municipality[{i}].locations");
@@ -103,7 +100,7 @@ namespace SuppLocals
                 var zoom = o1.SelectToken($"municipality[{i}].zoom");
 
                 LocationCollection locColl = new LocationCollection();
-                for (int j = 0; j < locations.Count(); j++)
+                for (var j = 0; j < locations.Count(); j++)
                 {
                     locColl.Add(new Location((double) locations[j][1], (double) locations[j][0]));
                 }

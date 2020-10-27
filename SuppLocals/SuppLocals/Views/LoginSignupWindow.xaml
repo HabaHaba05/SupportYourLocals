@@ -11,9 +11,7 @@
         ResizeMode="NoResize" Height="600" Width="400"
         AllowsTransparency="true" Background="Transparent"
         WindowStyle="none" 
-        MouseDown="Window_MouseDown"
-        >
-
+        MouseDown="Window_MouseDown">
 
     <Window.Resources>
         <DataTemplate x:Name="LoginTemplate"
@@ -26,12 +24,8 @@
             <views:SignupView DataContext="{Binding}"/>
         </DataTemplate>
     </Window.Resources>
-    
-    
-    
+
     <Grid Background="#CCBA8B">
-
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="300"/>
@@ -67,17 +61,16 @@
         </StackPanel>
 
         <StackPanel Grid.Row="3" Grid.Column="1">
-            <Button Width="130"
-                    Content="Back" Height="50" 
+            <Button Width="100"
+                    Content="Back" Height="35" 
                     HorizontalAlignment="Center"
-                    Margin="10 25"
-                    Background="{x:Null}"
-                    FontSize="35" BorderBrush="{x:Null}"
+                    Margin="35"
+                    FontSize="23" 
                     Click="BackClick"/>
 
             <Label Name="ForgotPassword"
                    Height="25" Width="110" 
-                   Margin="0,-100,0,0"
+                   Margin="10,-105,0,0"
                    VerticalAlignment="Top">
                 <Hyperlink Click="Hyperlink_Click" >
                     Forgot Password?</Hyperlink>

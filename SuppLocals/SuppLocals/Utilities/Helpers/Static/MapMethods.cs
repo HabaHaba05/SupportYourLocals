@@ -17,7 +17,7 @@ namespace SuppLocals
     public static class MapMethods
     {
         // Returns current user position
-        public static async Task<Location> GetLiveLocation(Window window)
+        public static async Task<Location> GetLiveLocationAsync(Window window)
         {
             var loc = new Location(0, 0);
 
@@ -129,7 +129,7 @@ namespace SuppLocals
             return locCollection;
         }
 
-        public static async Task<string> ConvertLocationToAddress(Location location)
+        public static async Task<string> ConvertLocationToAddressAsync(Location location)
         {
             string data = "";
 
@@ -159,7 +159,7 @@ namespace SuppLocals
             return data;
         }
 
-        public static async Task<List<string>> ConvertAddressToLocation(string address)
+        public static async Task<List<string>> ConvertAddressToLocationAsync(string address)
         {
             var data = new List<string>();
 
@@ -180,7 +180,7 @@ namespace SuppLocals
 
                 var address_components = (JArray) o.SelectToken("results[0].address_components");
 
-                for (int i = 0; i < address_components.Count(); i++)
+                for (var i = 0; i < address_components.Count(); i++)
                 {
                     var zero2 = (JObject) address_components[i];
                     var long_name = (string) zero2.SelectToken("long_name");

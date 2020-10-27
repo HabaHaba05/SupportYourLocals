@@ -156,7 +156,7 @@ namespace SuppLocals.ViewModels
             {
                 _useDistanceFilter = value;
                 ResetToNulls();
-                UserDistanceFilterChange();
+                UserDistanceFilterChangeAsync();
                 NotifyPropertyChanged("UseDistanceFilter");
             }
         }
@@ -219,7 +219,7 @@ namespace SuppLocals.ViewModels
 
         private void InitializeCommands()
         {
-            FindRouteBtnClick = new RelayCommand(o => CalcRoute(), o => true);
+            FindRouteBtnClick = new RelayCommand(o => CalcRouteAsync(), o => true);
             HideBtnClick = new RelayCommand(o => ResetToNulls(), o => true);
 
             ReviewBtnClick = new RelayCommand(
@@ -264,11 +264,11 @@ namespace SuppLocals.ViewModels
             }
         }
 
-        private async void UserDistanceFilterChange()
+        private async Task UserDistanceFilterChangeAsync()
         {
             if (_useDistanceFilter)
             {
-                await GetLiveLocation();
+                await GetLiveLocationAsync();
             }
 
             UpdateVendorsList();
@@ -296,14 +296,14 @@ namespace SuppLocals.ViewModels
             }
         }
 
-        private async Task GetLiveLocation()
+        private async Task GetLiveLocationAsync()
         {
-            ActiveUser.Location ??= await MapMethods.GetLiveLocation(_mainWindow);
+            ActiveUser.Location ??= await MapMethods.GetLiveLocationAsync(_mainWindow);
         }
 
-        private async void CalcRoute()
+        private async Task CalcRouteAsync()
         {
-            await GetLiveLocation();
+            await GetLiveLocationAsync();
             RouteLine = MapMethods.GetRoute(ActiveUser.Location, _selectedVendor.Location);
         }
 

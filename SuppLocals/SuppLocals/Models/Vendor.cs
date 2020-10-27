@@ -1,12 +1,9 @@
-﻿using Geocoding;
-using Microsoft.Maps.MapControl.WPF;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Windows;
 using Location = Microsoft.Maps.MapControl.WPF.Location;
 
 namespace SuppLocals
@@ -95,7 +92,7 @@ namespace SuppLocals
                         where r.VendorID == ID
                         select r).ToList();
 
-            for(int i =0; i < 6; i++)
+            for(var i =0; i < 6; i++)
             {
                 ReviewsCount[i] = 0;
             }
@@ -106,10 +103,10 @@ namespace SuppLocals
         public double Average()
         {
             UpdateReviewsCount();
-            var suma = 0;
-            for(var i =0; i<6; i++)
+            var sum = 0;
+            for(var i = 0; i < 6; i++)
             {
-                suma += ReviewsCount[i] * i;
+                sum += ReviewsCount[i] * i;
             }
 
             if(ReviewsCount.Sum() == 0) 
@@ -117,7 +114,7 @@ namespace SuppLocals
                 return 0;
             }
 
-            return (double)suma / (double)ReviewsCount.Sum();
+            return sum / (double)ReviewsCount.Sum();
         }
 
     }

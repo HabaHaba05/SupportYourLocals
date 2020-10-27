@@ -59,8 +59,8 @@ namespace SuppLocals.ViewModels
                 }
 
                 _address = value;
-                _ = GetAddressSuggestions();
-                _ = ChangeMapCenter();
+                _ = GetAddressSuggestionsAsync();
+                _ = ChangeMapCenterAsync();
                 NotifyPropertyChanged("Address");
             }
         }
@@ -139,9 +139,9 @@ namespace SuppLocals.ViewModels
 
         public AddServiceVM(User user)
         {
-            this._user = user;
+            _user = user;
 
-            CreateVendorBtnClick = new RelayCommand(async (x) => await CreateVendor(), o => AllFieldsValid());
+            CreateVendorBtnClick = new RelayCommand(async (x) => await CreateVendorAsync(), o => AllFieldsValid());
 
             LostFocusCommand = new RelayCommand(o =>
             {
@@ -159,9 +159,9 @@ namespace SuppLocals.ViewModels
             return (!string.IsNullOrEmpty(Title) || !string.IsNullOrEmpty(About) || !string.IsNullOrEmpty(Address));
         }
 
-        private async Task CreateVendor()
+        private async Task CreateVendorAsync()
         {
-            var placeInfo = await MapMethods.ConvertAddressToLocation(_address);
+            var placeInfo = await MapMethods.ConvertAddressToLocationAsync(_address);
 
             if (placeInfo.Count() == 0)
             {
@@ -175,8 +175,8 @@ namespace SuppLocals.ViewModels
                 About = _about,
                 Address = _address,
                 VendorType = SelectedVendorType,
-                Latitude = Double.Parse(placeInfo[0]),
-                Longitude = Double.Parse(placeInfo[1]),
+                Latitude = double.Parse(placeInfo[0]),
+                Longitude = double.Parse(placeInfo[1]),
                 Municipality = placeInfo[2],
                 County = placeInfo[3],
                 UserID = _user.ID
@@ -198,14 +198,14 @@ namespace SuppLocals.ViewModels
             Address = "";
         }
 
-        private async Task GetAddressSuggestions()
+        private async Task GetAddressSuggestionsAsync()
         {
             if (string.IsNullOrEmpty(Address))
             {
                 return;
             }
 
-            var data = await AutoComplete.GetData(Address);
+            var data = await AutoComplete.GetDataAsync(Address);
 
             var list = new List<TextBlock>();
 
@@ -251,9 +251,9 @@ namespace SuppLocals.ViewModels
             };
         }
 
-        private async Task ChangeMapCenter()
+        private async Task ChangeMapCenterAsync()
         {
-            var data = await MapMethods.ConvertAddressToLocation(Address);
+            var data = await MapMethods.ConvertAddressToLocationAsync(Address);
             MyMapCenter = new Location(double.Parse(data[0]), double.Parse(data[1]));
         }
 
