@@ -99,8 +99,7 @@ namespace SuppLocals
 
             foreach (var review in _reviews)
             { 
-                var comment = review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" +
-                              review.Date;
+                var comment = review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" + review.Date;
 
                 RView.Items.Add(new Item {Text = comment, Response = review.Reply});
             }
@@ -127,12 +126,10 @@ namespace SuppLocals
             // getting the index of the pressed POST button
             var index = GetIndex(button);
 
-            using (var db = new AppDbContext())
-            {
-                var user = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
-                user.Reply = comment.Text;
-                db.SaveChanges();
-            }
+            using var db = new AppDbContext();
+            var user = db.Reviews.SingleOrDefault(x => (x.VendorID == _vendor.ID) && (x.CommentID == index));
+            user.Reply = comment.Text;
+            db.SaveChanges();
         }
 
         private void ItemLoaded(object sender, RoutedEventArgs e)

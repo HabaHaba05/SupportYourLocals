@@ -11,7 +11,7 @@ namespace SuppLocals
     public static class AutoComplete
     {
         //Method to get JSON from google API
-        public static async Task<List<string>> GetData(string query)
+        public static async Task<List<string>> GetDataAsync(string query)
         {
             var data = new List<string>();
 

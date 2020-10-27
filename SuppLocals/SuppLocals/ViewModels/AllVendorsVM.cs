@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
-using Windows.UI.Xaml;
 
 namespace SuppLocals.ViewModels
 {
@@ -40,19 +36,16 @@ namespace SuppLocals.ViewModels
 
         private void GetData(string username)
         {
-            using (var db = new AppDbContext())
+            using var db = new AppDbContext();
+            var userList = db.Users.ToList();
+            var user = userList.FirstOrDefault(x => x.Username == username);
+            var vendorList = db.Vendors.ToList();
+
+            foreach (var vendor in vendorList.Where(x => x.UserID == user.ID))
             {
-                var userList = db.Users.ToList();
-                var user = userList.FirstOrDefault(x => x.Username == username);
-                var vendorList = db.Vendors.ToList();
-                foreach (var vendor in vendorList.Where(x => x.UserID == user.ID))
-                {
-                    VendorsList.Add(vendor);
-                }
+                VendorsList.Add(vendor);
             }
-
         }
-
         #endregion
     }
 }

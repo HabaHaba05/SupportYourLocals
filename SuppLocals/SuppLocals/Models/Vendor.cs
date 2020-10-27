@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Windows;
 using Location = Microsoft.Maps.MapControl.WPF.Location;
 
 namespace SuppLocals
@@ -95,7 +94,7 @@ namespace SuppLocals
                         where r.VendorID == ID
                         select r).ToList();
 
-            for(int i =0; i < 6; i++)
+            for(var i =0; i < 6; i++)
             {
                 ReviewsCount[i] = 0;
             }
@@ -107,7 +106,7 @@ namespace SuppLocals
         {
             UpdateReviewsCount();
             var suma = 0;
-            for(var i =0; i<6; i++)
+            for(var i = 0; i < 6; i++)
             {
                 suma += ReviewsCount[i] * i;
             }
@@ -117,7 +116,7 @@ namespace SuppLocals
                 return 0;
             }
 
-            return (double)suma / (double)ReviewsCount.Sum();
+            return suma / (double)ReviewsCount.Sum();
         }
 
     }

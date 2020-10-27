@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SuppLocals.Classes.Enums
+﻿namespace SuppLocals.Classes.Enums
 {
     public enum CountiesNames
     {

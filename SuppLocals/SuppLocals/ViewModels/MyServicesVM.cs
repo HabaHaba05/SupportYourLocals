@@ -1,8 +1,6 @@
 ﻿using SuppLocals.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -49,7 +47,7 @@ namespace SuppLocals.ViewModels
             VendorList = new ObservableCollection<Vendor>();
             GetData(user.ID);
             ButtonCommand = new RelayCommand(new Action<object>(EditButtonClick));
-            DeleteButtonCommand = new RelayCommand(new Action<object>(DeleteButtonClick));
+            DeleteButtonCommand = new RelayCommand(new Action<object>(PreviewDeleteButtonClick));
         }
 
         #endregion
@@ -58,13 +56,11 @@ namespace SuppLocals.ViewModels
 
         private void GetData(int userID)
         {
-            using (var db = new AppDbContext())
+            using var db = new AppDbContext();
+            var data = db.Vendors.ToList();
+            foreach (var vendor in data.Where(vendor => vendor.UserID == userID))
             {
-                var data = db.Vendors.ToList();
-                foreach (var vendor in data.Where(vendor => vendor.UserID == userID))
-                {
-                    VendorList.Add(vendor);
-                }
+                VendorList.Add(vendor);
             }
         }
 
@@ -78,30 +74,43 @@ namespace SuppLocals.ViewModels
                 var user = db.Users.SingleOrDefault(x => x.ID == _user.ID);
                 user.VendorsCount--;
                 var reviewList = db.Reviews.ToList();
+
                 foreach(var review in reviewList.Where(x => x.VendorID == vendor.ID))
                 {
                     db.Remove(review);
                 }
                 db.SaveChanges();
             }
+
             var itemToRemove = VendorList.Single(d => d.ID == vendor.ID);
             VendorList.Remove(itemToRemove);
         }
 
+        private void PreviewDeleteButtonClick(object sender)
+        {
+            MessageBoxResult mBoxResult = MessageBox.Show("Are you sure you want to delete this?", "Delete Confirmation", MessageBoxButton.YesNo);
+            if (mBoxResult == MessageBoxResult.Yes)
+            {
+                DeleteButtonClick(sender);
+            }
+            else
+            {
+                return;
+            }
+        }
+
         private void EditButtonClick(object sender)
         {
-            
             var vendor = sender as Vendor;
             tempVendor = vendor;
             editVendor = new EditVendor(vendor);
             editVendor.Show();
-            editVendor.SaveBtn.Click += new RoutedEventHandler(WriteToDatabase);
-
+            editVendor.SaveBtn.Click += WriteToDatabase;
         }
 
         private async void WriteToDatabase(object sender,EventArgs e)
         {
-            var point = await MapMethods.ConvertAddressToLocation(editVendor.addressBox.Text);
+            var point = await MapMethods.ConvertAddressToLocationAsync(editVendor.addressBox.Text);
             var temp = new ObservableCollection<Vendor>();
 
             foreach(var vendor in VendorList)
@@ -129,8 +138,8 @@ namespace SuppLocals.ViewModels
                 vendor.Title = editVendor.titleBox.Text;
                 vendor.About = editVendor.aboutBox.Text;
                 vendor.Address = editVendor.addressBox.Text;
-                vendor.Latitude = Double.Parse(point[0]);
-                vendor.Longitude = Double.Parse(point[1]);
+                vendor.Latitude = double.Parse(point[0]);
+                vendor.Longitude = double.Parse(point[1]);
                 vendor.Municipality = point[2];
                 vendor.County = point[3];
                 db.SaveChanges();
