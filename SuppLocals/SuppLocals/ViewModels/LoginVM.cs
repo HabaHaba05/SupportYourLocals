@@ -1,8 +1,12 @@
-﻿using SuppLocals.Utilities.Helpers;
+﻿using Microsoft.VisualStudio.PlatformUI;
+using SuppLocals.Utilities.Helpers;
 using SuppLocals.Views;
+using SuppLocals.Views.AccountViews;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using BC = BCrypt.Net.BCrypt;
 
@@ -12,7 +16,9 @@ namespace SuppLocals.ViewModels
     {
         private string _username;
         private string _password;
+        private bool _loginIsDisabled;
 
+      
 
         public string Error => null;
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
@@ -57,6 +63,7 @@ namespace SuppLocals.ViewModels
 
                 }
 
+
                 if (ErrorCollection.ContainsKey(name))
                     ErrorCollection[name] = result;
                 else if (result != null)
@@ -88,15 +95,28 @@ namespace SuppLocals.ViewModels
                 NotifyPropertyChanged("Password");
             }
         }
+
+        public bool LoginIsDisabled
+        {
+            get => _loginIsDisabled;
+            set
+            {
+                _loginIsDisabled = value;
+                NotifyPropertyChanged("LoginIsDisabled");
+            }
+        }
+
         #endregion
-        public RelayCommand LoginClick { get; }
+        public RelayCommand LoginClick{ get; }
+        
 
         public LoginVM()
         {
-            LoginClick = new RelayCommand(o => { LogInBtnClick(); }, o => true);
+            LoginClick = new RelayCommand(async (x) =>  await LogInBtnClickAsync(), o => ButtonState());
+           
         }
 
-        public void LogInBtnClick()
+        public async Task LogInBtnClickAsync()
         {
             using var db = new AppDbContext();
             var username = _username;
@@ -115,9 +135,32 @@ namespace SuppLocals.ViewModels
             map.Show();
 
             if (CloseWindow.WinObject != null)
-            {
                 CloseWindow.CloseParent();
+
+        }
+
+        private bool ButtonState()
+        {
+            var passwordValidator = new ValidateUsername();
+            if (string.IsNullOrWhiteSpace(_username) || string.IsNullOrWhiteSpace(_password))
+            {
+                return false;
+            }
+            else if (_password.Length < 8 ||  _username.Length < 5)
+            {
+                return false;
+            }
+            else if (passwordValidator.IsPasswordValid(_password) is false )
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
+
     }
+
+
 }
