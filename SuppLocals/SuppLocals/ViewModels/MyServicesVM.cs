@@ -10,7 +10,7 @@ namespace SuppLocals.ViewModels
     public class MyServicesVM : ObservableObject
     {
         private EditVendor editVendor;
-        private User _user;
+        private readonly User _user;
         public Vendor tempVendor;
         ObservableCollection<Vendor> vendorList;
 
