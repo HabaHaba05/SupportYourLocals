@@ -1,6 +1,4 @@
-﻿using Geocoding;
-using Microsoft.Maps.MapControl.WPF;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -105,10 +103,10 @@ namespace SuppLocals
         public double Average()
         {
             UpdateReviewsCount();
-            var suma = 0;
+            var sum = 0;
             for(var i = 0; i < 6; i++)
             {
-                suma += ReviewsCount[i] * i;
+                sum += ReviewsCount[i] * i;
             }
 
             if(ReviewsCount.Sum() == 0) 
@@ -116,7 +114,7 @@ namespace SuppLocals
                 return 0;
             }
 
-            return suma / (double)ReviewsCount.Sum();
+            return sum / (double)ReviewsCount.Sum();
         }
 
     }

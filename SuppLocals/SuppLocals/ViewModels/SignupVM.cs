@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using BC = BCrypt.Net.BCrypt;
@@ -186,7 +185,9 @@ namespace SuppLocals.ViewModels
             mainWindow.Show();
 
             if (CloseWindow.WinObject != null)
+            {
                 CloseWindow.CloseParent();
+            }
         }
 
         private bool ButtonState()
@@ -214,6 +215,5 @@ namespace SuppLocals.ViewModels
                 return true;
             }
         }
-
     }
 }
