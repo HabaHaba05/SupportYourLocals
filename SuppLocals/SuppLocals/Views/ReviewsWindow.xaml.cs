@@ -103,7 +103,9 @@ namespace SuppLocals
             var number = 0;
 
             using var db = new AppDbContext();
-            _reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
+            _reviews = (from r in db.Reviews
+                       where r.VendorID == _vendor.ID
+                       select r).ToList();
 
             for (var i = 0; i < 6; i++)
             {
