@@ -28,7 +28,7 @@ namespace SuppLocals.Views
 
         private void JoinClicked(object sender, RoutedEventArgs e)
         {
-            var login = new Login();
+            var login = new LoginSignupWindow();
             login.Show();
             Close();
         }

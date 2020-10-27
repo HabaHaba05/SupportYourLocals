@@ -107,7 +107,11 @@
                 </Button>
             </StackPanel>
 
-            <Grid x:Name="TabCursor" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0 0 0 10"  Width="115" Height="3" Background="Black">
+            <Grid x:Name="TabCursor" 
+                  HorizontalAlignment="Left" 
+                  VerticalAlignment="Bottom" 
+                  Margin="0 0 0 10"  Width="115" 
+                  Height="3" Background="Black">
                 <Grid.RenderTransform>
                     <TranslateTransform />
                 </Grid.RenderTransform>

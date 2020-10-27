@@ -34,7 +34,7 @@ namespace SuppLocals.Views
 
         private void Exit_Button_Click(object sender, RoutedEventArgs e)
         {
-            var login = new Login();
+            var login = new LoginSignupWindow();
             login.Show();
             Close();
         }
