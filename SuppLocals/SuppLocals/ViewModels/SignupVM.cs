@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using BC = BCrypt.Net.BCrypt;
 
@@ -143,10 +144,11 @@ namespace SuppLocals.ViewModels
 
         public SignupVM()
         {
-            SignupClick = new RelayCommand(o => { SignUp_ButtonClick(); }, o => true);
+            
+            SignupClick = new RelayCommand(async (x) => await SignUp_ButtonClick(), o => ButtonState());
         }
 
-        private void SignUp_ButtonClick()
+        private async Task SignUp_ButtonClick()
         {
             var username = _username;
             var password = _password;
@@ -187,6 +189,31 @@ namespace SuppLocals.ViewModels
                 CloseWindow.CloseParent();
         }
 
+        private bool ButtonState()
+        {
+            var passwordValidator = new ValidateUsername();
+            if (string.IsNullOrWhiteSpace(_username) || string.IsNullOrWhiteSpace(_password) || 
+                string.IsNullOrWhiteSpace(_email) || string.IsNullOrWhiteSpace(_confirmPassword))
+            {
+                return false;
+            }
+            else if (_password.Length < 8 || _confirmPassword.Length < 8 || _username.Length < 5)
+            {
+                return false;
+            }
+            else if (_email.IsEmail() is false)
+            {
+                return false;
+            }
+            else if (passwordValidator.IsPasswordValid(_confirmPassword) is false || passwordValidator.IsPasswordValid(_password) is false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
     }
 }

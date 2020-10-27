@@ -87,6 +87,7 @@
                         Foreground="Black"
                         Text="{Binding Username, ValidatesOnDataErrors=True, 
                         UpdateSourceTrigger=PropertyChanged}"
+                        ToolTip="{Binding ErrorCollection[Username]}"
                         Background="Transparent"
                         BorderThickness="0"
                         Width="160"
@@ -190,6 +191,7 @@
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center"
                 Command="{Binding SignupClick}"
+                ToolTipService.ShowOnDisabled="True"
                 />
         </StackPanel>
 
