@@ -112,11 +112,11 @@ namespace SuppLocals.ViewModels
 
         public LoginVM()
         {
-            LoginClick = new RelayCommand(async (x) =>  await LogInBtnClick(), o => ButtonState());
+            LoginClick = new RelayCommand(async (x) =>  await LogInBtnClickAsync(), o => ButtonState());
            
         }
 
-        public async Task LogInBtnClick()
+        public async Task LogInBtnClickAsync()
         {
             using var db = new AppDbContext();
             var username = _username;

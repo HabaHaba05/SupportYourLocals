@@ -145,10 +145,10 @@ namespace SuppLocals.ViewModels
         public SignupVM()
         {
             
-            SignupClick = new RelayCommand(async (x) => await SignUp_ButtonClick(), o => ButtonState());
+            SignupClick = new RelayCommand(async (x) => await SignUp_ButtonClickAsync(), o => ButtonState());
         }
 
-        private async Task SignUp_ButtonClick()
+        private async Task SignUp_ButtonClickAsync()
         {
             var username = _username;
             var password = _password;
