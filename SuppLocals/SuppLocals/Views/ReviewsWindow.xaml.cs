@@ -13,8 +13,6 @@ namespace SuppLocals
         private readonly User _user;
         private readonly Vendor _vendor;
 
-        private decimal _average;
-
         private List<Review> _reviews;
 
         public ReviewsWindow(Vendor vendor, User activeUser)
@@ -37,12 +35,6 @@ namespace SuppLocals
             }
 
             PopulateData();
-        }
-
-        private class Item
-        {
-            public string Text { get; set; }
-            public string Response { get; set; }
         }
 
         public Visibility CanComment { get; set; }
@@ -91,40 +83,22 @@ namespace SuppLocals
             ThreeRating.Text = _vendor.ReviewsCount[3].ToString();
             FourRating.Text = _vendor.ReviewsCount[4].ToString();
             FiveRating.Text = _vendor.ReviewsCount[5].ToString();
-
-            Average.Text = _average.ToString("0.0");
+            Average.Text = _vendor.Average().ToString("0.0");
         }
 
         private void PopulateData()
         {
             RView.Items.Clear();
 
-            var sum = 0;
-            var number = 0;
+            _vendor.UpdateReviewsCount();
 
             using var db = new AppDbContext();
-            _reviews = db.Reviews.Where(x => x.VendorID == _vendor.ID).ToList();
-
-            for (var i = 0; i < 6; i++)
-            {
-                _vendor.ReviewsCount[i] = 0;
-            }
+            _reviews = (from r in db.Reviews
+                           where r.VendorID == _vendor.ID
+                           select r).ToList();
 
             foreach (var review in _reviews)
-            {
-                _vendor.ReviewsCount[review.Stars]++;
-                sum += review.Stars;
-                number += 1;
-
-                if (sum != 0 || number != 0)
-                {
-                    _average = (decimal) sum / number;
-                }
-                else
-                {
-                    _average = 0;
-                }
-
+            { 
                 var comment = review.SenderUsername + " " + _stars[review.Stars] + "\n" + review.Text + "\n" +
                               review.Date;
 
@@ -161,7 +135,6 @@ namespace SuppLocals
             }
         }
 
-
         private void ItemLoaded(object sender, RoutedEventArgs e)
         {
             var control = sender as Grid;
@@ -191,4 +164,11 @@ namespace SuppLocals
             return RView.Items.IndexOf(element.DataContext);
         }
     }
+
+    internal struct Item
+    {
+        public string Text { get; set; }
+        public string Response { get; set; }
+    }
+
 }
