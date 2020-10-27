@@ -14,20 +14,20 @@ namespace SuppLocals.Views
         {
             InitializeComponent();
             DataContext = new LoginVM();
-            CloseWindow.WinObject = (Window)this;
+            CloseWindow.WinObject = this;
 
         }
 
         private void LoginClick(object sender, RoutedEventArgs e)
         {
             DataContext = new LoginVM();
-            Labeliukas.Visibility = Visibility.Visible;
+            ForgotPassword.Visibility = Visibility.Visible;
         }
 
         private void SignupClick(object sender, RoutedEventArgs e)
         {
             DataContext = new SignupVM();
-            Labeliukas.Visibility = Visibility.Hidden;
+            ForgotPassword.Visibility = Visibility.Hidden;
             
         }
 
@@ -35,14 +35,14 @@ namespace SuppLocals.Views
         {
             var start = new StartWindow();
             start.Show();
-            this.Close();
+            Close();
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
             var forgotPassword = new ForgotPassword();
             forgotPassword.Show();
-            this.Close();
+            Close();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
